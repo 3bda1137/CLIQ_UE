@@ -1,0 +1,536 @@
+﻿@{
+    Layout = "_HomePageLayout";
+}
+    <!-- ! Navbar -->
+    <div class="row">
+        <div class="col-12">
+            <nav>
+                <div class="nav-content">
+                    <a class="logo" href="#">Clique <i class="fa-solid fa-people-group"></i></a>
+                    <div class="search-bar">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search" />
+                    </div>
+
+                    <div class="right-items">
+                        <div class="items">
+                            <div class="notification">
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+                            <div class="home ">
+                                <a href="#"><i class="fa-solid fa-house active-link"></i></a>
+                            </div>
+
+                            <div class="messages">
+                                <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                            </div>
+
+                            <div class="profile-box" id="profile-box">
+                                <div class="profile-pic"><img src="~/HomePage/images/giphy.gif" alt="Profile image"></div>
+                                <div class="profile-name">
+                                    moudy
+                                    <i class="fa-solid fa-caret-down"></i>
+                                </div>
+                                <div class="dropdown-menu" id="dropdown-menu">
+                                    <div class="dropdown-item" data-action="profile"><i class="fa-solid fa-user"></i> Profile</div>
+                                    <div class="dropdown-item" data-action="chat"><i class="fa-solid fa-comments"></i> Chat</div>
+                                    <div class="dropdown-item" data-action="settings"><i class="fa-solid fa-cog"></i> Settings</div>
+                                    <div class="dropdown-item" data-action="group"><i class="fa-solid fa-users"></i> Group</div>
+                                    <div class="dropdown-item" data-action="logout"><i class="fa-solid fa-sign-out"></i> Logout</div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="container-fluid">
+
+        <!-- * ---------------------------------------------------------------- -->
+        <!-- ! Content -->
+        <div class="row mt-3">
+            <!-- *! Left Content !*-->
+            <div class="col-lg-3 col-md-4 d-none left-content-container fixed d-md-flex justify-content-center">
+                <div class="left-boxes">
+                    <div class="links-container">
+                        <div class="link active-link">
+                            <i class="fa-solid fa-house"></i>
+                            <a href="#" class="home">Home</a>
+                        </div>
+                        <div class="link">
+                            <i class="fa-solid fa-comments"></i>
+                            <a href="#" class="chat">Chat</a>
+                        </div>
+                        <div class="link">
+                            <i class="fa-solid fa-user-group"></i>
+                            <a href="#" class="group">Group</a>
+                        </div>
+                        <div class="link">
+                            <i class="fa-solid fa-gears"></i>
+                            <a href="#" class="Settings">Settings</a>
+                        </div>
+                    </div>
+
+
+                    <div class="links-container">
+                        <div class="link">
+                            <i class="fa-solid fa-wallet"></i>
+                            <a href="#">Walt</a>
+                        </div>
+                        <div class="link">
+                            <i class="fa-solid fa-diagram-project"></i>
+                            <a href="#">My Products</a>
+                        </div>
+                        <div class="link">
+                            <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="" />
+                            <a href="#">@@mod_99</a>
+                        </div>
+                    </div>
+
+
+
+                    <p class="Explore">Explore</p>
+
+                    <div class="links-container">
+                        <div class="link">
+                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                            <a href="#">Offer</a>
+                        </div>
+                        <div class="link">
+                            <i class="fa-solid fa-user-doctor"></i>
+                            <a href="#">Jobs</a>
+                        </div>
+
+                        <div class="link">
+                            <i class="fa-solid fa-store"></i>
+                            <a href="#">Market Place</a>
+                        </div>
+                        <div class="link">
+                            <i class="fa-solid fa-square-parking"></i>
+                            <a href="#">Pages</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--* Main Context  *******************************************-->
+            <div class="col-lg-6 col-md-8 col-12 main-content-container d-flex justify-content-center">
+                <div class="container-box">
+
+                    <div class="add-post">
+                        <div class="box">
+                            <div class="write-text">
+                                <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="">
+                                <!-- <input oninput="auto_increase_input_height(this)" class="post-text" type="text" placeholder="What's on your mind"> -->
+                                <textarea name="post-text" id="write-post-text" cols="30" rows="1" placeholder="What's on your mind"></textarea>
+                            </div>
+                            <div class="post-img">
+                                <img class="add-post-img" src="" alt="">
+                            </div>
+                            <div class="bottom-btns">
+                                <div class="left">
+                                    <i class="fa-solid fa-face-smile emoji-btn"></i>
+                                    <i class="fa-solid fa-hashtag hash-btn"></i>
+                                    <i class="fa-solid fa-images img-btn"></i>
+
+                                    <div class="post-privacy">
+                                        <div class="dropdown">
+                                            <button class="dropdown-toggle" id="privacyDropdown" aria-expanded="false">
+                                                <i class="fa-solid fa-earth-americas"></i>
+                                                <span>Public</span>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="privacyDropdown">
+                                                <li data-value="public"><i class="fa-solid fa-earth-americas"></i> Public</li>
+                                                <li data-value="friends"><i class="fa-solid fa-users"></i> Friends</li>
+                                                <li data-value="private"><i class="fa-solid fa-lock"></i> Private</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="right">
+                                    <button class="post-btn">Post</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="posts-container">
+                        <!-- ! Post ConTainer -->
+
+
+                        <div class="post" data-post-date="2024-03-30T12:00:00">
+                            <div class="box">
+                                <div class="top">
+                                    <!-- Profile -- views -->
+                                    <div class="profile">
+                                        <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                                        <div class="name">
+
+                                            <p class="username">moudy rasmy</p>
+                                            <p class="post-time">1 hour ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="views">
+                                        <div class="views-number">
+                                            <i class="fa-solid fa-eye"></i>
+                                            <p>100</p>
+
+                                        </div>
+                                        <div class="more-options">
+                                            <i class="fa-solid fa-ellipsis more-options-icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ! Post Content -->
+                                <div class="post-content">
+                                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, eaque eligendi, veniam commodi dignissimos vero consectetur neque maxime iure et adipisci voluptas quae doloremque unde non optio nesciunt porro possimus.</p>
+                                    <img src="./images/6.jpg" alt="">
+                                    <div class="post-img">
+                                    </div>
+                                    <div class="interactions">
+                                        <div class="box">
+                                            <i class="fa-solid fa-heart like-icon"></i>
+                                            <span>12</span>
+                                        </div>
+
+                                        <div class="box">
+                                            <i class="fa-solid fa-thumbs-down dislike-icon"></i>
+                                            <span>12</span>
+                                        </div>
+
+                                        <div class="box">
+                                            <i class="fa-solid fa-retweet repost-icon"></i>
+                                            <span>12</span>
+                                        </div>
+
+                                        <div class="box">
+                                            <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"> </i>
+                                            <span>12</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- Add Comment -->
+                                <div class="add-comment">
+                                    <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="">
+                                    <input type="text" placeholder="Add a comment">
+                                    <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="post" data-post-date="2024-03-30T12:00:00">
+                            <div class="box">
+                                <div class="top">
+                                    <!-- Profile -- views -->
+                                    <div class="profile">
+                                        <img src="~/HomePage/images/giphy.gif" alt="Profile image">
+                                        <div class="name">
+                                            <p>moudy rasmy</p>
+                                            <p class="post-time">1 hour ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="views">
+                                        <div class="views-number">
+                                            <i class="fa-solid fa-eye"></i>
+                                            <p class="post-views">100</p>
+
+                                        </div>
+                                        <div class="more-options">
+                                            <i class="fa-solid fa-ellipsis"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ! Post Content -->
+                                <div class="post-content">
+                                    <p class="post-text">ليه سميت اكشن بوتنشال؟؟ 🤔🤔</p>
+                                    <div class="post-img">
+                                    </div>
+                                    <div class="video">
+                                        <video width="640" height="360" controls>
+                                            <source class="post-video" src="~/HomePage/images/t1.mp4" type="video/mp4">
+                                        </video>
+                                    </div>
+                                    <div class="interactions">
+                                        <div class="box">
+                                            <i class="fa-solid fa-heart"></i>
+                                            <span class="like-numbers"> 12</span>
+                                        </div>
+
+                                        <div class="box">
+                                            <i class="fa-solid fa-thumbs-down"></i>
+                                            <span class="dislike-numbers"> 12</span>
+                                        </div>
+
+                                        <div class="box">
+                                            <i class="fa-solid fa-retweet"></i>
+                                            <span class="repost-numbers">12</span>
+                                        </div>
+
+                                        <div class="box">
+                                            <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"> </i>
+
+                                            <span class="comment-numbers">12</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- Add Comment -->
+                                <div class="add-comment">
+                                    <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="">
+                                    <input class="comment-text" type="text" placeholder="Add a comment">
+                                    <i cl class="fa-solid fa-hand-pointer"></i>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="post" data-post-date="2024-03-30T12:00:00">
+                            <div class="box">
+                                <div class="top">
+                                    <!-- Profile -- views -->
+                                    <div class="profile">
+                                        <img src="~/HomePage/images/giphy.gif" alt="Profile image">
+                                        <div class="name">
+                                            <p>moudy rasmy</p>
+                                            <p class="post-time"></p>
+                                        </div>
+                                    </div>
+                                    <div class="views">
+                                        <div class="views-number">
+                                            <i class="fa-solid fa-eye"></i>
+                                            <p>100</p>
+
+                                        </div>
+                                        <div class="more-options">
+                                            <i class="fa-solid fa-ellipsis"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ! Post Content -->
+                                <div class="post-content">
+                                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, eaque eligendi, veniam commodi dignissimos</p>
+                                    <div class="post-img">
+                                        <img src="./images/giphy (1).gif" class="post-img" alt="">
+
+                                    </div>
+                                    <div class="interactions">
+                                        <div class="box">
+                                            <i class="fa-solid fa-heart"></i>
+                                            <span>12</span>
+                                        </div>
+
+                                        <div class="box">
+                                            <i class="fa-solid fa-thumbs-down"></i>
+                                            <span>12</span>
+                                        </div>
+
+                                        <div class="box">
+                                            <i class="fa-solid fa-retweet"></i>
+                                            <span>12</span>
+                                        </div>
+
+                                        <div class="box">
+                                            <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"> </i>
+
+                                            <span>12</span>
+                                        </div>
+
+                                    </div>
+                                    <a href="#">View <span>12</span> Commnets</a>
+                                </div>
+                                <!-- Add Comment -->
+                                <div class="add-comment">
+                                    <img src="~/HomePage/images/giphy.gif" alt="">
+                                    <input type="text" placeholder="Add a comment">
+                                    <i class="fa-solid fa-hand-pointer"></i>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- ! ===================================  ! -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!--*! Right Content !***************************************-->
+            <div class="col-lg-3 d-none right-content-container  d-lg-flex justify-content-center">
+                <div class="right-boxes">
+
+                    <div class="links-container box-1">
+                        <p>Complete Your Profile</p>
+
+                        <progress value="50" max="100"></progress>
+
+                        <p class="complete-progress">verifiy your email <span class="checked">✓✓</span></p>
+                        <p>set your username <span class="checked">✓✓</span> </p>
+                        <p>set your profile pictuer <span class="checked">✓✓</span> </p>
+                    </div>
+
+                    <div class="links-container box-with-two-cols">
+                        <div class="header">
+                            <div class="left">
+                                <img src="./images/fire.svg" alt="Fire svg">
+                                <p>Trending</p>
+                            </div>
+                            <a href="#">See more</a>
+                        </div>
+
+                        <div class="box-row">
+                            <p>#Cliuqe</p>
+                            <div class="follow">
+                                <a href="#"><i class="fa-solid fa-circle-plus"></i> Fllow</a>
+                            </div>
+                        </div>
+
+
+                        <div class="box-row">
+                            <p>#Metaverse</p>
+                            <div class="follow">
+                                <a href="#"><i class="fa-solid fa-circle-plus"></i> Fllow</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="links-container box-with-two-cols friends-box">
+                        <div class="header">
+                            <div class="left">
+                                <i class="fa-solid fa-user-group Friends-icon"></i>
+                                <p>Friends Suggesttion</p>
+                            </div>
+                            <a href="#">See more</a>
+                        </div>
+
+                        <div class="box-row">
+                            <div class="profile">
+                                <img src="./images/3.jpg" alt="profile pictuer">
+                                <p>Moudy Rasmy</p>
+                            </div>
+                            <div class="follow">
+                                <a href="#"><i class="fa-solid fa-circle-plus"></i> Fllow</a>
+                            </div>
+                        </div>
+
+
+                        <div class="box-row">
+                            <div class="profile">
+                                <img src="./images/6.jpg" alt="profile pictuer">
+                                <p>Mahmoud salah</p>
+                            </div>
+                            <div class="follow">
+                                <a href="#"><i class="fa-solid fa-circle-plus"></i> Fllow</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="links-container box-with-two-cols group-box">
+                        <div class="header">
+                            <div class="left">
+                                <i class="fa-solid fa-user-group Friends-icon"></i>
+                                <p>Groups</p>
+                            </div>
+                            <a href="#">See more</a>
+                        </div>
+
+                        <div class="box-row">
+                            <div class="profile">
+                                <img src="./images/3.jpg" alt="profile pictuer">
+                                <p>Kersh Kepers</p>
+                                <span class="joins-number">3M Member</span>
+                            </div>
+                            <div class="follow">
+                                <a href="#"><i class="fa-solid fa-circle-plus"></i> Join</a>
+                            </div>
+                        </div>
+
+
+                        <div class="box-row">
+                            <div class="profile">
+                                <img src="./images/iti.svg" alt="profile pictuer">
+                                <p>ITI-Assiut</p>
+                                <span class="joins-number">25k Member</span>
+
+                            </div>
+                            <div class="follow">
+                                <a href="#"><i class="fa-solid fa-circle-plus"></i> Join</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+        <!-- * ---------------------------------------------------------------- -->
+    </div>
+
+
+    <!--  -->
+    <!-- Modal -->
+    <div class="modal fade" id="show_comments" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="show_commentsLabel">Comments</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="comment">
+                        <div class="profile">
+                            <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                            <div class="name">
+                                <p class="username">moudy rasmy</p>
+                                <p class="comment-time">1 hour ago</p>
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            <p class="comment-text">This is a comment.</p>
+                        </div>
+                        <div class="love-icon">
+                            <i class="fa-solid fa-heart like-icon"></i>
+                            <span>12</span>
+                        </div>
+                    </div>
+
+
+                    <div class="comment">
+                        <div class="profile">
+                            <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                            <div class="name">
+                                <p class="username">moudy rasmy</p>
+                                <p class="comment-time">1 hour ago</p>
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, voluptates vero voluptatibus placeat, necessitatibus mollitia similique impedit quasi minima culpa magni, nulla sapiente ex non. Illo sequi tempora laboriosam impedit..</p>
+                        </div>
+                        <div class="love-icon">
+                            <i class="fa-solid fa-heart like-icon"></i>
+                            <span>12</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  -->
+
