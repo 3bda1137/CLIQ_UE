@@ -1,4 +1,5 @@
-﻿using CLIQ_UE.Models;
+﻿using CLIQ_UE.Helpers;
+using CLIQ_UE.Models;
 using CLIQ_UE.Services;
 using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -79,6 +80,85 @@ namespace CLIQ_UE.Controllers
 		{
 			await signInManager.SignOutAsync();
 			return RedirectToAction("Login", "Account");
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> ForgotPassword()
+		{
+
+			return View();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
+		{
+			if (ModelState.IsValid)
+			{
+				ApplicationUser user = await userManager.FindByEmailAsync(forgotPasswordViewModel.Email);
+				if (user != null)
+				{
+					string token = await userManager.GeneratePasswordResetTokenAsync(user);
+					var urlForResetPassword = Url.Action("ResetPassword", "Account", new
+					{
+						email = forgotPasswordViewModel.Email,
+						token = token
+					}, protocol: Request.Scheme);
+
+					Email email = new Email()
+					{
+						Subject = "Reset Your Password",
+						Recipients = forgotPasswordViewModel.Email,
+						Body = urlForResetPassword
+					};
+					EmailSetting.SendEmail(email);
+					return RedirectToAction("ResetMessage", "Account");
+				}
+
+			}
+			return View(forgotPasswordViewModel);
+		}
+
+		public IActionResult ResetMessage()
+		{
+			return View();
+		}
+
+		public IActionResult ResetPassword(string email, string token)
+		{
+			TempData["email"] = email;
+			TempData["token"] = token;
+			return View();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+		{
+			if (ModelState.IsValid)
+			{
+				string email = TempData["email"].ToString();
+				string token = TempData["token"].ToString();
+
+				ApplicationUser user = await userManager.FindByEmailAsync(email);
+				if (user != null)
+				{
+					var result = await userManager.ResetPasswordAsync(user, token, resetPasswordViewModel.Password);
+					if (result.Succeeded)
+					{
+						return RedirectToAction("Login", "Account");
+					}
+
+					foreach (var error in result.Errors)
+					{
+						ModelState.AddModelError("", error.Description);
+					}
+				}
+				else
+				{
+					ModelState.AddModelError("", "Not Valid");
+				}
+
+			}
+			return View(resetPasswordViewModel);
 		}
 	}
 }

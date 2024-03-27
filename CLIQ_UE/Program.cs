@@ -1,5 +1,6 @@
 using CLIQ_UE.Models;
 using CLIQ_UE.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CLIQ_UE
@@ -25,7 +26,8 @@ namespace CLIQ_UE
 								option.Password.RequireNonAlphanumeric = false;
 								option.Password.RequireDigit = true;
 								option.Password.RequiredLength = 6;
-							}).AddEntityFrameworkStores<ApplicationContext>();
+							}).AddEntityFrameworkStores<ApplicationContext>()
+							.AddDefaultTokenProviders();//to generat token
 
 			//register My Services
 			builder.Services.AddScoped<IUserServices, UserServices>();
