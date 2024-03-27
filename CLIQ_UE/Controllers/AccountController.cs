@@ -103,14 +103,10 @@ namespace CLIQ_UE.Controllers
 						email = forgotPasswordViewModel.Email,
 						token = token
 					}, protocol: Request.Scheme);
+					string body = FormatEmail.CreateDesignOfEmail(urlForResetPassword);
+					SendEmail sendEmail = new SendEmail();
+					await sendEmail.SendEmailAsync(forgotPasswordViewModel.Email, body);
 
-					Email email = new Email()
-					{
-						Subject = "Reset Your Password",
-						Recipients = forgotPasswordViewModel.Email,
-						Body = urlForResetPassword
-					};
-					EmailSetting.SendEmail(email);
 					return RedirectToAction("ResetMessage", "Account");
 				}
 
