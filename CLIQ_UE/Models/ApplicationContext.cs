@@ -16,6 +16,7 @@ namespace CLIQ_UE.Models
 		public DbSet<Reaction> Reactions { get; set; }
 		public DbSet<View> Views { get; set; }
 		public DbSet<ChatIndividual> ChatIndividual { get; set; }
+		public DbSet<OnlineUser> OnlineUsers { get; set; }
 
 
 		protected override void OnModelCreating(ModelBuilder builder)
