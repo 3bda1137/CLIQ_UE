@@ -513,7 +513,7 @@ nav .nav-content {
   border-radius: 10px;
   background-color: var(--box-group-color);
   height: 100%;
-  width: 150px;
+  
 }
 
 .nav-content .right-items .profile-box .profile-pic {
@@ -628,10 +628,12 @@ nav .nav-content {
 
 .add-post .box .post-img {
   margin: 1.3rem 0;
+  max-width:80%;
 }
 
 .add-post .box .post-img img {
   width: 100%;
+  max-height:500px;
   border-radius: var(--border-radius);
 }
 
@@ -866,6 +868,7 @@ nav .nav-content {
   font-weight: 500;
   text-align: left;
   font-size: 1.2rem;
+  width:100%;
 }
 
 .posts-container .post .box .post-content .post-img {

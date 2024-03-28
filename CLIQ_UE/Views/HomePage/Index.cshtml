@@ -1,4 +1,16 @@
-﻿@{
+﻿@using CLIQ_UE.ViewModels
+  @model HomePageViewModel
+  
+@if (Model.UserImage == null)
+{
+    Model.UserImage = "default user pic";
+    Model.FullName = Model.UserName;
+    Model.FirstName = Model.UserName;
+    Model.LastName = Model.UserName;
+
+}
+@{
+   
     Layout = "_HomePageLayout";
 }
     <!-- ! Navbar -->
@@ -28,7 +40,7 @@
                             <div class="profile-box" id="profile-box">
                                 <div class="profile-pic"><img src="~/HomePage/images/giphy.gif" alt="Profile image"></div>
                                 <div class="profile-name">
-                                    moudy
+                                    @Model.FirstName
                                     <i class="fa-solid fa-caret-down"></i>
                                 </div>
                                 <div class="dropdown-menu" id="dropdown-menu">
@@ -36,7 +48,7 @@
                                     <div class="dropdown-item" data-action="chat"><i class="fa-solid fa-comments"></i> Chat</div>
                                     <div class="dropdown-item" data-action="settings"><i class="fa-solid fa-cog"></i> Settings</div>
                                     <div class="dropdown-item" data-action="group"><i class="fa-solid fa-users"></i> Group</div>
-                                    <div class="dropdown-item" data-action="logout"><i class="fa-solid fa-sign-out"></i> Logout</div>
+                                <div class="dropdown-item logout" data-action="logout"><a asp-action="Logout" asp-controller="Account"><i class="fa-solid fa-sign-out"></i> Logout</a></div>
                                 </div>
                             </div>
 
@@ -165,16 +177,19 @@
                         <!-- ! Post ConTainer -->
 
 
-                        <div class="post" data-post-date="2024-03-30T12:00:00">
+                    @foreach(Post post in Model.LatestPosts)
+                    {
+                        <div class="post" data-post-date=@post.PostDate>
                             <div class="box">
                                 <div class="top">
                                     <!-- Profile -- views -->
                                     <div class="profile">
-                                        <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                                        <img class="profile-pic" src= "@post.User.ProfileImage"  alt="Profile image">
                                         <div class="name">
 
-                                            <p class="username">moudy rasmy</p>
-                                            <p class="post-time">1 hour ago</p>
+                                            <p class="username">@post.User.FirstName</p>
+                                            @* Using js funciton to calc the time  *@
+                                            <p class="post-time"></p>
                                         </div>
                                     </div>
                                     <div class="views">
@@ -190,8 +205,8 @@
                                 </div>
                                 <!-- ! Post Content -->
                                 <div class="post-content">
-                                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, eaque eligendi, veniam commodi dignissimos vero consectetur neque maxime iure et adipisci voluptas quae doloremque unde non optio nesciunt porro possimus.</p>
-                                    <img src="./images/6.jpg" alt="">
+                                    <p>@post.TextContent ==null ? "Null": @post</p>
+                                    <img src=@post.PostImages alt="Post Image">
                                     <div class="post-img">
                                     </div>
                                     <div class="interactions">
@@ -216,145 +231,82 @@
                                         </div>
 
                                     </div>
+                                    <a href="#">View <span>12</span> Commnets</a>
                                 </div>
                                 <!-- Add Comment -->
                                 <div class="add-comment">
-                                    <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="">
+                                    <img class="profile-pic" src="@Model.UserImage" alt="">
                                     <input type="text" placeholder="Add a comment">
                                     <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
                                 </div>
                             </div>
                         </div>
 
+                    }
 
-                        <div class="post" data-post-date="2024-03-30T12:00:00">
-                            <div class="box">
-                                <div class="top">
-                                    <!-- Profile -- views -->
-                                    <div class="profile">
-                                        <img src="~/HomePage/images/giphy.gif" alt="Profile image">
-                                        <div class="name">
-                                            <p>moudy rasmy</p>
-                                            <p class="post-time">1 hour ago</p>
-                                        </div>
-                                    </div>
-                                    <div class="views">
-                                        <div class="views-number">
-                                            <i class="fa-solid fa-eye"></i>
-                                            <p class="post-views">100</p>
 
-                                        </div>
-                                        <div class="more-options">
-                                            <i class="fa-solid fa-ellipsis"></i>
-                                        </div>
+                     @* ////  TEst Post *@
+
+                    <div class="post" data-post-date="2024-03-30T12:00:00">
+                        <div class="box">
+                            <div class="top">
+                                <!-- Profile -- views -->
+                                <div class="profile">
+                                    <img class="profile-pic" src="./images/giphy.gif" alt="Profile image">
+                                    <div class="name">
+
+                                        <p class="username">moudy rasmy</p>
+                                        <p class="post-time">1 hour ago</p>
                                     </div>
                                 </div>
-                                <!-- ! Post Content -->
-                                <div class="post-content">
-                                    <p class="post-text">ليه سميت اكشن بوتنشال؟؟ 🤔🤔</p>
-                                    <div class="post-img">
-                                    </div>
-                                    <div class="video">
-                                        <video width="640" height="360" controls>
-                                            <source class="post-video" src="~/HomePage/images/t1.mp4" type="video/mp4">
-                                        </video>
-                                    </div>
-                                    <div class="interactions">
-                                        <div class="box">
-                                            <i class="fa-solid fa-heart"></i>
-                                            <span class="like-numbers"> 12</span>
-                                        </div>
-
-                                        <div class="box">
-                                            <i class="fa-solid fa-thumbs-down"></i>
-                                            <span class="dislike-numbers"> 12</span>
-                                        </div>
-
-                                        <div class="box">
-                                            <i class="fa-solid fa-retweet"></i>
-                                            <span class="repost-numbers">12</span>
-                                        </div>
-
-                                        <div class="box">
-                                            <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"> </i>
-
-                                            <span class="comment-numbers">12</span>
-                                        </div>
+                                <div class="views">
+                                    <div class="views-number">
+                                        <i class="fa-solid fa-eye"></i>
+                                        <p>100</p>
 
                                     </div>
-                                </div>
-                                <!-- Add Comment -->
-                                <div class="add-comment">
-                                    <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="">
-                                    <input class="comment-text" type="text" placeholder="Add a comment">
-                                    <i cl class="fa-solid fa-hand-pointer"></i>
+                                    <div class="more-options">
+                                        <i class="fa-solid fa-ellipsis more-options-icon"></i>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-
-                        <div class="post" data-post-date="2024-03-30T12:00:00">
-                            <div class="box">
-                                <div class="top">
-                                    <!-- Profile -- views -->
-                                    <div class="profile">
-                                        <img src="~/HomePage/images/giphy.gif" alt="Profile image">
-                                        <div class="name">
-                                            <p>moudy rasmy</p>
-                                            <p class="post-time"></p>
-                                        </div>
-                                    </div>
-                                    <div class="views">
-                                        <div class="views-number">
-                                            <i class="fa-solid fa-eye"></i>
-                                            <p>100</p>
-
-                                        </div>
-                                        <div class="more-options">
-                                            <i class="fa-solid fa-ellipsis"></i>
-                                        </div>
-                                    </div>
+                            <!-- ! Post Content -->
+                            <div class="post-content">
+                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, eaque eligendi, veniam commodi dignissimos vero consectetur neque maxime iure et adipisci voluptas quae doloremque unde non optio nesciunt porro possimus.</p>
+                                <img src="./images/6.jpg" alt="">
+                                <div class="post-img">
                                 </div>
-                                <!-- ! Post Content -->
-                                <div class="post-content">
-                                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, eaque eligendi, veniam commodi dignissimos</p>
-                                    <div class="post-img">
-                                        <img src="./images/giphy (1).gif" class="post-img" alt="">
-
+                                <div class="interactions">
+                                    <div class="box">
+                                        <i class="fa-solid fa-heart like-icon"></i>
+                                        <span>12</span>
                                     </div>
-                                    <div class="interactions">
-                                        <div class="box">
-                                            <i class="fa-solid fa-heart"></i>
-                                            <span>12</span>
-                                        </div>
 
-                                        <div class="box">
-                                            <i class="fa-solid fa-thumbs-down"></i>
-                                            <span>12</span>
-                                        </div>
-
-                                        <div class="box">
-                                            <i class="fa-solid fa-retweet"></i>
-                                            <span>12</span>
-                                        </div>
-
-                                        <div class="box">
-                                            <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"> </i>
-
-                                            <span>12</span>
-                                        </div>
-
+                                    <div class="box">
+                                        <i class="fa-solid fa-thumbs-down dislike-icon"></i>
+                                        <span>12</span>
                                     </div>
-                                    <a href="#">View <span>12</span> Commnets</a>
-                                </div>
-                                <!-- Add Comment -->
-                                <div class="add-comment">
-                                    <img src="~/HomePage/images/giphy.gif" alt="">
-                                    <input type="text" placeholder="Add a comment">
-                                    <i class="fa-solid fa-hand-pointer"></i>
+
+                                    <div class="box">
+                                        <i class="fa-solid fa-retweet repost-icon"></i>
+                                        <span>12</span>
+                                    </div>
+
+                                    <div class="box">
+                                        <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"> </i>
+                                        <span>12</span>
+                                    </div>
+
                                 </div>
                             </div>
+                            <!-- Add Comment -->
+                            <div class="add-comment">
+                                <img class="profile-pic" src="./images/giphy.gif" alt="">
+                                <input type="text" placeholder="Add a comment">
+                                <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
+                            </div>
                         </div>
+                    </div>
 
 
                         <!-- ! ===================================  ! -->
