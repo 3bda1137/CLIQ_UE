@@ -5,54 +5,54 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CLIQ_UE
 {
-	public class Program
-	{
-		public static void Main(string[] args)
-		{
-			var builder = WebApplication.CreateBuilder(args);
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-			// Add services to the container.
-			builder.Services.AddControllersWithViews();
-			//Add Service DbContext
-			builder.Services.AddDbContext<ApplicationContext>(options =>
-			{
-				options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
-			});
-			//Add Service Identity
-			builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
-							option =>
-							{
-								//setting of Password
-								option.Password.RequireNonAlphanumeric = false;
-								option.Password.RequireDigit = true;
-								option.Password.RequiredLength = 6;
-							}).AddEntityFrameworkStores<ApplicationContext>()
-							.AddDefaultTokenProviders();//to generat token
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+            //Add Service DbContext
+            builder.Services.AddDbContext<ApplicationContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
+            });
+            //Add Service Identity
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
+                            option =>
+                            {
+                                //setting of Password
+                                option.Password.RequireNonAlphanumeric = false;
+                                option.Password.RequireDigit = true;
+                                option.Password.RequiredLength = 6;
+                            }).AddEntityFrameworkStores<ApplicationContext>()
+                            .AddDefaultTokenProviders();//to generat token
 
-			//register My Services
-			builder.Services.AddScoped<IUserServices, UserServices>();
-
-
-			var app = builder.Build();
+            //register My Services
+            builder.Services.AddScoped<IUserServices, UserServices>();
 
 
-			// Configure the HTTP request pipeline.
-			if (!app.Environment.IsDevelopment())
-			{
-				app.UseExceptionHandler("/Home/Error");
-			}
-			app.UseStaticFiles();
+            var app = builder.Build();
 
-			app.UseRouting();
 
-			//app.UseAuthentication();
-			app.UseAuthorization();
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseStaticFiles();
 
-			app.MapControllerRoute(
-				name: "default",
-				pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.UseRouting();
 
-			app.Run();
-		}
-	}
+            //app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Account}/{action=Register}/{id?}");
+
+            app.Run();
+        }
+    }
 }
