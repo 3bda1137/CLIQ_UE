@@ -1,4 +1,5 @@
 using CLIQ_UE.Models;
+using CLIQ_UE.Repositories;
 using CLIQ_UE.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -29,9 +30,21 @@ namespace CLIQ_UE
                             }).AddEntityFrameworkStores<ApplicationContext>()
                             .AddDefaultTokenProviders();//to generat token
 
+
             //register My Services
             builder.Services.AddScoped<IUserServices, UserServices>();
+            //
+            builder.Services.AddScoped<IPostRepository, PostRepository>();
+            builder.Services.AddScoped<IPostService, PostService>();
 
+            builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
+
+            builder.Services.AddScoped<IReactionRepository, ReactionRepository>();
+            builder.Services.AddScoped<IReactionService, ReactionService>();
+
+            builder.Services.AddScoped<IViewRepository, ViewRepository>();
+            builder.Services.AddScoped<IViewService, ViewService>();
 
             var app = builder.Build();
 
@@ -50,7 +63,7 @@ namespace CLIQ_UE
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Account}/{action=Register}/{id?}");
+                pattern: "{controller=HomePage}/{action=Index}/{id?}");
 
             app.Run();
         }
