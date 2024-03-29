@@ -1,8 +1,8 @@
-﻿using CLIQ_UE.Models;
+﻿using CLIQ_UE.Helpers;
+using CLIQ_UE.Models;
 using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
 namespace CLIQ_UE.Repositories
 {
     public class PostRepository : IPostRepository
@@ -28,43 +28,48 @@ namespace CLIQ_UE.Repositories
 
         public void CreatePost(CreatePostViewModel postModel, ApplicationUser user)
         {
-            IFormFile imageFile = postModel.PostImage;
-
-            using (var stream = imageFile.OpenReadStream())
+            byte[] imageData = null;
+            string imageUrl = null;
+            if (postModel.PostImage != null && postModel.PostImage.Length > 0)
             {
-                byte[] imageData;
-                using (var memoryStream = new MemoryStream())
+                IFormFile imageFile = postModel.PostImage;
+
+                using (var stream = imageFile.OpenReadStream())
                 {
-                    stream.CopyTo(memoryStream);
-                    imageData = memoryStream.ToArray();
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        stream.CopyTo(memoryStream);
+                        imageData = memoryStream.ToArray();
+                    }
+
+                    string imageFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                    string imagePath = Path.Combine("wwwroot", "images", imageFileName);
+
+                    // Save the image to the specified path
+                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        imageFile.CopyTo(fileStream);
+                    }
+
+                    // Construct the URL of the image
+                    imageUrl = $"/images/{imageFileName}";
                 }
 
-                string imageFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-                string imagePath = Path.Combine("wwwroot", "images", imageFileName);
-
-                // Save the image to the specified path
-                using (var fileStream = new FileStream(imagePath, FileMode.Create))
-                {
-                    imageFile.CopyTo(fileStream);
-                }
-
-                // Construct the URL of the image
-                string imageUrl = $"/images/{imageFileName}";
-
-                // Create the post object
-                Post post = new Post
-                {
-                    PostDate = DateTime.Now,
-                    UserId = user.Id,
-                    privacy = postModel.privacyValue,
-                    ImageData = imageData,
-                    TextContent = postModel.postContent,
-                    PostImage = imageUrl,
-                    User = user
-                };
-
-                context.Posts.Add(post);
             }
+            // Create the post object
+            Post post = new Post
+            {
+                PostDate = DateTime.Now,
+                UserId = user.Id,
+                privacy = postModel.privacyValue,
+                ImageData = imageData,
+                postAddedTime = FormatTime.FormatingTime(DateTime.Now),
+                TextContent = postModel.postContent,
+                PostImage = imageUrl,
+                User = user
+            };
+
+            context.Posts.Add(post);
         }
 
 
@@ -75,10 +80,21 @@ namespace CLIQ_UE.Repositories
 
         public List<Post> GetLatestPosts()
         {
-            return context.Posts.OrderBy(p => p.PostDate)
-                .Take(100)
-                .ToList();
+            List<Post> latestPosts = context.Posts.OrderBy(p => p.PostDate)
+                                                  .Take(100)
+                                                  .ToList();
+
+            foreach (var post in latestPosts)
+            {
+                post.postAddedTime = FormatTime.FormatingTime(post.PostDate);
+            }
+
+
+            context.SaveChanges();
+
+            return latestPosts;
         }
+
 
         public Post GetPostById(int id)
         {

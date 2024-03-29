@@ -18,8 +18,9 @@ namespace CLIQ_UE.Models
         public ApplicationUser User { get; set; }
         public DateTime PostDate { get; set; }
         public string? PostImage { get; set; }
+        public string postAddedTime { get; set; }
 
-        public byte[] ImageData { get; set; }
+        public byte[]? ImageData { get; set; }
 
 
         public List<string>? Videos { get; set; }
@@ -27,6 +28,7 @@ namespace CLIQ_UE.Models
         public int DislikeCount { get; set; }
         public int RepostCount { get; set; }
         public int CommentCount { get; set; }
+        public int ViewsCount { get; set; }
         public string privacy { get; set; }
         // Navigation properties
         public ICollection<View>? Views { get; set; }

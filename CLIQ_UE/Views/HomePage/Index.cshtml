@@ -1,14 +1,7 @@
 ﻿@using CLIQ_UE.ViewModels
   @model HomePageViewModel
   
-@if (Model.UserImage == null)
-{
-    Model.UserImage = "default user pic";
-    Model.FullName = Model.UserName;
-    Model.FirstName = Model.UserName;
-    Model.LastName = Model.UserName;
 
-}
 @{
    
     Layout = "_HomePageLayout";
@@ -38,9 +31,9 @@
                             </div>
 
                             <div class="profile-box" id="profile-box">
-                                <div class="profile-pic"><img src="~/HomePage/images/giphy.gif" alt="Profile image"></div>
+                                <div class="profile-pic"><img src=@Model.UserImage alt="Profile image"></div>
                                 <div class="profile-name">
-                                    @Model.FirstName
+                                    @Model.UserName
                                     <i class="fa-solid fa-caret-down"></i>
                                 </div>
                                 <div class="dropdown-menu" id="dropdown-menu">
@@ -99,8 +92,8 @@
                             <a href="#">My Products</a>
                         </div>
                         <div class="link">
-                            <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="" />
-                            <a href="#">@@mod_99</a>
+                            <img class="profile-pic" src="@Model.UserImage" alt="" />
+                        <a href="#">@@@Model.UserName</a>
                         </div>
                     </div>
 
@@ -177,8 +170,10 @@
                 <div class="add-post">
                     <div class="box">
                         <form asp-action="CreatePost" asp-controller="Posts"  method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="PostDate" id="postedTime" />
+
                             <div class="write-text">
-                                <img class="profile-pic" src="~/HomePage/images/default user pic.png" alt="">
+                                <img class="profile-pic" src="@Model.UserImage" alt="">
                                 <textarea name="postContent" id="write-post-text" cols="30" rows="1" placeholder="What's on your mind"></textarea>
                             </div>
                             <div class="post-img">
@@ -210,7 +205,7 @@
                                     </div>
                                 </div>
                                 <div class="right">
-                                    <button type="submit" class="post-btn">Post</button>
+                                    <button type="submit" class="post-btn" onclick="send_time()">Post</button>
                                 </div>
                             </div>
                         </form>
@@ -232,18 +227,18 @@
                                 <div class="top">
                                     <!-- Profile -- views -->
                                     <div class="profile">
-                                        <img class="profile-pic" src= "@post.User.ProfileImage"  alt="Profile image">
+                                        <img class="profile-pic" src= "@post.User.PersonalImage"  alt="Profile image">
                                         <div class="name">
 
-                                            <p class="username">@post.User.FirstName</p>
+                                            <p class="username">@post.User.UserName</p>
                                             @* Using js funciton to calc the time  *@
-                                            <p class="post-time"></p>
+                                            <p class="post-time">@post.postAddedTime</p>
                                         </div>
                                     </div>
                                     <div class="views">
                                         <div class="views-number">
                                             <i class="fa-solid fa-eye"></i>
-                                            <p>100</p>
+                                            <p>@post.ViewsCount</p>
 
                                         </div>
                                         <div class="more-options">
@@ -253,10 +248,18 @@
                                 </div>
                                 <!-- ! Post Content -->
                                 <div class="post-content">
-                                    <p>@post.TextContent ==null ? "Null": @post</p>
-                                    <img src=@post.PostImage alt="Post Image">
+                                    @if(post.TextContent != null)
+                                    {
+                                    <p>@post.TextContent</p> 
+                                    }
+
                                     <div class="post-img">
+                                    @if(post.PostImage != null)
+                                    {
+                                    <img src=@post.PostImage alt="Post Image">
+                                    }
                                     </div>
+
                                     <div class="interactions">
                                         <div class="box">
                                             <i class="fa-solid fa-heart like-icon"></i>
@@ -297,12 +300,12 @@
 
 
 
-                    <div class="post" data-post-date="2024-03-30T12:00:00">
+                    <div class="post" data-post-date="2024-02-30T12:00:00">
                         <div class="box">
                             <div class="top">
                                 <!-- Profile -- views -->
                                 <div class="profile">
-                                    <img class="profile-pic" src="./images/giphy.gif" alt="Profile image">
+                                    <img class="profile-pic" src="@Model.UserImage" alt="Profile image">
                                     <div class="name">
 
                                         <p class="username">moudy rasmy</p>
@@ -351,7 +354,7 @@
                             </div>
                             <!-- Add Comment -->
                             <div class="add-comment">
-                                <img class="profile-pic" src="./images/giphy.gif" alt="">
+                                <img class="profile-pic" src="@Model.UserImage"  alt="">
                                 <input type="text" placeholder="Add a comment">
                                 <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
                             </div>

@@ -9,33 +9,33 @@ namespace CLIQ_UE
 {
 
 
-	public class Program
-	{
-		public static void Main(string[] args)
-		{
-			var builder = WebApplication.CreateBuilder(args);
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-			// Add services to the container.
-			builder.Services.AddControllersWithViews();
-			//Add Service DbContext
-			builder.Services.AddDbContext<ApplicationContext>(options =>
-			{
-				options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
-			});
-			//Add Service Identity
-			builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
-							option =>
-							{
-								//setting of Password
-								option.Password.RequireNonAlphanumeric = false;
-								option.Password.RequireDigit = true;
-								option.Password.RequiredLength = 6;
-							}).AddEntityFrameworkStores<ApplicationContext>()
-							.AddDefaultTokenProviders();//to generat token
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+            //Add Service DbContext
+            builder.Services.AddDbContext<ApplicationContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
+            });
+            //Add Service Identity
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
+                            option =>
+                            {
+                                //setting of Password
+                                option.Password.RequireNonAlphanumeric = false;
+                                option.Password.RequireDigit = true;
+                                option.Password.RequiredLength = 6;
+                            }).AddEntityFrameworkStores<ApplicationContext>()
+                            .AddDefaultTokenProviders();//to generat token
 
-			//register My Services
-			builder.Services.AddScoped<IUserServices, UserServices>();
-      builder.Services.AddScoped<IPostRepository, PostRepository>();
+            //register My Services
+            builder.Services.AddScoped<IUserServices, UserServices>();
+            builder.Services.AddScoped<IPostRepository, PostRepository>();
             builder.Services.AddScoped<IPostService, PostService>();
 
             builder.Services.AddScoped<ICommentRepository, CommentRepository>();
@@ -46,33 +46,33 @@ namespace CLIQ_UE
 
             builder.Services.AddScoped<IViewRepository, ViewRepository>();
             builder.Services.AddScoped<IViewService, ViewService>();
-       builder.Services.AddScoped<IEditRepository, EditRepository>();
-			builder.Services.AddSignalR();
-			var app = builder.Build();
+            builder.Services.AddScoped<IEditRepository, EditRepository>();
+            builder.Services.AddSignalR();
+            var app = builder.Build();
 
 
-			// Configure the HTTP request pipeline.
-			if (!app.Environment.IsDevelopment())
-			{
-				app.UseExceptionHandler("/Home/Error");
-			}
-			app.UseStaticFiles();
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseStaticFiles();
 
-			app.UseRouting();
+            app.UseRouting();
 
-			//app.UseAuthentication();
-			app.UseAuthorization();
-
-
-			app.MapHub<ChatIndividualHub>("/ChatIndividual");
-			app.MapHub<OnlineUsersHub>("/OnlineUsers");
+            //app.UseAuthentication();
+            app.UseAuthorization();
 
 
-			app.MapControllerRoute(
-				name: "default",
-				pattern: "{controller=Account}/{action=Register}/{id?}");
+            app.MapHub<ChatIndividualHub>("/ChatIndividual");
+            app.MapHub<OnlineUsersHub>("/OnlineUsers");
 
-			app.Run();
-		}
-	}
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=HomePage}/{action=Index}/{id?}");
+
+            app.Run();
+        }
+    }
 }

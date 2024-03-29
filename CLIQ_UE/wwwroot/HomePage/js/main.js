@@ -154,46 +154,72 @@ dropdownMenu.addEventListener('click', function (event) {
 });
 
 
-// ! Add post date func ==>
-function calculatePostTime(postDate) {
-  const currentDate = new Date();
-  const timeDifference = currentDate.getTime() - postDate.getTime();
-  const secondsDifference = Math.floor(timeDifference / 1000);
-  const minutesDifference = Math.floor(secondsDifference / 60);
-  const hoursDifference = Math.floor(minutesDifference / 60);
-  const daysDifference = Math.floor(hoursDifference / 24);
+// Send the date into the backedn ==>
+// Get the current date and time
+function send_time() {
 
-  if (daysDifference < 1) {
-    if (hoursDifference < 1) {
-      if (minutesDifference < 1) {
-        return 'Just now';
-      } else if (minutesDifference === 1) {
-        return '1m';
-      } else {
-        return `${minutesDifference}m`;
-      }
-    } else if (hoursDifference === 1) {
-      return '1h';
-    } else {
-      return `${hoursDifference}h`;
-    }
-  } else if (daysDifference === 1) {
-    return '1d';
-  } else if (daysDifference < 7) {
-    return `${daysDifference}d`;
-  } else {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return postDate.toLocaleDateString('en-US', options);
-  }
+const currentDate = new Date();
+
+// Format the date and time as required (YYYY-MM-DDTHH:mm)
+const formattedDate = currentDate.toISOString().slice(0, 16);
+
+// Set the value of the hidden input field
+    document.getElementById("postedTime").value = formattedDate;
+    console.log("Date Send to The Backend : ", document.getElementById("postedTime").value )
+
 }
+
+
+// ! Add post date func ==>
+function calculatePostTime(postDateAttr) {
+    const postDate = new Date(postDateAttr);
+
+    console.log(`THis is the date that i convert to ${postDate} `)
+    console.log(`THis is the date that i conver ${postDateAttr} `)
+
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); 
+
+    const timeDifference = currentDate.getTime() - postDate.getTime();
+    const secondsDifference = Math.floor(timeDifference / 1000);
+    const minutesDifference = Math.floor(secondsDifference / 60);
+    const hoursDifference = Math.floor(minutesDifference / 60);
+    const daysDifference = Math.floor(hoursDifference / 24);
+
+    console.log("Days difference" + daysDifference)
+    if (daysDifference < 1) {
+        if (hoursDifference < 1) {
+            if (minutesDifference < 1) {
+                return 'Just now';
+            } else if (minutesDifference === 1) {
+                return '1m';
+            } else {
+                return `${minutesDifference}m`;
+            }
+        } else if (hoursDifference === 1) {
+            return '1h';
+        } else {
+            return `${hoursDifference}h`;
+        }
+    } else if (daysDifference === 1) {
+        return '1d';
+    } else if (daysDifference < 7) {
+        return `${daysDifference}d`;
+    } else {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return postDate.toLocaleDateString('en-US', options);
+             }
+}
+
 
 function updatePostTime(postElement) {
-  const postDateAttr = postElement.dataset.postDate;
-  const postDate = new Date(postDateAttr);
-  const timeText = calculatePostTime(postDate);
-  const posted_at = postElement.querySelector('.post-time');
-  posted_at.textContent = timeText;
+    const postDateAttr = postElement.getAttribute('data-post-date'); // Get the post date attribute
+    const timeText = calculatePostTime(postDateAttr); // Calculate the post time
+
+    const posted_at = postElement.querySelector('.post-time');
+    posted_at.textContent = timeText;
 }
+
 
 const postElements = document.querySelectorAll('.post');
 

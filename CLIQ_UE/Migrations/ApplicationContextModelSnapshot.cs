@@ -207,6 +207,42 @@ namespace CLIQ_UE.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("CLIQ_UE.Models.EditBio", b =>
+                {
+                    b.Property<string>("USerName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PublicBirthDate")
+                        .HasColumnType("bit");
+
+                    b.HasKey("USerName");
+
+                    b.ToTable("editBio");
+                });
+
             modelBuilder.Entity("CLIQ_UE.Models.OnlineUser", b =>
                 {
                     b.Property<int>("Id")
@@ -242,7 +278,6 @@ namespace CLIQ_UE.Migrations
                         .HasColumnType("int");
 
                     b.Property<byte[]>("ImageData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<int>("LikeCount")
@@ -267,6 +302,13 @@ namespace CLIQ_UE.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Videos")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ViewsCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("postAddedTime")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("privacy")
