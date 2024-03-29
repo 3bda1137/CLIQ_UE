@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CLIQ_UE.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240328164035_init_2")]
-    partial class init_2
+    [Migration("20240329035113_update")]
+    partial class update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -189,26 +189,36 @@ namespace CLIQ_UE.Migrations
                     b.Property<int>("DislikeCount")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int>("LikeCount")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PostDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PostImages")
+                    b.Property<string>("PostImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RepostCount")
                         .HasColumnType("int");
 
                     b.Property<string>("TextContent")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Videos")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("privacy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

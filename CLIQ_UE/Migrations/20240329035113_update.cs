@@ -5,7 +5,7 @@
 namespace CLIQ_UE.Migrations
 {
     /// <inheritdoc />
-    public partial class add_privacy : Migration
+    public partial class update : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,23 +62,12 @@ namespace CLIQ_UE.Migrations
                 name: "FK_Views_Posts_PostId",
                 table: "Views");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "TextContent",
+            migrationBuilder.AddColumn<byte[]>(
+                name: "ImageData",
                 table: "Posts",
-                type: "nvarchar(500)",
-                maxLength: 500,
+                type: "varbinary(max)",
                 nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "privacy",
-                table: "Posts",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+                defaultValue: new byte[0]);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
@@ -241,17 +230,8 @@ namespace CLIQ_UE.Migrations
                 table: "Views");
 
             migrationBuilder.DropColumn(
-                name: "privacy",
+                name: "ImageData",
                 table: "Posts");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "TextContent",
-                table: "Posts",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(500)",
-                oldMaxLength: 500);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
