@@ -1,4 +1,5 @@
 using CLIQ_UE.Models;
+using CLIQ_UE.Repositories;
 using CLIQ_UE.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ namespace CLIQ_UE
 
             //register My Services
             builder.Services.AddScoped<IUserServices, UserServices>();
+            builder.Services.AddScoped<IEditRepository, EditRepository>();
 
 
             var app = builder.Build();
