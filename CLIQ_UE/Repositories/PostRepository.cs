@@ -80,7 +80,9 @@ namespace CLIQ_UE.Repositories
 
         public List<Post> GetLatestPosts()
         {
-            List<Post> latestPosts = context.Posts.OrderBy(p => p.PostDate)
+            List<Post> latestPosts = context.Posts
+                .Include(p => p.User)
+                .OrderByDescending(p => p.PostDate)
                                                   .Take(100)
                                                   .ToList();
 
