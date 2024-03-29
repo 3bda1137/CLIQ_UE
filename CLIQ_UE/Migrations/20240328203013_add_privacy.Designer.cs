@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CLIQ_UE.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240328000816_Post_model")]
-    partial class Post_model
+    [Migration("20240328203013_add_privacy")]
+    partial class add_privacy
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -196,17 +196,24 @@ namespace CLIQ_UE.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PostImages")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RepostCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("TextContent")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Videos")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("privacy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

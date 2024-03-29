@@ -1,4 +1,5 @@
 ﻿using CLIQ_UE.Models;
+using CLIQ_UE.ViewModels;
 
 namespace CLIQ_UE.Services
 {
@@ -6,10 +7,12 @@ namespace CLIQ_UE.Services
     {
         Post GetPostById(int id);
         List<Post> GetLatestPosts();
-        void CreatePost(Post newPost);
+        void CreatePost(CreatePostViewModel post, ApplicationUser user);
+
+
         void UpdatePost(Post post);
         void DeletePost(int id);
-
+        void Save();
 
         void AddReaction(Reaction reaction);
         void AddView(View view);

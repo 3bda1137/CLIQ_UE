@@ -47,6 +47,8 @@ const comment_text = document.querySelector('.comment-text');
 const add_comment = document.querySelector('.add-comment-icon')
 const comments_number = document.querySelector('.post-comments');
 
+// Drop Down menu
+const logout = document.querySelector(".logout")
 
 document.addEventListener('DOMContentLoaded', function () {
   const searchInput = document.querySelector('.search-input');
@@ -195,7 +197,30 @@ postElements.forEach(postElement => {
   updatePostTime(postElement);
 });
 
+// Will use this in foreach --->
+//setTextDirection(post_text, post_text.textContent.trim());
 
+
+
+// ! Check If the post Arabic or not to change direction
+
+function isArabic(text) {
+    const arabicRange = /[\u0600-\u06FF]/;
+    return arabicRange.test(text);
+}
+
+// Function to set direction and text alignment based on text language
+function setTextDirection(textContainer, text) {
+    if (text && isArabic(text.replace(/[^\u0600-\u06FF]/g, ''))) {
+        console.log("THE TEXT is Arabic");
+        textContainer.style.direction = 'rtl';
+        textContainer.style.textAlign = 'right';
+    } else {
+        console.log("THE TEXT is Not Arabic");
+        textContainer.style.direction = 'ltr';
+        textContainer.style.textAlign = 'left';
+    }
+}
 
 
 
@@ -229,95 +254,46 @@ function updateLikes(postId, numberOfLikes) {
 function updateComments(postId, numberOfComments) {
 }
 
-//! Add post function ==> 
-// Function to add a new post
-function addPost() {
-  const postContent = add_post_text.value.trim();
+// Function to add a new post 
+async function addPost() {
+    const postContent = add_post_text.value.trim();
+    if (postContent || add_post_img.src) {
+        const selectedPrivacy = dropdownMenu.querySelector('.selected');
+        const privacyValue = selectedPrivacy ? selectedPrivacy.dataset.value : 'public';
+        const currentDate = new Date();
+        const postImageSrc = add_post_img.src;
 
-  if (postContent || add_post_img.src) {
-    const selectedPrivacy = dropdownMenu.querySelector('.selected');
-    const privacyValue = selectedPrivacy ? selectedPrivacy.dataset.value : 'public';
+        // Send the data to action
+        const postData = {
+            postContent: postContent,
+            privacyValue: privacyValue,
+            postImageSrc: postImageSrc
+        };
 
+        try {
+            const response = await fetch('/Posts/CreatePost', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(postData)
+            });
 
-    const currentDate = new Date();
-    let postImageHTML = '';
-    if (add_post_img.src) {
-      postImageHTML = `<img class="post-img" src="${add_post_img.src}" alt="Post image">`;
+            if (response.ok) {
+  
+                console.log(' successfully!');
+            } else {
+                console.error('Error :', response.statusText);
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+        }
+
+        add_post_text.value = '';
+        add_post_img.src = '';
     }
-
-    const newPostHTML = `
-          <div class="post" data-post-date="${currentDate.toISOString()}">
-              <div class="box">
-                  <div class="top">
-                      <!-- Profile -- views -->
-                      <div class="profile">
-                          <img src="~/HomePage/images/giphy.gif" alt="Profile image">
-                          <div class="name">
-                              <p>moudy rasmy</p>
-                              <p class="post-time">${calculatePostTime(currentDate)}</p>
-                          </div>
-                      </div>
-                      <div class="views">
-                          <div class="views-number">
-                              <i class="fa-solid fa-eye"></i>
-                              <p>0</p>
-                          </div>
-                          <div class="more-options">
-                              <i class="fa-solid fa-ellipsis"></i>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- ! Post Content -->
-                  <div class="post-content">
-                      <p>${postContent}</p>
-                      ${postImageHTML} 
-                      <div class="interactions">
-                      <div class="box">
-                        <i class="fa-solid fa-heart like-icon"></i>
-                        <span>0</span>  
-                      </div>
-                      
-                      <div class="box">
-                        <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                        <span>0</span>  
-                      </div>
-  
-                      <div class="box">
-                        <i class="fa-solid fa-retweet repost-icon"></i>
-                        <span>0</span>  
-                      </div>
-  
-                      <div class="box">
-                      <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"> </i>
-
-                        <span>0</span>  
-                      </div>
-                      
-                    </div>
-                  </div>
-                  <!-- Add Comment -->
-                  <div class="add-comment">
-                      <img src="~/HomePage/images/giphy.gif" alt="">
-                      <input type="text" placeholder="Add a comment">
-                      <i class="fa-solid fa-hand-pointer"></i>
-                  </div>
-              </div>
-          </div>
-      `;
-
-    post_container.insertAdjacentHTML('afterbegin', newPostHTML);
-
-    add_post_text.value = '';
-
-    dropdownMenu.querySelector('[data-value="public"]').classList.add('selected');
-    dropdownMenu.querySelector('[data-value="friends"]').classList.remove('selected');
-    dropdownMenu.querySelector('[data-value="private"]').classList.remove('selected');
-
-    // Update the privacy value
-    privacy_value = privacyValue;
-    add_post_img.src = '';
-  }
 }
+
 
 
 // Event listener for the "Post" button
@@ -349,3 +325,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+
+// DropDown Menu Functions --> 
+logout.addEventListener("click", () => {
+
+})
