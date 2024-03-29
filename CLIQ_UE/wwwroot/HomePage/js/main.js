@@ -322,7 +322,7 @@ function updateComments(postId, numberOfComments) {
         //}
 
 
-        //// Event listener for the "Post" button
+        //// Event  for the "Post" button
         //btn_post.addEventListener('click', addPost);
 
 
@@ -337,7 +337,7 @@ document.addEventListener('DOMContentLoaded', function () {
     profileBox.classList.toggle('active');
   });
 
-  // Close the dropdown menu when clicking outside of it
+  // Close the dropdown menu when clicking outside 
   document.addEventListener('click', function () {
     profileBox.classList.remove('active');
   });
