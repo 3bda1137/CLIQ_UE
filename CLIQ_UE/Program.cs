@@ -1,11 +1,13 @@
 using CLIQ_UE.Hubs;
 using CLIQ_UE.Models;
+using CLIQ_UE.Repositories;
 using CLIQ_UE.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CLIQ_UE
 {
+
 	public class Program
 	{
 		public static void Main(string[] args)
@@ -32,7 +34,17 @@ namespace CLIQ_UE
 
 			//register My Services
 			builder.Services.AddScoped<IUserServices, UserServices>();
+      builder.Services.AddScoped<IPostRepository, PostRepository>();
+            builder.Services.AddScoped<IPostService, PostService>();
 
+            builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
+
+            builder.Services.AddScoped<IReactionRepository, ReactionRepository>();
+            builder.Services.AddScoped<IReactionService, ReactionService>();
+
+            builder.Services.AddScoped<IViewRepository, ViewRepository>();
+            builder.Services.AddScoped<IViewService, ViewService>();
 			builder.Services.AddSignalR();
 			var app = builder.Build();
 
@@ -61,4 +73,5 @@ namespace CLIQ_UE
 			app.Run();
 		}
 	}
+
 }

@@ -7,154 +7,154 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CLIQ_UE.Controllers
 {
-	public class AccountController : Controller
-	{
-		private readonly UserManager<ApplicationUser> userManager;
-		private readonly SignInManager<ApplicationUser> signInManager;
-		private readonly IUserServices userServices;
+    public class AccountController : Controller
+    {
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IUserServices userServices;
 
-		public AccountController(UserManager<ApplicationUser> _UserManager, SignInManager<ApplicationUser> _SignInManager, IUserServices _UserServices)
-		{
-			userManager = _UserManager;
-			signInManager = _SignInManager;
-			userServices = _UserServices;
-		}
+        public AccountController(UserManager<ApplicationUser> _UserManager, SignInManager<ApplicationUser> _SignInManager, IUserServices _UserServices)
+        {
+            userManager = _UserManager;
+            signInManager = _SignInManager;
+            userServices = _UserServices;
+        }
 
-		[HttpGet]
-		public IActionResult Register()
-		{
-			return View();
-		}
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
-		{
-			if (ModelState.IsValid)
-			{
-				ApplicationUser applicationUser = userServices.MapRegisterViewModelToAppUser(registerViewModel);
-				IdentityResult result = await userManager.CreateAsync(applicationUser, registerViewModel.Password);
-				if (result.Succeeded)
-				{
-					signInManager.SignInAsync(applicationUser, false);
-					return RedirectToAction("Index", "Home");
-				}
-				else
-				{
-					foreach (var error in result.Errors)
-					{
-						ModelState.AddModelError("", error.Description);
-					}
-				}
-			}
-			return View(registerViewModel);
-		}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser applicationUser = userServices.MapRegisterViewModelToAppUser(registerViewModel);
+                IdentityResult result = await userManager.CreateAsync(applicationUser, registerViewModel.Password);
+                if (result.Succeeded)
+                {
+                    signInManager.SignInAsync(applicationUser, false);
+                    return RedirectToAction("Index", "HomePage");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
+            return View(registerViewModel);
+        }
 
-		public IActionResult Login()
-		{
+        public IActionResult Login()
+        {
 
-			return View();
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Login(LoginViewModel loginViewModel)
-		{
-			if (ModelState.IsValid)
-			{
-				ApplicationUser user = await userManager.FindByEmailAsync(loginViewModel.Email);
-				if (user != null)
-				{
-					bool isFound = await userManager.CheckPasswordAsync(user, loginViewModel.Password);
-					if (isFound)
-					{
-						signInManager.SignInAsync(user, true);
-						return RedirectToAction("Index", "Home");
-					}
-					ModelState.AddModelError("", "UserName or Password Not valid");
-				}
-			}
-			return View(loginViewModel);
-		}
-		[HttpGet]
-		public async Task<IActionResult> Logout()
-		{
-			await signInManager.SignOutAsync();
-			return RedirectToAction("Login", "Account");
-		}
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = await userManager.FindByEmailAsync(loginViewModel.Email);
+                if (user != null)
+                {
+                    bool isFound = await userManager.CheckPasswordAsync(user, loginViewModel.Password);
+                    if (isFound)
+                    {
+                        await signInManager.SignInAsync(user, true);
+                        return RedirectToAction("Index", "HomePage");
+                    }
+                    ModelState.AddModelError("", "UserName or Password Not valid");
+                }
+            }
+            return View(loginViewModel);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
+        }
 
-		[HttpGet]
-		public async Task<IActionResult> ForgotPassword()
-		{
+        [HttpGet]
+        public async Task<IActionResult> ForgotPassword()
+        {
 
-			return View();
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
-		{
-			if (ModelState.IsValid)
-			{
-				ApplicationUser user = await userManager.FindByEmailAsync(forgotPasswordViewModel.Email);
-				if (user != null)
-				{
-					string token = await userManager.GeneratePasswordResetTokenAsync(user);
-					var urlForResetPassword = Url.Action("ResetPassword", "Account", new
-					{
-						email = forgotPasswordViewModel.Email,
-						token = token
-					}, protocol: Request.Scheme);
-					string body = FormatEmail.CreateDesignOfEmail(urlForResetPassword);
-					SendEmail sendEmail = new SendEmail();
-					await sendEmail.SendEmailAsync(forgotPasswordViewModel.Email, body);
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = await userManager.FindByEmailAsync(forgotPasswordViewModel.Email);
+                if (user != null)
+                {
+                    string token = await userManager.GeneratePasswordResetTokenAsync(user);
+                    var urlForResetPassword = Url.Action("ResetPassword", "Account", new
+                    {
+                        email = forgotPasswordViewModel.Email,
+                        token = token
+                    }, protocol: Request.Scheme);
+                    string body = FormatEmail.CreateDesignOfEmail(urlForResetPassword);
+                    SendEmail sendEmail = new SendEmail();
+                    await sendEmail.SendEmailAsync(forgotPasswordViewModel.Email, body);
 
-					return RedirectToAction("ResetMessage", "Account");
-				}
+                    return RedirectToAction("ResetMessage", "Account");
+                }
 
-			}
-			return View(forgotPasswordViewModel);
-		}
+            }
+            return View(forgotPasswordViewModel);
+        }
 
-		public IActionResult ResetMessage()
-		{
-			return View();
-		}
+        public IActionResult ResetMessage()
+        {
+            return View();
+        }
 
-		public IActionResult ResetPassword(string email, string token)
-		{
-			TempData["email"] = email;
-			TempData["token"] = token;
-			return View();
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
-		{
-			if (ModelState.IsValid)
-			{
-				string email = TempData["email"].ToString();
-				string token = TempData["token"].ToString();
+        public IActionResult ResetPassword(string email, string token)
+        {
+            TempData["email"] = email;
+            TempData["token"] = token;
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                string email = TempData["email"].ToString();
+                string token = TempData["token"].ToString();
 
-				ApplicationUser user = await userManager.FindByEmailAsync(email);
-				if (user != null)
-				{
-					var result = await userManager.ResetPasswordAsync(user, token, resetPasswordViewModel.Password);
-					if (result.Succeeded)
-					{
-						return RedirectToAction("Login", "Account");
-					}
+                ApplicationUser user = await userManager.FindByEmailAsync(email);
+                if (user != null)
+                {
+                    var result = await userManager.ResetPasswordAsync(user, token, resetPasswordViewModel.Password);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Login", "Account");
+                    }
 
-					foreach (var error in result.Errors)
-					{
-						ModelState.AddModelError("", error.Description);
-					}
-				}
-				else
-				{
-					ModelState.AddModelError("", "Not Valid");
-				}
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Not Valid");
+                }
 
-			}
-			return View(resetPasswordViewModel);
-		}
-	}
+            }
+            return View(resetPasswordViewModel);
+        }
+    }
 }

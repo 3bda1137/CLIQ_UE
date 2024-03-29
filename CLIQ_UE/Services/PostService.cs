@@ -1,5 +1,6 @@
 ﻿using CLIQ_UE.Models;
 using CLIQ_UE.Repositories;
+using CLIQ_UE.ViewModels;
 
 namespace CLIQ_UE.Services
 {
@@ -22,9 +23,10 @@ namespace CLIQ_UE.Services
             throw new NotImplementedException();
         }
 
-        public void CreatePost(Post newPost)
+        public void CreatePost(CreatePostViewModel post, ApplicationUser user)
+
         {
-            throw new NotImplementedException();
+            postRepository.CreatePost(post, user);
         }
 
         public void DeletePost(int id)
@@ -34,7 +36,7 @@ namespace CLIQ_UE.Services
 
         public List<Post> GetLatestPosts()
         {
-            throw new NotImplementedException();
+            return postRepository.GetLatestPosts();
         }
 
         public Post GetPostById(int id)
@@ -45,6 +47,11 @@ namespace CLIQ_UE.Services
         public List<Reaction> GetReactionsByPostID(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public void Save()
+        {
+            postRepository.Save();
         }
 
         public void UpdatePost(Post post)
