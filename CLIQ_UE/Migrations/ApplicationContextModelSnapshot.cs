@@ -277,13 +277,16 @@ namespace CLIQ_UE.Migrations
                     b.Property<int>("DislikeCount")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int>("LikeCount")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PostDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PostImages")
+                    b.Property<string>("PostImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RepostCount")
@@ -299,6 +302,13 @@ namespace CLIQ_UE.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Videos")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ViewsCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("postAddedTime")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("privacy")

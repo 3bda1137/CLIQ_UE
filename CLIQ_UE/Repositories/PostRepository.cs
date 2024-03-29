@@ -1,9 +1,8 @@
-﻿using CLIQ_UE.Models;
+﻿using CLIQ_UE.Helpers;
+using CLIQ_UE.Models;
 using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
 namespace CLIQ_UE.Repositories
 {
     public class PostRepository : IPostRepository
@@ -27,24 +26,52 @@ namespace CLIQ_UE.Repositories
             throw new NotImplementedException();
         }
 
-        public void CreatePost([FromBody] CreatePostViewModel postModle, ApplicationUser user)
+        public void CreatePost(CreatePostViewModel postModel, ApplicationUser user)
         {
-            CreatePostViewModel createPost = new CreatePostViewModel();
-
-            Post post = new Post();
+            byte[] imageData = null;
+            string imageUrl = null;
+            if (postModel.PostImage != null && postModel.PostImage.Length > 0)
             {
-                post.PostDate = DateTime.Now;
-                post.UserId = user.Id;
-                post.privacy = postModle.privacyValue;
-                post.TextContent = postModle.postContent;
-                post.PostImages = postModle.PostImages;
-                post.User = user;
+                IFormFile imageFile = postModel.PostImage;
+
+                using (var stream = imageFile.OpenReadStream())
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        stream.CopyTo(memoryStream);
+                        imageData = memoryStream.ToArray();
+                    }
+
+                    string imageFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                    string imagePath = Path.Combine("wwwroot", "images", imageFileName);
+
+                    // Save the image to the specified path
+                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        imageFile.CopyTo(fileStream);
+                    }
+
+                    // Construct the URL of the image
+                    imageUrl = $"/images/{imageFileName}";
+                }
 
             }
+            // Create the post object
+            Post post = new Post
+            {
+                PostDate = DateTime.Now,
+                UserId = user.Id,
+                privacy = postModel.privacyValue,
+                ImageData = imageData,
+                postAddedTime = FormatTime.FormatingTime(DateTime.Now),
+                TextContent = postModel.postContent,
+                PostImage = imageUrl,
+                User = user
+            };
 
             context.Posts.Add(post);
-
         }
+
 
         public void DeletePost(int id)
         {
@@ -53,10 +80,21 @@ namespace CLIQ_UE.Repositories
 
         public List<Post> GetLatestPosts()
         {
-            return context.Posts.OrderBy(p => p.PostDate)
-                .Take(100)
-                .ToList();
+            List<Post> latestPosts = context.Posts.OrderBy(p => p.PostDate)
+                                                  .Take(100)
+                                                  .ToList();
+
+            foreach (var post in latestPosts)
+            {
+                post.postAddedTime = FormatTime.FormatingTime(post.PostDate);
+            }
+
+
+            context.SaveChanges();
+
+            return latestPosts;
         }
+
 
         public Post GetPostById(int id)
         {

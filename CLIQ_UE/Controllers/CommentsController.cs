@@ -1,4 +1,5 @@
 ﻿using CLIQ_UE.Services;
+using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CLIQ_UE.Controllers
@@ -14,6 +15,12 @@ namespace CLIQ_UE.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> NewComment(AddCommentViewModel commentVM)
+        {
+            await commentService.AddComment(commentVM, User);
+            return Content("Added Successfully.");
         }
     }
 }
