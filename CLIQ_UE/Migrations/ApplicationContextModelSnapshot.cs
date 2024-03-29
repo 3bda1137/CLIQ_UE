@@ -207,6 +207,42 @@ namespace CLIQ_UE.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("CLIQ_UE.Models.EditBio", b =>
+                {
+                    b.Property<string>("USerName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PublicBirthDate")
+                        .HasColumnType("bit");
+
+                    b.HasKey("USerName");
+
+                    b.ToTable("editBio");
+                });
+
             modelBuilder.Entity("CLIQ_UE.Models.OnlineUser", b =>
                 {
                     b.Property<int>("Id")

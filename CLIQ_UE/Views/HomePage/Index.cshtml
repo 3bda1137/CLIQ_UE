@@ -236,8 +236,9 @@
                                 <!-- Add Comment -->
                                 <div class="add-comment">
                                     <img class="profile-pic" src="@Model.UserImage" alt="">
-                                    <input type="text" placeholder="Add a comment">
-                                    <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
+                                    <input name="commenttext" type="text" placeholder="Add a comment">
+                                    <input name="postId" value="@post.Id" hidden />
+                                    <i class="fa-solid fa-hand-pointer add-comment-icon" href="/comment/newcomment"></i>
                                 </div>
                             </div>
                         </div>
@@ -247,7 +248,7 @@
 
                      @* ////  TEst Post *@
 
-                    <div class="post" data-post-date="2024-03-30T12:00:00">
+                    @* <div class="post" data-post-date="2024-03-30T12:00:00">
                         <div class="box">
                             <div class="top">
                                 <!-- Profile -- views -->
@@ -306,7 +307,7 @@
                                 <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
                             </div>
                         </div>
-                    </div>
+                    </div> *@
 
 
                         <!-- ! ===================================  ! -->

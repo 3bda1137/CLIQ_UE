@@ -10,9 +10,10 @@ namespace CLIQ_UE.Repositories
         {
             this.context = context;
         }
-        public Comment AddComment(Comment comment)
+        public void AddComment(Comment comment)
         {
-            throw new NotImplementedException();
+            context.Comments.AddAsync(comment);
+            context.SaveChanges();
         }
 
         public void DeleteComment(Comment comment)

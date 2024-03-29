@@ -26,8 +26,8 @@ namespace CLIQ_UE.Controllers
         {
 
             var user = await userManager.GetUserAsync(User);
-            model.UserName = user.UserName;
-            model.UserImage = user.ProfileImage;
+            model.UserName = user?.UserName!;
+            model.UserImage = user?.ProfileImage!;
             model.LatestPosts = postService.GetLatestPosts();
             return View(model);
         }
