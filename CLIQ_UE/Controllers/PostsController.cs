@@ -16,16 +16,25 @@ namespace CLIQ_UE.Controllers
             this.postService = postService;
             this.userManager = userManager;
         }
+
+
         [HttpPost]
-        public async Task<ActionResult> CreatePost([FromBody] CreatePostViewModel post)
+        public async Task<ActionResult> CreatePost(CreatePostViewModel post)
         {
             ApplicationUser user = await userManager.GetUserAsync(User);
+
             postService.CreatePost(post, user);
+
             if (ModelState.IsValid)
             {
                 postService.Save();
+                return RedirectToAction("Index", "HomePage");
             }
-            return View();
+            else
+            {
+                // Handle invalid model state
+                return BadRequest(ModelState);
+            }
         }
 
         public IActionResult Index()

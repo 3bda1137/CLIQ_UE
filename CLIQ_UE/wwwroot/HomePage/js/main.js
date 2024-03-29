@@ -87,109 +87,139 @@ document.getElementById('write-post-text').addEventListener('input', function ()
   auto_increase_input_height(this);
 });
 
-//! Select Image in Add Post !//
+// //! Select Image in Add Post !//
 btn_select_img.addEventListener('click', function () {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*,video/*';
+    const input = document.querySelector('#add-img-post');
 
-  input.addEventListener('change', function (event) {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      const reader = new FileReader();
-      reader.onload = function () {
-        add_post_img.src = reader.result;
-        console.log('Selected file:', selectedFile);
-        console.log('File name:', selectedFile.name);
-        console.log('Updated src:', add_post_img.src);
-      };
-      reader.readAsDataURL(selectedFile);
-    }
-  });
+    input.addEventListener('change', function (event) {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                add_post_img.src = reader.result;
+                //console.log('Selected file:', selectedFile);
+                //console.log('File name:', selectedFile.name);
+                //console.log('Updated src:', add_post_img.src);
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+    });
 
-  input.click();
+
 });
+
 
 
 //! Change Privacy ====>
 // Show or hide the dropdown menu when privacy dropdown is clicked
 privacyDropdown.addEventListener('click', function (event) {
-  event.stopPropagation(); // Stop event propagation
+    event.stopPropagation();// Stop event propagation
 
-  dropdownMenu.classList.toggle('show');
+    dropdownMenu.classList.toggle('show');
 });
 
 // Close dropdown menu when clicking outside of it or selecting an option
 document.addEventListener('click', function (event) {
-  if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown-menu')) {
-    dropdownMenu.classList.remove('show');
-  }
+    if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown-menu')) {
+        dropdownMenu.classList.remove('show');
+    }
 });
 
 // Set selected privacy option when clicking on a dropdown menu item
 dropdownMenu.addEventListener('click', function (event) {
-  event.stopPropagation(); // Stop event propagation
+    event.stopPropagation(); // Stop event propagation
 
-  if (event.target.tagName === 'LI') {
-    const selectedValue = event.target.getAttribute('data-value');
-    privacyDropdown.querySelector('span').textContent = event.target.textContent;
+    if (event.target.tagName === 'LI') {
+        const selectedValue = event.target.getAttribute('data-value');
+        privacyDropdown.querySelector('span').textContent = event.target.textContent;
 
-    // Remove selected class from all items
-    dropdownMenu.querySelectorAll('li').forEach(item => {
-      item.classList.remove('selected');
-    });
+        // Remove selected class from all items
+        dropdownMenu.querySelectorAll('li').forEach(item => {
+            item.classList.remove('selected');
+        });
 
-    // Add selected class to the clicked item
-    event.target.classList.add('selected');
+        // Add selected class to the clicked item
+        event.target.classList.add('selected');
 
-    // Update privacy
-    privacy_value = selectedValue;
+        // Update privacy
+        privacy_value = selectedValue;
+        document.querySelector("#selected-privacy").value = selectedValue;
+        // Close dropdown menu
+        dropdownMenu.classList.remove('show');
+    }
 
-    // Close dropdown menu
-    dropdownMenu.classList.remove('show');
-  }
+    console.log(privacy_value)
+    // Prevent form submission
+    event.preventDefault();
 });
 
-// ! Add post date func ==>
-function calculatePostTime(postDate) {
-  const currentDate = new Date();
-  const timeDifference = currentDate.getTime() - postDate.getTime();
-  const secondsDifference = Math.floor(timeDifference / 1000);
-  const minutesDifference = Math.floor(secondsDifference / 60);
-  const hoursDifference = Math.floor(minutesDifference / 60);
-  const daysDifference = Math.floor(hoursDifference / 24);
 
-  if (daysDifference < 1) {
-    if (hoursDifference < 1) {
-      if (minutesDifference < 1) {
-        return 'Just now';
-      } else if (minutesDifference === 1) {
-        return '1m';
-      } else {
-        return `${minutesDifference}m`;
-      }
-    } else if (hoursDifference === 1) {
-      return '1h';
-    } else {
-      return `${hoursDifference}h`;
-    }
-  } else if (daysDifference === 1) {
-    return '1d';
-  } else if (daysDifference < 7) {
-    return `${daysDifference}d`;
-  } else {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return postDate.toLocaleDateString('en-US', options);
-  }
+// Send the date into the backedn ==>
+// Get the current date and time
+function send_time() {
+
+const currentDate = new Date();
+
+// Format the date and time as required (YYYY-MM-DDTHH:mm)
+const formattedDate = currentDate.toISOString().slice(0, 16);
+
+// Set the value of the hidden input field
+    document.getElementById("postedTime").value = formattedDate;
+    console.log("Date Send to The Backend : ", document.getElementById("postedTime").value )
+
 }
+
+
+// ! Add post date func ==>
+function calculatePostTime(postDateAttr) {
+    const postDate = new Date(postDateAttr);
+
+    console.log(`THis is the date that i convert to ${postDate} `)
+    console.log(`THis is the date that i conver ${postDateAttr} `)
+
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); 
+
+    const timeDifference = currentDate.getTime() - postDate.getTime();
+    const secondsDifference = Math.floor(timeDifference / 1000);
+    const minutesDifference = Math.floor(secondsDifference / 60);
+    const hoursDifference = Math.floor(minutesDifference / 60);
+    const daysDifference = Math.floor(hoursDifference / 24);
+
+    console.log("Days difference" + daysDifference)
+    if (daysDifference < 1) {
+        if (hoursDifference < 1) {
+            if (minutesDifference < 1) {
+                return 'Just now';
+            } else if (minutesDifference === 1) {
+                return '1m';
+            } else {
+                return `${minutesDifference}m`;
+            }
+        } else if (hoursDifference === 1) {
+            return '1h';
+        } else {
+            return `${hoursDifference}h`;
+        }
+    } else if (daysDifference === 1) {
+        return '1d';
+    } else if (daysDifference < 7) {
+        return `${daysDifference}d`;
+    } else {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return postDate.toLocaleDateString('en-US', options);
+             }
+}
+
 
 function updatePostTime(postElement) {
-  const postDateAttr = postElement.dataset.postDate;
-  const postDate = new Date(postDateAttr);
-  const timeText = calculatePostTime(postDate);
-  const posted_at = postElement.querySelector('.post-time');
-  posted_at.textContent = timeText;
+    const postDateAttr = postElement.getAttribute('data-post-date'); // Get the post date attribute
+    const timeText = calculatePostTime(postDateAttr); // Calculate the post time
+
+    const posted_at = postElement.querySelector('.post-time');
+    posted_at.textContent = timeText;
 }
+
 
 const postElements = document.querySelectorAll('.post');
 
@@ -255,49 +285,71 @@ function updateComments(postId, numberOfComments) {
 }
 
 // Function to add a new post 
-async function addPost() {
-    const postContent = add_post_text.value.trim();
-    if (postContent || add_post_img.src) {
-        const selectedPrivacy = dropdownMenu.querySelector('.selected');
-        const privacyValue = selectedPrivacy ? selectedPrivacy.dataset.value : 'public';
-        const currentDate = new Date();
-        const postImageSrc = add_post_img.src;
+        //async function addPost() {
+        //    const postContent = add_post_text.value.trim();
+        //    if (postContent || add_post_img.src) {
+        //        const selectedPrivacy = dropdownMenu.querySelector('.selected');
+        //        const privacyValue = selectedPrivacy ? selectedPrivacy.dataset.value : 'public';
+        //        const currentDate = new Date();
+        //        const postImageSrc = add_post_img.src;
 
-        // Send the data to action
-        const postData = {
-            postContent: postContent,
-            privacyValue: privacyValue,
-            postImageSrc: postImageSrc
-        };
+        //        // Convert the image to Base64
+        //        const postImageBase64 = await getBase64FromImageUrl(postImageSrc);
 
-        try {
-            const response = await fetch('/Posts/CreatePost', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(postData)
-            });
+        //        // Send the data to action
+        //        const postData = {
+        //            postContent: postContent,
+        //            privacyValue: privacyValue,
+        //            postImageSrc: postImageSrc,
+        //            postImageBase64: postImageBase64 // Add this property
+        //        };
+        //        console.log(postData);
+        //        try {
+        //            const response = await fetch('/Posts/CreatePost', {
+        //                method: 'POST',
+        //                headers: {
+        //                    'Content-Type': 'application/json'
+        //                },
+        //                body: JSON.stringify(postData)
+        //            });
 
-            if (response.ok) {
-  
-                console.log(' successfully!');
-            } else {
-                console.error('Error :', response.statusText);
-            }
-        } catch (error) {
-            console.error('Network error:', error);
-        }
+        //            if (response.ok) {
 
-        add_post_text.value = '';
-        add_post_img.src = '';
-    }
-}
+        //                console.log(' successfully!');
+        //            } else {
+        //                console.error('Error :', response.statusText);
+        //            }
+        //        } catch (error) {
+        //            console.error('Network error:', error);
+        //        }
+
+        //        add_post_text.value = '';
+        //        add_post_img.src = '';
+        //    }
+        //}
+
+        //// Function to convert image to Base64
+        //function getBase64FromImageUrl(imageUrl) {
+        //    return new Promise((resolve, reject) => {
+        //        const img = new Image();
+        //        img.setAttribute('crossOrigin', 'anonymous');
+        //        img.onload = () => {
+        //            const canvas = document.createElement('canvas');
+        //            canvas.width = img.width;
+        //            canvas.height = img.height;
+        //            const ctx = canvas.getContext('2d');
+        //            ctx.drawImage(img, 0, 0);
+        //            const dataURL = canvas.toDataURL('image/png');
+        //            resolve(dataURL.replace(/^data:image\/(png|jpg);base64,/, ''));
+        //        };
+        //        img.onerror = error => reject(error);
+        //        img.src = imageUrl;
+        //    });
+        //}
 
 
-
-// Event listener for the "Post" button
-btn_post.addEventListener('click', addPost);
+        //// Event  for the "Post" button
+        //btn_post.addEventListener('click', addPost);
 
 
 //! Toggle profile menu 
@@ -311,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function () {
     profileBox.classList.toggle('active');
   });
 
-  // Close the dropdown menu when clicking outside of it
+  // Close the dropdown menu when clicking outside 
   document.addEventListener('click', function () {
     profileBox.classList.remove('active');
   });
@@ -330,3 +382,12 @@ document.addEventListener('DOMContentLoaded', function () {
 logout.addEventListener("click", () => {
 
 })
+
+
+
+
+
+
+
+
+
