@@ -47,10 +47,12 @@ namespace CLIQ_UE
             builder.Services.AddScoped<IViewRepository, ViewRepository>();
             builder.Services.AddScoped<IViewService, ViewService>();
 
-            builder.Services.AddScoped<IEditRepository, EditRepository>();
+            builder.Services.AddScoped<IEditUserServices, EditUserServices>();
+            builder.Services.AddScoped<IEditUserRepository, EditUserRepository>();
+
             builder.Services.AddSignalR();
-          //AutoMapper
-			builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            //AutoMapper
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             var app = builder.Build();
 
 
