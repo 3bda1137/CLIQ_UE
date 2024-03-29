@@ -8,6 +8,7 @@ namespace CLIQ_UE.Models
 		public ApplicationContext() : base() { }
 		public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
 
+
 		//DbSets
 		public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 		public DbSet<ApplicationRole> ApplicationRoles { get; set; }
@@ -17,6 +18,8 @@ namespace CLIQ_UE.Models
 		public DbSet<View> Views { get; set; }
 		public DbSet<ChatIndividual> ChatIndividual { get; set; }
 		public DbSet<OnlineUser> OnlineUsers { get; set; }
+     public DbSet<EditBio> editBio { get; set; }
+
 
 
 		protected override void OnModelCreating(ModelBuilder builder)

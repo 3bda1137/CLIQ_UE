@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CLIQ_UE
 {
 
+
 	public class Program
 	{
 		public static void Main(string[] args)
@@ -45,6 +46,7 @@ namespace CLIQ_UE
 
             builder.Services.AddScoped<IViewRepository, ViewRepository>();
             builder.Services.AddScoped<IViewService, ViewService>();
+       builder.Services.AddScoped<IEditRepository, EditRepository>();
 			builder.Services.AddSignalR();
 			var app = builder.Build();
 
@@ -73,5 +75,4 @@ namespace CLIQ_UE
 			app.Run();
 		}
 	}
-
 }
