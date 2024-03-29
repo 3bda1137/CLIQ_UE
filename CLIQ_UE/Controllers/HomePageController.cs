@@ -27,18 +27,11 @@ namespace CLIQ_UE.Controllers
 
             var user = await userManager.GetUserAsync(User);
 
-            model.UserName = user?.UserName!;
-            model.UserImage = user?.ProfileImage!;
-            model.LatestPosts = postService.GetLatestPosts();
-            return View(model);
-
             if (user != null)
             {
-
                 model.UserName = user.UserName;
                 model.UserImage = user.PersonalImage;
                 model.LatestPosts = postService.GetLatestPosts();
-
                 return View(model);
             }
             return RedirectToAction("Login", "Account");
