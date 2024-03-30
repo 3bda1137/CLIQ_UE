@@ -5,7 +5,7 @@
 namespace CLIQ_UE.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class addDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,12 +30,13 @@ namespace CLIQ_UE.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Lastame = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PersonalImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PublicBirthDate = table.Column<bool>(type: "bit", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -72,24 +73,6 @@ namespace CLIQ_UE.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ChatIndividual", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "editBio",
-                columns: table => new
-                {
-                    USerName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PublicBirthDate = table.Column<bool>(type: "bit", nullable: false),
-                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_editBio", x => x.USerName);
                 });
 
             migrationBuilder.CreateTable(
@@ -425,9 +408,6 @@ namespace CLIQ_UE.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
-
-            migrationBuilder.DropTable(
-                name: "editBio");
 
             migrationBuilder.DropTable(
                 name: "OnlineUsers");

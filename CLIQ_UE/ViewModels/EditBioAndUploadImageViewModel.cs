@@ -26,6 +26,8 @@ namespace CLIQ_UE.ViewModels
 
         public bool PublicBirthDate { get; set; }
 
+        public string ProfileImageName { get; set; } = "default";
+
         public string Bio { get; set; }
         [NotMapped]
         public IFormFile Image { get; set; }

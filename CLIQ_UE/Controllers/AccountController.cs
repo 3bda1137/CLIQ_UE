@@ -36,7 +36,7 @@ namespace CLIQ_UE.Controllers
                 IdentityResult result = await userManager.CreateAsync(applicationUser, registerViewModel.Password);
                 if (result.Succeeded)
                 {
-                    signInManager.SignInAsync(applicationUser, false);
+                    await signInManager.SignInAsync(applicationUser, false);
                     return RedirectToAction("Index", "HomePage");
                 }
                 else
