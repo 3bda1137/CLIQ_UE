@@ -144,26 +144,21 @@ dropdownMenu.addEventListener('click', function (event) {
         // Update privacy
         privacy_value = selectedValue;
         document.querySelector("#selected-privacy").value = selectedValue;
-        // Close dropdown menu
         dropdownMenu.classList.remove('show');
     }
 
     console.log(privacy_value)
-    // Prevent form submission
     event.preventDefault();
 });
 
 
 // Send the date into the backedn ==>
-// Get the current date and time
 function send_time() {
 
 const currentDate = new Date();
 
-// Format the date and time as required (YYYY-MM-DDTHH:mm)
 const formattedDate = currentDate.toISOString().slice(0, 16);
 
-// Set the value of the hidden input field
     document.getElementById("postedTime").value = formattedDate;
     console.log("Date Send to The Backend : ", document.getElementById("postedTime").value )
 
@@ -213,8 +208,8 @@ function calculatePostTime(postDateAttr) {
 
 
 function updatePostTime(postElement) {
-    const postDateAttr = postElement.getAttribute('data-post-date'); // Get the post date attribute
-    const timeText = calculatePostTime(postDateAttr); // Calculate the post time
+    const postDateAttr = postElement.getAttribute('data-post-date'); 
+    const timeText = calculatePostTime(postDateAttr); 
 
     const posted_at = postElement.querySelector('.post-time');
     posted_at.textContent = timeText;
