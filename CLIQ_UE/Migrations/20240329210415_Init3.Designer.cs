@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CLIQ_UE.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240329183837_init")]
-    partial class init
+    [Migration("20240329210415_Init3")]
+    partial class Init3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

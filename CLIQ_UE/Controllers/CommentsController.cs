@@ -17,10 +17,11 @@ namespace CLIQ_UE.Controllers
             return View();
         }
 
+        [HttpPost]
         public async Task<IActionResult> NewComment(AddCommentViewModel commentVM)
         {
             await commentService.AddComment(commentVM, User);
-            return Content("Added Successfully.");
+            return Ok();
         }
     }
 }
