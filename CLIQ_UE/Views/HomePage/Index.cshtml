@@ -277,7 +277,9 @@
                                         </div>
 
                                         <div class="box">
-                                            <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"> </i>
+                                            @* <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"> </i> *@
+                                            @* We want to access post to extract comments *@
+                                            <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(1)"> </i>
                                             <span>@post.CommentCount</span>
                                         </div>
 
@@ -433,43 +435,9 @@
                 <h1 class="modal-title fs-5" id="show_commentsLabel">Comments</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-
-
-                <div class="comment">
-                    <div class="profile">
-                        <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
-                        <div class="name">
-                            <p class="username">moudy rasmy</p>
-                            <p class="comment-time">1 hour ago</p>
-                        </div>
-                    </div>
-                    <div class="comment-content">
-                        <p class="comment-text">This is a comment.</p>
-                    </div>
-                    <div class="love-icon">
-                        <i class="fa-solid fa-heart like-icon"></i>
-                        <span>12</span>
-                    </div>
-                </div>
-
-
-                <div class="comment">
-                    <div class="profile">
-                        <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
-                        <div class="name">
-                            <p class="username">moudy rasmy</p>
-                            <p class="comment-time">1 hour ago</p>
-                        </div>
-                    </div>
-                    <div class="comment-content">
-                        <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, voluptates vero voluptatibus placeat, necessitatibus mollitia similique impedit quasi minima culpa magni, nulla sapiente ex non. Illo sequi tempora laboriosam impedit..</p>
-                    </div>
-                    <div class="love-icon">
-                        <i class="fa-solid fa-heart like-icon"></i>
-                        <span>12</span>
-                    </div>
-                </div>
+            <div id="commentsModal" class="modal-body">
+                
+               
 
             </div>
             <div class="modal-footer">
@@ -484,11 +452,75 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
+    function showModal(){
+        
+        let a = ` <div class="comment">
+                        <div class="profile">
+                            <img class="profile-pic" src="/HomePage/images/giphy.gif" alt="Profile image">
+                            <div class="name">
+                                <p class="username">moudy rasmy</p>
+                                <p class="comment-time">1 hour ago</p>
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            <p class="comment-text">This is a comment.</p>
+                        </div>
+                        <div class="love-icon">
+                            <i class="fa-solid fa-heart like-icon"></i>
+                            <span>12</span>
+                        </div>
+                    </div>`;
+        $('#commentsModal').html(a);
+        $('#show_comments').modal('show');
+    }
+    
+    function getPostComments(postId){
+        console.log("Get Post Comments");
+        $.ajax({
+            url: `/comments/getComments?postId=` + postId, // Endpoint URL
+            type: 'GET',
+            //data: { postId: postId, commentText: commentText }, // Include the postId and commentText parameters
+            success: function (response) {
+                // Handle the success response from the server
+                console.log('AJAX request successful');
+                console.log(response);
+                let a = ``;
+                $('#commentsModal').append(a);
+                for (let instructor of response) {
+                    a = `<div class="comment">
+                                <div class="profile">
+                                    <img class="profile-pic" src="/HomePage/images/giphy.gif" alt="Profile image">
+                                    <div class="name">
+                                        <p class="username">moudy rasmy</p>
+                                        <p class="comment-time">1 hour ago</p>
+                                    </div>
+                                </div>
+                                <div class="comment-content">
+                                    <p class="comment-text">${instructor.commentText}</p>
+                                </div>
+                                <div class="love-icon">
+                                    <i class="fa-solid fa-heart like-icon"></i>
+                                    <span>12</span>
+                                </div>
+                            </div>`
+                    $('#commentsModal').append(a);
+                }
+                $('#show_comments').modal('show');
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('AJAX request failed');
+                console.error(xhr.responseText);
+            }
+        });
+    }
 
     function addNewComment(postId) {
         console.log("Works");
         //var postId = $('#postId').val(); // Get the postId value from the hidden input field
         var commentText = $(`#` + postId).val(); // Get the commentText value from the input field
+        if (commentText == "")
+            return;
         console.log(postId);
         $.ajax({
             url: `/comments/newcomment?postId=` + postId + `&commenttext=` + commentText, // Endpoint URL

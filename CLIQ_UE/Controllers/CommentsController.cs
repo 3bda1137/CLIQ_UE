@@ -20,8 +20,18 @@ namespace CLIQ_UE.Controllers
         [HttpPost]
         public async Task<IActionResult> NewComment(AddCommentViewModel commentVM)
         {
-            await commentService.AddComment(commentVM, User);
-            return Ok();
+            bool res = await commentService.AddComment(commentVM, User);
+            if (res)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpGet]
+        public IActionResult GetComments(int postId)
+        {
+            return Json(commentService.GetCommentsByPost(postId));
         }
     }
 }

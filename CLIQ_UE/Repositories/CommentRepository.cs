@@ -1,4 +1,5 @@
 ﻿using CLIQ_UE.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CLIQ_UE.Repositories
 {
@@ -12,7 +13,9 @@ namespace CLIQ_UE.Repositories
         }
         public void AddComment(Comment comment)
         {
-            context.Comments.AddAsync(comment);
+            context
+                .Comments
+                .Add(comment);
             context.SaveChanges();
         }
 
@@ -23,7 +26,11 @@ namespace CLIQ_UE.Repositories
 
         public List<Comment> GetCommentsByPost(int postId)
         {
-            throw new NotImplementedException();
+            return context
+                .Comments
+                .Where(c => c.PostId == postId)
+                .Include(c => c.User)
+                .ToList();
         }
 
         public void UpdateComment(Comment comment)
