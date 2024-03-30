@@ -20,7 +20,7 @@ namespace CLIQ_UE.Services
 		}
 
 
-		public async Task AddComment(AddCommentViewModel commentVM, ClaimsPrincipal User)
+		public async Task<bool> AddComment(AddCommentViewModel commentVM, ClaimsPrincipal User)
         {
             Comment comment = mapper.Map<Comment>(commentVM);
             comment.CommentDate = DateTime.Now;
@@ -29,8 +29,14 @@ namespace CLIQ_UE.Services
             {
                 comment.UserId = user.Id;
             }
+            else
+            {
+                //No user, anonymous may be
+                return false;
+            }
             comment.LikeCount = 0;
             commentRepository.AddComment(comment);
+            return true;
         }
 
         public void DeleteComment(Comment comment)
@@ -40,7 +46,7 @@ namespace CLIQ_UE.Services
 
         public List<Comment> GetCommentsByPost(int postId)
         {
-            throw new NotImplementedException();
+            return commentRepository.GetCommentsByPost(postId);
         }
 
         public void UpdateComment(Comment comment)

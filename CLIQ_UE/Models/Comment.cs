@@ -11,7 +11,7 @@
         public int LikeCount { get; set; }
 
         // Navigation properties
-        public Post Post { get; set; }
-        public ApplicationUser User { get; set; }
+        public Post? Post { get; set; }
+        public ApplicationUser? User { get; set; }
     }
 }
