@@ -142,7 +142,6 @@ namespace CLIQ_UE.Controllers
                     {
                         return RedirectToAction("Login", "Account");
                     }
-
                     foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError("", error.Description);

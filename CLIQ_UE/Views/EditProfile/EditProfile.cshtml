@@ -1,0 +1,146 @@
+﻿
+@{
+    ViewData["Title"] = "EditProfile";
+}
+@model CLIQ_UE.ViewModels.EditProfileViewModelcs ;
+<h1>EditProfile</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @* <link rel="stylesheet" href="css/UserProfile.css"> *@
+    <link href="~/css/EditProfile.css" rel="stylesheet" />
+    <title>UserProfile</title>
+</head>
+
+<body>
+
+
+
+    @* <div class="container-fluid mt-3">
+        <div class="row  align-items-center">
+            <h5 class="col-3  text-black-50 d-none d-lg-block ">
+                setting > User Profile
+            </h5>
+            <div class="col-6  ">
+                <div class="w-75 m-auto">
+                    <input type="search" name="search" id="search" class="form form-control" placeholder="search">
+                </div>
+            </div>
+            <div class="col-3 d-flex justify-content-end align-items-center ">
+                <i class="fa-regular fs-2 fa-bell "></i>
+                <img src="images/1.jpg" class="img-fluid  rounded-circle mx-3" style="width: 50px; height: 50px;"
+                    alt="Circular Image">
+            </div>
+        </div>
+
+    </div>
+    <hr /> *@
+
+    <div class="container-fluid ">
+        <div class="row d-flex justify-content-center align-content-center  ">
+           @*  <div class="col-12 col-md-2 m-auto d-flex flex-column align-items-center myInfo ">
+                <img src="images/1.jpg" class="img-fluid w-50 h-50 rounded-circle mx-3" alt="Circular Image">
+                <div class="info pt-3 fs-3 text-black">
+                    <div class="my-2"><i class="fa-regular mx-2 fa-user"></i><a href="#">User Info</a></div>
+                    <div class="my-2"><i class="fa-regular mx-2 fa-clipboard"></i><a href="#">Dashboard</a></div>
+                    <div class="my-2"><i class="fa-regular mx-2 fa-heart"></i><a href="#">Favourites</a></div>
+                    <div class="my-2"><i class="fa-solid mx-2 fa-gear"></i><a href="#">Settings</a></div>
+                </div>
+            </div> *@
+            <div class="col-12 col-md-10 ">
+                <form asp-action="EditProfile" method="post" class=" p-3">
+                    <h3 class="text-center text-md-start">User Profile</h3>
+                    <div class="row">
+                        <div class="col-12 col-lg-6 ">
+                            <div class="form-group ">
+                                <label asp-for="UserName">UserName</label>
+                                <input asp-for="UserName" type="text" class="form form-control w-75 my-2  ">
+                            </div>
+                            <div class="form-group ">
+                                <label asp-for="Email">Email</label>
+                                <input asp-for="Email" type="email" class="form form-control w-75 my-2 ">
+                            </div>
+                            <div class="form-group ">
+                                <label asp-for="Gender">Gender</label>
+                                <select asp-for="Gender" name="Gender" id="Gender" class="form form-select   my-2  w-75 my-2 ">
+                                    <option value="M">Male</option>
+                                    <option value="f">Femal</option>
+                                </select>
+
+                            </div>
+
+                            <div class="form-group ">
+                                <label asp-for="BirthDate">Birthday</label>
+                                <input asp-for="BirthDate" type="date" id="BirthDay" name="BirthDay"
+                                    class="form form-select   my-2  w-75 my-2 ">
+                            </div>
+                            <div class="form-group ">
+                                <label asp-for="Language">Language</label>
+                                <select asp-for="Language" name="Language" id="Language" class="form form-select   my-2  w-75 my-2 ">
+                                    <option value="E">English</option>
+                                    <option value="A">Arabic</option>
+                                </select>
+                            </div>
+                            <div class="form-group ">
+                                <label asp-for="Country">Country</label>
+                                <select asp-for="Country" name="Country" id="Country" class="form form-select   my-2  w-75 my-2 ">
+                                    <option value="E">Egypt</option>
+                                    <option value="A">United Sates</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6  ">
+                            <div class="form-group ">
+                                <label asp-for="currentPassword">Current password</label>
+                                <input asp-for="currentPassword"  type="password" id="Cpassword" class="form form-control w-75 my-2">
+                            </div>
+                            <div class="form-group ">
+                                <label asp-for="NewPassword">New password</label>
+                                <input asp-for="NewPassword" type="password" id="Npassword" class="form form-control w-75 my-2">
+                            </div>
+                            <div class="form-group ">
+                                <label asp-for="ConfirmPassword" for="CFpassword">Confirm password</label>
+                                <input asp-for="ConfirmPassword" type="password" id="CFpassword" class="form form-control w-75 my-2">
+                            </div>
+
+                            <div class="form-group mt-4 ">
+                                <div class="form-check  form-switch px-0 d-flex justify-content-between w-75">
+                                    <label class="form-check-label" for="notification">Email notification</label>
+                                    <input class="form-check-input fs-3 " type="checkbox" role="switch"
+                                        id="notification" checked>
+                                </div>
+                                <div class="form-check  form-switch px-0 d-flex justify-content-between w-75">
+                                    <label class="form-check-label" for="Account">Private Account</label>
+                                    <input class="form-check-input fs-3" type="checkbox" role="switch" id="Account"
+                                        checked>
+                                </div>
+
+                            </div>
+                            <div class="form-group  mt-3">
+                                <input asp-action="EditProfile" type="submit" class="btn btn-info" value="Save changes">
+                            </div>
+                        </div>
+
+
+                    </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+
