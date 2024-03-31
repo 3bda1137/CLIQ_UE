@@ -13,6 +13,11 @@ namespace CLIQ_UE.Services
             this.postRepository = postRepository;
         }
 
+        public Post CreatePost(CreatePostViewModel post, ApplicationUser user)
+
+        {
+            return postRepository.CreatePost(post, user);
+        }
         public void AddReaction(Reaction reaction)
         {
             throw new NotImplementedException();
@@ -23,11 +28,6 @@ namespace CLIQ_UE.Services
             throw new NotImplementedException();
         }
 
-        public void CreatePost(CreatePostViewModel post, ApplicationUser user)
-
-        {
-            postRepository.CreatePost(post, user);
-        }
 
         public void DeletePost(int id)
         {

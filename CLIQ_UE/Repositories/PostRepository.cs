@@ -26,7 +26,7 @@ namespace CLIQ_UE.Repositories
             throw new NotImplementedException();
         }
 
-        public void CreatePost(CreatePostViewModel postModel, ApplicationUser user)
+        public Post CreatePost(CreatePostViewModel postModel, ApplicationUser user)
         {
             byte[] imageData = null;
             string imageUrl = null;
@@ -43,7 +43,7 @@ namespace CLIQ_UE.Repositories
                     }
 
                     string imageFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-                    string imagePath = Path.Combine("wwwroot", "images", imageFileName);
+                    string imagePath = Path.Combine("wwwroot", "PostsImages", imageFileName);
 
                     // Save the image to the specified path
                     using (var fileStream = new FileStream(imagePath, FileMode.Create))
@@ -52,7 +52,7 @@ namespace CLIQ_UE.Repositories
                     }
 
                     // Construct the URL of the image
-                    imageUrl = $"/images/{imageFileName}";
+                    imageUrl = $"/PostsImages/{imageFileName}";
                 }
 
             }
@@ -70,6 +70,7 @@ namespace CLIQ_UE.Repositories
             };
 
             context.Posts.Add(post);
+            return post;
         }
 
 
@@ -86,10 +87,10 @@ namespace CLIQ_UE.Repositories
                                                   .Take(100)
                                                   .ToList();
 
-            foreach (var post in latestPosts)
-            {
-                post.postAddedTime = FormatTime.FormatingTime(post.PostDate);
-            }
+            //foreach (var post in latestPosts)
+            //{
+            //    post.postAddedTime = FormatTime.FormatingTime(post.PostDate);
+            //}
 
 
             context.SaveChanges();

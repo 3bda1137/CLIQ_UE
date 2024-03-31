@@ -1,5 +1,7 @@
 "use strict";
 
+
+
 const profile_pic = document.querySelector('.profile-pic');
 const searchInput = document.querySelector('.nav-content .search-bar .search-input');
 const notification_icon = document.querySelector('.nav-content .right-items .items .notification i');
@@ -11,6 +13,7 @@ const btn_settings = document.querySelector('.Settings');
 const btn_home = document.querySelector('.home');
 
 //! add post !//
+const add_post_form = document.querySelector(".add-post-form")
 const add_post_img = document.querySelector('.add-post-img');
 const add_post_text = document.querySelector('#write-post-text');
 const btn_emoji = document.querySelector('.emoji-btn');
@@ -51,43 +54,43 @@ const comments_number = document.querySelector('.post-comments');
 const logout = document.querySelector(".logout")
 
 document.addEventListener('DOMContentLoaded', function () {
-  const searchInput = document.querySelector('.search-input');
+    const searchInput = document.querySelector('.search-input');
 
-  searchInput.addEventListener('input', function () {
-    const inputValue = searchInput.value.trim();
-    if (inputValue.length > 0) {
-      searchInput.value = '';
-    }
-  });
+    searchInput.addEventListener('input', function () {
+        const inputValue = searchInput.value.trim();
+        if (inputValue.length > 0) {
+            searchInput.value = '';
+        }
+    });
 });
 
 //! Emoji Picker Function ==>
 const picker = new EmojiButton();
 btn_emoji.addEventListener('click', () => {
-  picker.togglePicker(btn_emoji);
-  console.log("DONE");
+    picker.togglePicker(btn_emoji);
+    console.log("DONE");
 });
 
 picker.on('emoji', emoji => {
-  add_post_text.value += emoji;
+    add_post_text.value += emoji;
 });
 
 //! Auto increase input area
 function auto_increase_input_height(element) {
-  element.style.height = 'auto';
-  element.style.height = (element.scrollHeight) + 'px';
+    element.style.height = 'auto';
+    element.style.height = (element.scrollHeight) + 'px';
 }
 
 window.addEventListener('load', function () {
-  var textarea = document.getElementById('write-post-text');
-  auto_increase_input_height(textarea);
+    var textarea = document.getElementById('write-post-text');
+    auto_increase_input_height(textarea);
 });
 
 document.getElementById('write-post-text').addEventListener('input', function () {
-  auto_increase_input_height(this);
+    auto_increase_input_height(this);
 });
 
-// //! Select Image in Add Post !//
+// //! Select Image in Add Post  to show when choses!//
 btn_select_img.addEventListener('click', function () {
     const input = document.querySelector('#add-img-post');
 
@@ -97,9 +100,9 @@ btn_select_img.addEventListener('click', function () {
             const reader = new FileReader();
             reader.onload = function () {
                 add_post_img.src = reader.result;
-                //console.log('Selected file:', selectedFile);
-                //console.log('File name:', selectedFile.name);
-                //console.log('Updated src:', add_post_img.src);
+                console.log('Selected file:', selectedFile);
+                console.log('File name:', selectedFile.name);
+                console.log('Updated src:', add_post_img.src);
             };
             reader.readAsDataURL(selectedFile);
         }
@@ -152,28 +155,17 @@ dropdownMenu.addEventListener('click', function (event) {
 });
 
 
-// Send the date into the backedn ==>
-function send_time() {
-
-const currentDate = new Date();
-
-const formattedDate = currentDate.toISOString().slice(0, 16);
-
-    document.getElementById("postedTime").value = formattedDate;
-    console.log("Date Send to The Backend : ", document.getElementById("postedTime").value )
-
-}
 
 
 // ! Add post date func ==>
 function calculatePostTime(postDateAttr) {
     const postDate = new Date(postDateAttr);
 
-    console.log(`THis is the date that i convert to ${postDate} `)
-    console.log(`THis is the date that i conver ${postDateAttr} `)
+    //console.log(`THis is the date that i convert to ${postDate} `)
+    //console.log(`THis is the date converting ${postDateAttr} `)
 
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); 
+    currentDate.setHours(0, 0, 0, 0);
 
     const timeDifference = currentDate.getTime() - postDate.getTime();
     const secondsDifference = Math.floor(timeDifference / 1000);
@@ -181,7 +173,7 @@ function calculatePostTime(postDateAttr) {
     const hoursDifference = Math.floor(minutesDifference / 60);
     const daysDifference = Math.floor(hoursDifference / 24);
 
-    console.log("Days difference" + daysDifference)
+
     if (daysDifference < 1) {
         if (hoursDifference < 1) {
             if (minutesDifference < 1) {
@@ -203,13 +195,13 @@ function calculatePostTime(postDateAttr) {
     } else {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
         return postDate.toLocaleDateString('en-US', options);
-             }
+    }
 }
 
 
 function updatePostTime(postElement) {
-    const postDateAttr = postElement.getAttribute('data-post-date'); 
-    const timeText = calculatePostTime(postDateAttr); 
+    const postDateAttr = postElement.getAttribute('data-post-date');
+    const timeText = calculatePostTime(postDateAttr);
 
     const posted_at = postElement.querySelector('.post-time');
     posted_at.textContent = timeText;
@@ -219,7 +211,7 @@ function updatePostTime(postElement) {
 const postElements = document.querySelectorAll('.post');
 
 postElements.forEach(postElement => {
-  updatePostTime(postElement);
+    updatePostTime(postElement);
 });
 
 // Will use this in foreach --->
@@ -259,17 +251,23 @@ function addComment(postId, commentText) {
 }
 
 // Event  for liking a post
+if (btn_like_icon !== null) {
+
 btn_like_icon.addEventListener('click', function () {
-  let postId;
-  likePost(postId);
+    let postId;
+    likePost(postId);
 });
+}
 
 // Event  for adding a comment to a post
-btn_add_comment.addEventListener('click', function () {
-  let postId;
-  let commentText;
-  addComment(postId, commentText);
-});
+if (btn_add_comment !== null) {
+
+    btn_add_comment.addEventListener('click', function () {
+        let postId;
+        let commentText;
+        addComment(postId, commentText);
+    });
+}
 
 // Function to update the number of likes on a post
 function updateLikes(postId, numberOfLikes) {
@@ -280,96 +278,96 @@ function updateComments(postId, numberOfComments) {
 }
 
 // Function to add a new post 
-        //async function addPost() {
-        //    const postContent = add_post_text.value.trim();
-        //    if (postContent || add_post_img.src) {
-        //        const selectedPrivacy = dropdownMenu.querySelector('.selected');
-        //        const privacyValue = selectedPrivacy ? selectedPrivacy.dataset.value : 'public';
-        //        const currentDate = new Date();
-        //        const postImageSrc = add_post_img.src;
+//async function addPost() {
+//    const postContent = add_post_text.value.trim();
+//    if (postContent || add_post_img.src) {
+//        const selectedPrivacy = dropdownMenu.querySelector('.selected');
+//        const privacyValue = selectedPrivacy ? selectedPrivacy.dataset.value : 'public';
+//        const currentDate = new Date();
+//        const postImageSrc = add_post_img.src;
 
-        //        // Convert the image to Base64
-        //        const postImageBase64 = await getBase64FromImageUrl(postImageSrc);
+//        // Convert the image to Base64
+//        const postImageBase64 = await getBase64FromImageUrl(postImageSrc);
 
-        //        // Send the data to action
-        //        const postData = {
-        //            postContent: postContent,
-        //            privacyValue: privacyValue,
-        //            postImageSrc: postImageSrc,
-        //            postImageBase64: postImageBase64 // Add this property
-        //        };
-        //        console.log(postData);
-        //        try {
-        //            const response = await fetch('/Posts/CreatePost', {
-        //                method: 'POST',
-        //                headers: {
-        //                    'Content-Type': 'application/json'
-        //                },
-        //                body: JSON.stringify(postData)
-        //            });
+//        // Send the data to action
+//        const postData = {
+//            postContent: postContent,
+//            privacyValue: privacyValue,
+//            postImageSrc: postImageSrc,
+//            postImageBase64: postImageBase64 // Add this property
+//        };
+//        console.log(postData);
+//        try {
+//            const response = await fetch('/Posts/CreatePost', {
+//                method: 'POST',
+//                headers: {
+//                    'Content-Type': 'application/json'
+//                },
+//                body: JSON.stringify(postData)
+//            });
 
-        //            if (response.ok) {
+//            if (response.ok) {
 
-        //                console.log(' successfully!');
-        //            } else {
-        //                console.error('Error :', response.statusText);
-        //            }
-        //        } catch (error) {
-        //            console.error('Network error:', error);
-        //        }
+//                console.log(' successfully!');
+//            } else {
+//                console.error('Error :', response.statusText);
+//            }
+//        } catch (error) {
+//            console.error('Network error:', error);
+//        }
 
-        //        add_post_text.value = '';
-        //        add_post_img.src = '';
-        //    }
-        //}
+//        add_post_text.value = '';
+//        add_post_img.src = '';
+//    }
+//}
 
-        //// Function to convert image to Base64
-        //function getBase64FromImageUrl(imageUrl) {
-        //    return new Promise((resolve, reject) => {
-        //        const img = new Image();
-        //        img.setAttribute('crossOrigin', 'anonymous');
-        //        img.onload = () => {
-        //            const canvas = document.createElement('canvas');
-        //            canvas.width = img.width;
-        //            canvas.height = img.height;
-        //            const ctx = canvas.getContext('2d');
-        //            ctx.drawImage(img, 0, 0);
-        //            const dataURL = canvas.toDataURL('image/png');
-        //            resolve(dataURL.replace(/^data:image\/(png|jpg);base64,/, ''));
-        //        };
-        //        img.onerror = error => reject(error);
-        //        img.src = imageUrl;
-        //    });
-        //}
+//// Function to convert image to Base64
+//function getBase64FromImageUrl(imageUrl) {
+//    return new Promise((resolve, reject) => {
+//        const img = new Image();
+//        img.setAttribute('crossOrigin', 'anonymous');
+//        img.onload = () => {
+//            const canvas = document.createElement('canvas');
+//            canvas.width = img.width;
+//            canvas.height = img.height;
+//            const ctx = canvas.getContext('2d');
+//            ctx.drawImage(img, 0, 0);
+//            const dataURL = canvas.toDataURL('image/png');
+//            resolve(dataURL.replace(/^data:image\/(png|jpg);base64,/, ''));
+//        };
+//        img.onerror = error => reject(error);
+//        img.src = imageUrl;
+//    });
+//}
 
 
-        //// Event  for the "Post" button
-        //btn_post.addEventListener('click', addPost);
+//// Event  for the "Post" button
+//btn_post.addEventListener('click', addPost);
 
 
 //! Toggle profile menu 
 
 document.addEventListener('DOMContentLoaded', function () {
-  const profileBox = document.getElementById('profile-box');
-  const dropdownMenu = document.getElementById('dropdown-menu');
+    const profileBox = document.getElementById('profile-box');
+    const dropdownMenu = document.getElementById('dropdown-menu');
 
-  profileBox.addEventListener('click', function (event) {
-    event.stopPropagation();
-    profileBox.classList.toggle('active');
-  });
-
-  // Close the dropdown menu when clicking outside 
-  document.addEventListener('click', function () {
-    profileBox.classList.remove('active');
-  });
-
-  const dropdownItems = document.querySelectorAll('.dropdown-item');
-  dropdownItems.forEach(function (item) {
-    item.addEventListener('click', function (event) {
-      const action = this.getAttribute('data-action');
-      console.log('Clicked on:', action);
+    profileBox.addEventListener('click', function (event) {
+        event.stopPropagation();
+        profileBox.classList.toggle('active');
     });
-  });
+
+    // Close the dropdown menu when clicking outside 
+    document.addEventListener('click', function () {
+        profileBox.classList.remove('active');
+    });
+
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    dropdownItems.forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            const action = this.getAttribute('data-action');
+            console.log('Clicked on:', action);
+        });
+    });
 });
 
 
@@ -378,11 +376,145 @@ logout.addEventListener("click", () => {
 
 })
 
+////////////////////////////////////////////////// SignalR //////////////////////////////////////////////////////////////
+document.addEventListener("DOMContentLoaded", function () {
+    var connection = new signalR.HubConnectionBuilder().withUrl("/PostHub").build();
+
+    connection.start().then(function () {
+        console.log("SignalR connection established.");
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    /// Send the data from the form
+    document.getElementById("postForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        var formData = new FormData(this);
+        console.log("THis ==>")
+        console.log(this)
 
 
+        //fetch('/Posts/CreatePost', {
+        //    method: 'POST',
+        //    body: formData
+        //})
+        //    .then(function (response) {
+        //        console.log(response)
+        //        if (!response.ok) {
+        //            throw new Error('Network erroe');
+        //        }
+        //        return response.json();
+        //    })
+        //    .then(function (data) {
+        //        console.log(" created successfully:", data);
+
+        //    })
+        //    .catch(function (error) {
+        //        console.error("Error:", error);
+        //    });
+        fetch('/Posts/CreatePost', {
+            method: 'POST',
+            body: formData
+        })
+            .then(() => {
+                console.log("Data send successfully")
+            }).catch(() => {
+                console.log("Error")
+            })
 
 
+    });
+
+    ////// Consume the data 
+
+    connection.on("NewPostCreated", function (post) {
+        console.log("Data from send when the event fire")
+        console.log(post)
+
+        let PostHtml = `
+                    <div class="post" data-post-date="Just now">
+                        <div class="box">
+                            <div class="top">
+                                <!-- Profile -- views -->
+                                <div class="profile">
+                                    <img class="profile-pic" src= "${post.user.personalImage}"  alt="Profile image">
+                                    <div class="name">
+                                        <p class="username">${post.user.userName}</p>
+                                        <!-- Using js function to calculate the time -->
+                                        <p class="post-time">Just now</p>
+                                    </div>
+                                </div>
+                                <div class="views">
+                                    <div class="views-number">
+                                        <i class="fa-solid fa-eye"></i>
+                                        <p>${post.viewsCount}</p>
+                                    </div>
+                                    <div class="more-options">
+                                        <i class="fa-solid fa-ellipsis more-options-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Post Content -->
+                            <div class="post-content">
+                                ${post.textContent ? `<p>${post.textContent}</p>` : ''}
+                                <div class="post-img">
+                                    ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
+                                </div>
+                                <div class="interactions">
+                                    <div class="box">
+                                        <i class="fa-solid fa-heart like-icon"></i>
+                                        <span>${post.likeCount}</span>
+                                    </div>
+                                    <div class="box">
+                                        <i class="fa-solid fa-thumbs-down dislike-icon"></i>
+                                        <span>${post.dislikeCount}</span>
+                                    </div>
+                                    <div class="box">
+                                        <i class="fa-solid fa-retweet repost-icon"></i>
+                                        <span>${post.repostCount}</span>
+                                    </div>
+                                    <div class="box">
+                                        <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"></i>
+                                        <span>${post.commentCount}</span>
+                                    </div>
+                                </div>
+                                ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
+                            </div>
+                            <!-- Add Comment -->
+                            <div class="add-comment">
+                                <img class="profile-pic" src="${post.user.personalImage}" alt="">
+                                <input type="text" placeholder="Add a comment">
+                                <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
+                            </div>
+                        </div>
+                    </div>
 
 
+                `;
 
+        post_container.insertAdjacentHTML('afterbegin', PostHtml);
+        console.log("Comments COunt " + post.commentCount)
+        const newPostElement = post_container.querySelector('.post');
+        newPostElement.classList.add('hidden');
+        void newPostElement.offsetWidth;
+        newPostElement.classList.remove('hidden');
+        newPostElement.classList.add('visible');
 
+        add_post_text.value = '';
+        dropdownMenu.querySelector('[data-value="public"]').classList.add('selected');
+        dropdownMenu.querySelector('[data-value="friends"]').classList.remove('selected');
+        dropdownMenu.querySelector('[data-value="private"]').classList.remove('selected');
+
+        add_post_img.src = '';
+        document.querySelector('#add-img-post').value = "";
+        //        const privacyValue = selectedPrivacy ? selectedPrivacy.dataset.value : 'public';
+        //privacy_value = privacyValue;
+
+        console.log("==================TEST ==========================")
+        console.log(post)
+        console.log("OUT")
+
+    })
+
+});
