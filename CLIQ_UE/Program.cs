@@ -72,7 +72,7 @@ namespace CLIQ_UE
 
             app.MapHub<ChatIndividualHub>("/ChatIndividual");
             app.MapHub<OnlineUsersHub>("/OnlineUsers");
-
+            app.MapHub<PostsHub>("/PostHub");
 
             app.MapControllerRoute(
                 name: "default",

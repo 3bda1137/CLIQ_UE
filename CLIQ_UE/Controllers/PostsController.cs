@@ -1,8 +1,10 @@
-﻿using CLIQ_UE.Models;
+﻿using CLIQ_UE.Hubs;
+using CLIQ_UE.Models;
 using CLIQ_UE.Services;
 using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CLIQ_UE.Controllers
 {
@@ -10,33 +12,37 @@ namespace CLIQ_UE.Controllers
     {
         private readonly IPostService postService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IHubContext<PostsHub> hub;
 
-        public PostsController(IPostService postService, UserManager<ApplicationUser> userManager)
+        public PostsController(IPostService postService, UserManager<ApplicationUser> userManager, IHubContext<PostsHub> hub)
         {
             this.postService = postService;
             this.userManager = userManager;
+            this.hub = hub;
         }
 
 
         [HttpPost]
-        public async Task<ActionResult> CreatePost(CreatePostViewModel post)
+        public async Task<ActionResult> CreatePost(CreatePostViewModel postModel)
         {
-            ApplicationUser user = await userManager.GetUserAsync(User);
-
-            postService.CreatePost(post, user);
-
             if (ModelState.IsValid)
             {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                Post post = postService.CreatePost(postModel, user);
+
                 postService.Save();
-                return RedirectToAction("Index", "HomePage");
+
+                await hub.Clients.All.SendAsync("NewPostCreated", post);
+
+
+                return RedirectToAction("index", "HomePage");
             }
             else
             {
-                // Handle invalid model state
+
                 return BadRequest(ModelState);
             }
         }
-
         public IActionResult Index()
         {
             return View();

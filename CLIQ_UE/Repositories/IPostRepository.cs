@@ -7,7 +7,7 @@ namespace CLIQ_UE.Repositories
     {
         Post GetPostById(int id);
         List<Post> GetLatestPosts();
-        void CreatePost(CreatePostViewModel post, ApplicationUser user);
+        Post CreatePost(CreatePostViewModel post, ApplicationUser user);
 
         void UpdatePost(Post post);
         void DeletePost(int id);

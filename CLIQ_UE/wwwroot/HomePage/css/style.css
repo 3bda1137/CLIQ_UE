@@ -9,7 +9,7 @@ html {
     --secondary-color: #4385f5;
     --font-color: #282d38;
     --box-group-color: #5858580f;
-    --box-shadow: rgba(50, 50, 93, 0.25) -2px 6px 1px -1px, rgba(0, 0, 0, 0.3) 0px 4px 10px -1px;
+    --box-shadow: rgb(50 50 93 / 48%) -3px 6px 1px -1px, rgb(0 0 0 / 12%) 3px -1px 8px -1px;
     --margin: 1rem;
     --padding: 1.5rem;
     --transition: all 0.2s ease;
@@ -25,7 +25,7 @@ html {
 }
 
 body {
-    background-color: #fafafa;
+    /*    background-color: #fafafa;*/
     font-family: "Poppins", sans-serif;
     padding: 0;
     margin: 0;
@@ -752,13 +752,18 @@ nav .nav-content {
         box-shadow: var(--box-shadow);
         width: 90%;
         border-radius: var(--border-radius);
-        transition: var(--transition);  
+        transition: var(--transition);
     }
 
-        .posts-container .post:hover {
-
-  
+        .posts-container .post.hidden {
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
+
+        .posts-container .post.visible {
+            opacity: 1;
+        }
+
 
         .posts-container .post .box {
             width: 100%;
@@ -768,7 +773,7 @@ nav .nav-content {
             flex-direction: column;
             padding: 1.1rem;
             gap: 1.5rem;
-            background-color: #eee;
+            background-color: rgb(238 238 238 / 40%);
             border-radius: var(--border-radius);
         }
 
@@ -1176,4 +1181,3 @@ nav .nav-content {
         margin: 20px auto;
     }
 }
-    

@@ -12,7 +12,7 @@ namespace CLIQ_UE.ViewModels
         public string postContent { get; set; }
         public string privacyValue { set; get; }
         public IFormFile? PostImage { get; set; }
-        public string PostDate { set; get; }
+        public string? PostDate { set; get; }
 
 
 
