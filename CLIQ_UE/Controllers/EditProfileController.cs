@@ -11,11 +11,9 @@ namespace CLIQ_UE.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-
-           
         private readonly IEditUserServices editUserServices;
 
-        public EditProfileController(IEditUserServices editUserServices , UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public EditProfileController(IEditUserServices editUserServices, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             this.editUserServices = editUserServices;
             this.userManager = userManager;
@@ -24,40 +22,63 @@ namespace CLIQ_UE.Controllers
 
         public IActionResult EditProfile()
         {
-            return View("EditProfile");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            EditProfileViewModel viewModel = editUserServices.GetUserViewModelById(userId);
+            return View("EditProfile", viewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> EditProfile(EditProfileViewModelcs userViewModel)
+        public async Task<IActionResult> EditProfile(EditProfileViewModel userViewModel)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ApplicationUser user = editUserServices.GetById(userId);
             if (ModelState.IsValid)
             {
-
-                user.UserName = userViewModel.UserName;
-                user.PasswordHash = userViewModel.currentPassword;
-                user.PasswordHash = userViewModel.NewPassword;
-                user.PasswordHash = userViewModel.ConfirmPassword;
-                user.BirthDate = userViewModel.BirthDate;
-                user.Location = userViewModel.Country; 
-                user.Gender = userViewModel.Gender;
-                user.Language = userViewModel.Language;
-                user.Email = userViewModel.Email;
-
-                IdentityResult result =
-                    await userManager.UpdateAsync(user);
-
-                if (result.Succeeded)
+                bool result = await userManager.CheckPasswordAsync(user, userViewModel.CurrentPassword);
+                if (result)
                 {
-                    return RedirectToAction("Index", "home");
+                    editUserServices.UpdateProfile(userViewModel, userId);
+                    return RedirectToAction("Index", "Home");
                 }
-                foreach (var item in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, item.Description);
-                }
+                ModelState.AddModelError("CurrentPassword", "Current Password Not Valid");
             }
             return View("EditProfile", userViewModel);
         }
-        
+
+
+        public IActionResult EditBio()
+        {
+            return View("EditBio");
+        }
+        [HttpPost]
+        public IActionResult EditBio(EditBioAndUploadImageViewModel BioVM)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (ModelState.IsValid == true)
+            {
+                if (BioVM.Image != null && BioVM.Image.Length > 0)
+                {
+                    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(BioVM.Image.FileName);
+
+                    // Path to save the image
+                    var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images");
+                    var filePath = Path.Combine(uploads, uniqueFileName);
+
+                    // Save the uploaded image
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        BioVM.Image.CopyTo(fileStream);
+                    }
+
+                    // Set the new filename in the bio object
+                    BioVM.ProfileImageName = uniqueFileName;
+                }
+
+                //edit ApplicationUser
+                editUserServices.UpdateBio(BioVM, userId);
+                return RedirectToAction("Index", "Home");
+            }
+            return View("EditBio", BioVM);
+        }
     }
 }

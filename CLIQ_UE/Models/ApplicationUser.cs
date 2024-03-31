@@ -16,5 +16,6 @@ namespace CLIQ_UE.Models
         public bool? PublicBirthDate { get; set; }
         public string? Language { get; set; } // new
         public string? Gender { get; set; } // new
+        public string? Country { get; set; } // new
     }
 }

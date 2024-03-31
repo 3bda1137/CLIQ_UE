@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "EditProfile";
 }
-@model CLIQ_UE.ViewModels.EditProfileViewModelcs ;
+@model CLIQ_UE.ViewModels.EditProfileViewModel ;
 <h1>EditProfile</h1>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,7 +57,7 @@
             </div> *@
             <div class="col-12 col-md-10 ">
                 <form asp-action="EditProfile" method="post" class=" p-3">
-                    <h3 class="text-center text-md-start">User Profile</h3>
+                    @* <h3 class="text-center text-md-start">User Profile</h3> *@
                     <div class="row">
                         <div class="col-12 col-lg-6 ">
                             <div class="form-group ">
@@ -100,22 +100,37 @@
                         </div>
                         <div class="col-12 col-lg-6  ">
                             <div class="form-group ">
-                                <label asp-for="currentPassword">Current password</label>
-                                <input asp-for="currentPassword"  type="password" id="Cpassword" class="form form-control w-75 my-2">
+                                <label asp-for="FirstName">First Name</label>
+                                <input asp-for="FirstName"  id="Cpassword" class="form form-control w-75 my-2">
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group ">
+                                <label asp-for="LastName">Last Name</label>
+                                <input asp-for="LastName" id="Cpassword" class="form form-control w-75 my-2">
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group ">
+                                <label asp-for="CurrentPassword">Current password</label>
+                                <input asp-for="CurrentPassword"  type="password" id="Cpassword" class="form form-control w-75 my-2">
+                                <span asp-validation-for="CurrentPassword" class="text-danger"></span>
                             </div>
                             <div class="form-group ">
                                 <label asp-for="NewPassword">New password</label>
                                 <input asp-for="NewPassword" type="password" id="Npassword" class="form form-control w-75 my-2">
+                                <span asp-validation-for="NewPassword" class="text-danger"></span>
+
                             </div>
                             <div class="form-group ">
                                 <label asp-for="ConfirmPassword" for="CFpassword">Confirm password</label>
                                 <input asp-for="ConfirmPassword" type="password" id="CFpassword" class="form form-control w-75 my-2">
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
                             </div>
 
                             <div class="form-group mt-4 ">
                                 <div class="form-check  form-switch px-0 d-flex justify-content-between w-75">
                                     <label class="form-check-label" for="notification">Email notification</label>
-                                    <input class="form-check-input fs-3 " type="checkbox" role="switch"
+                                    <input class="form-check-input fs-3" type="checkbox" role="switch"
                                         id="notification" checked>
                                 </div>
                                 <div class="form-check  form-switch px-0 d-flex justify-content-between w-75">
@@ -135,7 +150,7 @@
             </form>
         </div>
     </div>
-
+        <partial name="_ValidationScriptsPartial"></partial>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
