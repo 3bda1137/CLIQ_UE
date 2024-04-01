@@ -92,6 +92,7 @@ document.getElementById('write-post-text').addEventListener('input', function ()
 
 // //! Select Image in Add Post  to show when choses!//
 btn_select_img.addEventListener('click', function () {
+    console.log("clicked")
     const input = document.querySelector('#add-img-post');
 
     input.addEventListener('change', function (event) {
@@ -111,6 +112,18 @@ btn_select_img.addEventListener('click', function () {
 
 });
 
+
+/// Notification menu ==> 
+document.getElementById('notification-icon').addEventListener('click', function (event) {
+    event.stopPropagation(); // Prevent the click event from propagating to the document body
+    document.getElementById('notification-container').classList.toggle('active');
+});
+
+document.body.addEventListener('click', function (event) {
+    if (!event.target.closest('#notification-container')) {
+        document.getElementById('notification-container').classList.remove('active');
+    }
+});
 
 
 //! Change Privacy ====>

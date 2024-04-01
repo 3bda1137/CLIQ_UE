@@ -21,9 +21,54 @@
 
                 <div class="right-items">
                     <div class="items">
-                        <div class="notification">
-                            <i class="fa-solid fa-bell"></i>
+                         
+                           <div class="notification-container" id="notification-container">
+                    <div class="notification">
+                        <i class="fa-solid fa-bell" id="notification-icon"></i>
+                        <span class="notification-count">9+</span>
+                    </div>
+                    <div class="notification-list">
+
+                        <div class="notification-item">
+                            <img src="@Model.UserImage" alt="User 1" class="user-avatar">
+                            <div class="notification-details">
+                                <span class="user-name"><strong>User 1</strong></span>
+                                <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
+                            </div>
                         </div>
+
+
+                        <div class="notification-item">
+                            <img src="@Model.UserImage"  alt="User 1" class="user-avatar">
+                            <div class="notification-details">
+                                <span class="user-name"><strong>User 2</strong></span>
+                                <span class="notification-text">commented on your post  <strong>5h ago</strong></span>
+                            </div>
+                        </div>
+
+
+                        <div class="notification-item">
+                            <img src="@Model.UserImage" alt="User 1" class="user-avatar">
+                            <div class="notification-details">
+                                <span class="user-name"><strong>User 1</strong></span>
+                                <span class="notification-text">commented on your post . <strong>a Week ago</strong></span>
+                            </div>
+                        </div>
+
+
+                        <div class="notification-item">
+                            <img src="@Model.UserImage" alt="User 2" class="user-avatar">
+                            <div class="notification-details">
+                                <span class="user-name"><strong>User 2</strong></span>
+                                <span class="notification-text">commented on your post  <strong>5 ago</strong></span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
                         <div class="home ">
                             <a href="#"><i class="fa-solid fa-house active-link"></i></a>
                         </div>
@@ -296,7 +341,9 @@
                                 <!-- Add Comment -->
                                 <div class="add-comment">
                                     <img class="profile-pic" src="@Model.UserImage" alt="">
-                                    <input type="text" placeholder="Add a comment">
+
+                                    <input type="text" placeholder="Add a comment" id="write-comment-text">
+                 
                                     <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
                                 </div>
                             </div>
@@ -330,7 +377,7 @@
                 <div class="links-container box-with-two-cols">
                     <div class="header">
                         <div class="left">
-                            <img src="./images/fire.svg" alt="Fire svg">
+                            <img src="~/HomePage/images/fire.svg" alt="Fire svg">
                             <p>Trending</p>
                         </div>
                         <a href="#">See more</a>
@@ -365,7 +412,7 @@
 
                     <div class="box-row">
                         <div class="profile">
-                            <img src="./images/3.jpg" alt="profile pictuer">
+                            <img src="~/HomePage/images/3.jpg" alt="profile pictuer">
                             <p>Moudy Rasmy</p>
                         </div>
                         <div class="follow">
@@ -376,7 +423,7 @@
 
                     <div class="box-row">
                         <div class="profile">
-                            <img src="./images/6.jpg" alt="profile pictuer">
+                            <img src="~/HomePage/images/6.jpg" alt="profile pictuer">
                             <p>Mahmoud salah</p>
                         </div>
                         <div class="follow">
@@ -396,7 +443,7 @@
 
                     <div class="box-row">
                         <div class="profile">
-                            <img src="./images/3.jpg" alt="profile pictuer">
+                            <img src="~/HomePage/images/3.jpg" alt="profile pictuer">
                             <p>Kersh Kepers</p>
                             <span class="joins-number">3M Member</span>
                         </div>
@@ -408,7 +455,7 @@
 
                     <div class="box-row">
                         <div class="profile">
-                            <img src="./images/iti.svg" alt="profile pictuer">
+                            <img src="~/HomePage/images/fire.svg" alt="profile pictuer">
                             <p>ITI-Assiut</p>
                             <span class="joins-number">25k Member</span>
 
@@ -438,9 +485,43 @@
                 <h1 class="modal-title fs-5" id="show_commentsLabel">Comments</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div id="commentsModal" class="modal-body">
-                
-               
+            <div class="modal-body">
+
+
+                <div class="comment">
+                    <div class="profile">
+                        <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                        <div class="name">
+                            <p class="username">moudy rasmy</p>
+                            <p class="comment-time">1 hour ago</p>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <p class="comment-text">This is a comment.</p>
+                    </div>
+                    <div class="love-icon">
+                        <i class="fa-solid fa-heart like-icon"></i>
+                        <span>12</span>
+                    </div>
+                </div>
+
+
+                <div class="comment">
+                    <div class="profile">
+                        <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                        <div class="name">
+                            <p class="username">moudy rasmy</p>
+                            <p class="comment-time">1 hour ago</p>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, voluptates vero voluptatibus placeat, necessitatibus mollitia similique impedit quasi minima culpa magni, nulla sapiente ex non. Illo sequi tempora laboriosam impedit..</p>
+                    </div>
+                    <div class="love-icon">
+                        <i class="fa-solid fa-heart like-icon"></i>
+                        <span>12</span>
+                    </div>
+                </div>
 
             </div>
             <div class="modal-footer">
@@ -449,6 +530,4 @@
         </div>
     </div>
 </div>
-
-
-
+<!--  -->
