@@ -12,12 +12,14 @@ namespace CLIQ_UE.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IUserServices userServices;
+        private readonly IConfiguration configuration;
 
-        public AccountController(UserManager<ApplicationUser> _UserManager, SignInManager<ApplicationUser> _SignInManager, IUserServices _UserServices)
+        public AccountController(UserManager<ApplicationUser> _UserManager, SignInManager<ApplicationUser> _SignInManager, IUserServices _UserServices, IConfiguration _Configuration)
         {
             userManager = _UserManager;
             signInManager = _SignInManager;
             userServices = _UserServices;
+            configuration = _Configuration;
         }
 
         [HttpGet]
@@ -104,7 +106,7 @@ namespace CLIQ_UE.Controllers
                         token = token
                     }, protocol: Request.Scheme);
                     string body = FormatEmail.CreateDesignOfEmail(urlForResetPassword);
-                    SendEmail sendEmail = new SendEmail();
+                    SendEmail sendEmail = new SendEmail(configuration);
                     await sendEmail.SendEmailAsync(forgotPasswordViewModel.Email, body);
 
                     return RedirectToAction("ResetMessage", "Account");
