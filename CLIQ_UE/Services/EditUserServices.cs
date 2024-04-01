@@ -33,7 +33,7 @@ namespace CLIQ_UE.Services
             return editProfileViewModel;
         }
 
-        public void UpdateBio(EditBioAndUploadImageViewModel userViewModel, string userId)
+        public void UpdateBio(CompleteProfileViewModel userViewModel, string userId)
         {
             ApplicationUser user = GetById(userId);
             if (user != null)

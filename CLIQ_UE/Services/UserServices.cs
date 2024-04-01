@@ -14,6 +14,19 @@ namespace CLIQ_UE.Services
             this.userManager = userManager;
             this.context = context;
         }
+
+        public CompleteProfileViewModel MapAppUserToViewModel(ApplicationUser applicationUser)
+        {
+            CompleteProfileViewModel completeProfileViewModel = new CompleteProfileViewModel();
+            completeProfileViewModel.Bio = applicationUser.Bio;
+            completeProfileViewModel.FirstName = applicationUser.FirstName;
+            completeProfileViewModel.LastName = applicationUser.LastName;
+            completeProfileViewModel.Location = applicationUser.Location;
+            completeProfileViewModel.UserName = applicationUser.UserName;
+            completeProfileViewModel.PhoneNum = applicationUser.PhoneNumber;
+            return completeProfileViewModel;
+        }
+
         public ApplicationUser MapRegisterViewModelToAppUser(RegisterViewModel viewModel)
         {
             ApplicationUser applicationUser = new ApplicationUser();
@@ -40,9 +53,9 @@ namespace CLIQ_UE.Services
             return username;
         }
 
-        public ApplicationUser GetUserById(string id)
-        {
-            return context.Users.FirstOrDefault(u => u.Id == id);
-        }
+        //public ApplicationUser GetUserById(string id)
+        //{
+        //    return context.Users.FirstOrDefault(u => u.Id == id);
+        //}
     }
 }
