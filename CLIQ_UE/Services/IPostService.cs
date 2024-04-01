@@ -6,7 +6,7 @@ namespace CLIQ_UE.Services
     public interface IPostService
     {
         Post GetPostById(int id);
-        List<Post> GetLatestPosts();
+        List<Post> GetLatestPosts(int pageIndex, int pageSize);
         Post CreatePost(CreatePostViewModel post, ApplicationUser user);
 
 

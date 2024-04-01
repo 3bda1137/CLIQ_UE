@@ -34,9 +34,9 @@ namespace CLIQ_UE.Services
             throw new NotImplementedException();
         }
 
-        public List<Post> GetLatestPosts()
+        public List<Post> GetLatestPosts(int pageIndex, int pageSize)
         {
-            return postRepository.GetLatestPosts();
+            return postRepository.GetLatestPosts(pageIndex, pageSize);
         }
 
         public Post GetPostById(int id)

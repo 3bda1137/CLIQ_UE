@@ -79,25 +79,40 @@ namespace CLIQ_UE.Repositories
             throw new NotImplementedException();
         }
 
-        public List<Post> GetLatestPosts()
+        public List<Post> GetLatestPosts(int pageIndex, int pageSize)
         {
+            int postsToSkip = pageIndex * pageSize;
+
             List<Post> latestPosts = context.Posts
                 .Include(p => p.User)
                 .OrderByDescending(p => p.PostDate)
-                                                  .Take(100)
-                                                  .ToList();
+                .Skip(postsToSkip)
+                .Take(pageSize)
+                .Select(p => new Post
+                {
+                    postAddedTime = FormatTime.FormatingTime(p.PostDate),
+                    CommentCount = p.CommentCount,
+                    Comments = p.Comments,
+                    ViewsCount = p.ViewsCount,
+                    DislikeCount = p.DislikeCount,
+                    LikeCount = p.LikeCount,
+                    RepostCount = p.RepostCount,
+                    TextContent = p.TextContent,
+                    Id = p.Id,
+                    PostDate = p.PostDate,
+                    PostImage = p.PostImage,
+                    User = p.User,
+                    privacy = p.privacy,
+                })
+                .ToList();
 
-            //foreach (var post in latestPosts)
-            //{
-            //    post.postAddedTime = FormatTime.FormatingTime(post.PostDate);
-            //}
-
-
-            context.SaveChanges();
+            foreach (var post in latestPosts)
+            {
+                post.postAddedTime = FormatTime.FormatingTime(post.PostDate);
+            }
 
             return latestPosts;
         }
-
 
         public Post GetPostById(int id)
         {

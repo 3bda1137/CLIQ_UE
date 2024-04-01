@@ -10,11 +10,7 @@ namespace CLIQ_UE.ViewModels
         public string UserImage { get; set; }
         public List<Post>? LatestPosts { get; set; }
         ApplicationUser user { get; set; }
-        public string FullName
-        {
-            get => $"{FirstName} {LastName}";
-            set { }
-        }
+
 
     }
 }

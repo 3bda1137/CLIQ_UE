@@ -446,7 +446,7 @@ nav .nav-content {
         justify-content: center;
         gap: 1.5rem;
     }
-
+        /* ! ===================== Notifications =============== */
         .nav-content .right-items .items .notification {
             background-color: var(--box-group-color);
             border-radius: 50%;
@@ -463,16 +463,140 @@ nav .nav-content {
                 font-size: 1.5rem;
             }
 
-        .nav-content .right-items .items .home {
-            display: none;
-            background-color: var(--box-group-color);
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
+.notification {
+    position: relative;
+}
+
+.notification-count {
+    position: absolute;
+    top: -7px;
+    right: -9px;
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 10px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.notification-container {
+    position: relative;
+}
+
+.notification-list {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    padding: 5px;
+    right: 0;
+    width: 500px;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: -10px 13px 8px 3px rgb(0 0 0 / 20%);
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+}
+
+.notification-container.active .notification-list {
+    display: block;
+    opacity: 1;
+}
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-align: start;
+}
+
+    .notification-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.notification-details {
+    flex-grow: 1;
+}
+
+.user-name {
+    font-weight: bold;
+    color: #282d38;
+}
+
+.notification-time {
+    font-weight: bold;
+    color: rgba(40, 45, 56, 0.6);
+}
+
+.notification-text {
+    font-size: 14px;
+}
+
+.notification-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notification-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+    .notification-list::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+.notification:hover {
+    animation: flash 0.5s linear;
+}
+
+.notification-item {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+}
+
+    .notification-item:hover {
+        background-color: #f0f0f0;
+    }
+
+    .notification-item:last-child {
+        margin-bottom: 0;
+    }
+
+.notification-container.active .notification-list {
+    opacity: 1;
+}
+
+/* *End notifications* */
+.nav-content .right-items .items .home {
+    display: none;
+    background-color: var(--box-group-color);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
 
             .nav-content .right-items .items .home i {
                 color: var(--font-color);
@@ -857,6 +981,7 @@ nav .nav-content {
                     text-align: left;
                     font-size: 1.2rem;
                     width: 100%;
+                    overflow-wrap:break-word;
                 }
 
                 .posts-container .post .box .post-content .post-img {
@@ -949,6 +1074,8 @@ nav .nav-content {
 .profile-box {
     position: relative;
 }
+
+
 
 .dropdown-menu {
     display: none;
@@ -1066,6 +1193,22 @@ nav .nav-content {
     }
 }
 
+/*Notification Flash Effect*/
+@keyframes flash {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
 /* !=================================================================================================! */
 /* Media query for medium-sized screens */
 @media screen and (max-width: 992px) {
@@ -1179,5 +1322,11 @@ nav .nav-content {
     .modal.show .modal-dialog {
         width: 90%;
         margin: 20px auto;
+    }
+
+    .notification-list {
+        left: 0;
+        width: 315px;
+        max-height: 300px;
     }
 }
