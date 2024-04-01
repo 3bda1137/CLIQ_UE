@@ -446,7 +446,6 @@ nav .nav-content {
         justify-content: center;
         gap: 1.5rem;
     }
-
         /* ! ===================== Notifications =============== */
         .nav-content .right-items .items .notification {
             background-color: var(--box-group-color);
@@ -485,6 +484,7 @@ nav .nav-content {
 }
 
 .notification-list {
+    display: none;
     position: absolute;
     top: calc(100% + 10px);
     padding: 5px;
@@ -497,11 +497,11 @@ nav .nav-content {
     border-radius: 10px;
     box-shadow: -10px 13px 8px 3px rgb(0 0 0 / 20%);
     z-index: 1000;
-    opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .notification-container.active .notification-list {
+    display: block;
     opacity: 1;
 }
 
@@ -512,7 +512,7 @@ nav .nav-content {
     align-items: center;
     margin-bottom: 10px;
     cursor: pointer;
-    text-align:start;
+    text-align: start;
 }
 
     .notification-item:last-child {
@@ -562,11 +562,9 @@ nav .nav-content {
         background: #555;
     }
 
-
 .notification:hover {
     animation: flash 0.5s linear;
 }
-
 
 .notification-item {
     padding: 10px;
@@ -584,25 +582,21 @@ nav .nav-content {
         margin-bottom: 0;
     }
 
-
-
 .notification-container.active .notification-list {
     opacity: 1;
 }
 
 /* *End notifications* */
-
-
-        .nav-content .right-items .items .home {
-            display: none;
-            background-color: var(--box-group-color);
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
+.nav-content .right-items .items .home {
+    display: none;
+    background-color: var(--box-group-color);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
 
             .nav-content .right-items .items .home i {
                 color: var(--font-color);

@@ -6,7 +6,7 @@ namespace CLIQ_UE.Repositories
     public interface IPostRepository
     {
         Post GetPostById(int id);
-        List<Post> GetLatestPosts();
+        List<Post> GetLatestPosts(int pageIndex, int pageSize);
         Post CreatePost(CreatePostViewModel post, ApplicationUser user);
 
         void UpdatePost(Post post);

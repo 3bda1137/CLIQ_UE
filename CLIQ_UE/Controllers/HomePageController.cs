@@ -31,11 +31,33 @@ namespace CLIQ_UE.Controllers
             {
                 model.UserName = user.UserName;
                 model.UserImage = user.PersonalImage;
-                model.LatestPosts = postService.GetLatestPosts();
                 return View(model);
             }
             return RedirectToAction("Login", "Account");
 
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetPosts(int pageIndex = 0, int pageSize = 5)
+        {
+            ApplicationUser user = await userManager.GetUserAsync(User);
+            List<Post> posts = postService.GetLatestPosts(pageIndex, pageSize);
+
+            displayPostViewModel displayPostViewModel = new displayPostViewModel();
+
+            displayPostViewModel.Posts = posts;
+            displayPostViewModel.currentUserId = user.Id;
+            displayPostViewModel.currentUserImage = user.PersonalImage;
+            displayPostViewModel.currentUserusername = user.UserName;
+            displayPostViewModel.currentUserFirstName = user.FirstName;
+            displayPostViewModel.currentUserLastName = user.LastName;
+
+
+
+            return Json(displayPostViewModel);
+        }
+
+
     }
 }
