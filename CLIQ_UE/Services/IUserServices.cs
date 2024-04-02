@@ -8,5 +8,6 @@ namespace CLIQ_UE.Services
         public CompleteProfileViewModel MapAppUserToViewModel(ApplicationUser? applicationUser);
         public ApplicationUser MapRegisterViewModelToAppUser(RegisterViewModel viewModel);
 
+        public ApplicationUser GetUserByUserName(string userName);
     }
 }

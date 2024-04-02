@@ -22,6 +22,8 @@ namespace CLIQ_UE
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
             });
+
+            builder.Services.AddScoped<DbContext, ApplicationContext>();
             //Add Service Identity
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
                             option =>
@@ -34,6 +36,10 @@ namespace CLIQ_UE
                             .AddDefaultTokenProviders();//to generat token
 
             //register My Services
+
+            builder.Services.AddScoped<IOnlineUserServices, OnlineUserServices>();
+            builder.Services.AddScoped<IOnlineUserRepository, OnlineUserRepository>();
+
             builder.Services.AddScoped<IUserServices, UserServices>();
             builder.Services.AddScoped<IPostRepository, PostRepository>();
             builder.Services.AddScoped<IPostService, PostService>();
@@ -48,11 +54,12 @@ namespace CLIQ_UE
             builder.Services.AddScoped<IViewService, ViewService>();
 
             builder.Services.AddScoped<IEditUserServices, EditUserServices>();
-            builder.Services.AddScoped<IEditUserRepository, EditUserRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             builder.Services.AddSignalR();
             //AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             var app = builder.Build();
 
 

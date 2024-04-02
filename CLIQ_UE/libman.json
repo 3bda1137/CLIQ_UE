@@ -4,7 +4,7 @@
   "libraries": [
     {
       "library": "microsoft-signalr@8.0.0",
-      "destination": "wwwroot/lib/microsoft-signalr/"
+      "destination": "wwwroot/microsoft-signalr/"
     }
   ]
 }
