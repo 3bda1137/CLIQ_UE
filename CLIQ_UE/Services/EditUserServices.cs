@@ -7,9 +7,9 @@ namespace CLIQ_UE.Services
 {
     public class EditUserServices : IEditUserServices
     {
-        private readonly IEditUserRepository editUserRepository;
+        private readonly IUserRepository editUserRepository;
 
-        public EditUserServices(IEditUserRepository editUserRepository)
+        public EditUserServices(IUserRepository editUserRepository)
         {
             this.editUserRepository = editUserRepository;
         }

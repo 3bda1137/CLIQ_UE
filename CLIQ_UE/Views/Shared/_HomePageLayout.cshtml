@@ -22,5 +22,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
     <script src="~/HomePage/js/main.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+   
+    <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
+    <script>
+        var onlineUserHub = new signalR.HubConnectionBuilder().withUrl("/OnlineUsers").build();
+        onlineUserHub.start().then(function () {
+            console.log("SignalR online User Hub connection established.");
+        });
+        // var userId = @User.Identity.Name;
+        // onlineUserHub.invoke("SaveOnlineUser", userId)
+
+    </script>
 </body>
 </html>

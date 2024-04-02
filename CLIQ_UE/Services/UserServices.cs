@@ -1,4 +1,5 @@
 ﻿using CLIQ_UE.Models;
+using CLIQ_UE.Repositories;
 using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
@@ -7,12 +8,12 @@ namespace CLIQ_UE.Services
     public class UserServices : IUserServices
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly ApplicationContext context;
+        private readonly IUserRepository userRepository;
 
-        public UserServices(UserManager<ApplicationUser> userManager, ApplicationContext context)
+        public UserServices(UserManager<ApplicationUser> userManager, IUserRepository userRepository)
         {
             this.userManager = userManager;
-            this.context = context;
+            this.userRepository = userRepository;
         }
 
         public CompleteProfileViewModel MapAppUserToViewModel(ApplicationUser applicationUser)
@@ -53,9 +54,9 @@ namespace CLIQ_UE.Services
             return username;
         }
 
-        //public ApplicationUser GetUserById(string id)
-        //{
-        //    return context.Users.FirstOrDefault(u => u.Id == id);
-        //}
+        public ApplicationUser GetUserByUserName(string userName)
+        {
+            return userRepository.GetByUserName(userName);
+        }
     }
 }

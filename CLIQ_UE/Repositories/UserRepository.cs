@@ -2,11 +2,11 @@
 
 namespace CLIQ_UE.Repositories
 {
-    public class EditUserRepository : IEditUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly ApplicationContext context;
 
-        public EditUserRepository(ApplicationContext _context)
+        public UserRepository(ApplicationContext _context)
         {
             context = _context;
         }
@@ -15,6 +15,12 @@ namespace CLIQ_UE.Repositories
         {
             ApplicationUser user = context.ApplicationUsers.Find(appUserId);
             return user;
+        }
+
+        public ApplicationUser GetByUserName(string userName)
+        {
+            return context.ApplicationUsers
+                .FirstOrDefault(user => user.UserName == userName);
         }
 
         public void Update(ApplicationUser appUser)
