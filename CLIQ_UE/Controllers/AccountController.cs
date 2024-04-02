@@ -37,7 +37,7 @@ namespace CLIQ_UE.Controllers
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(applicationUser, false);
-                    return RedirectToAction("Index", "HomePage");
+                    return RedirectToAction("EditProfile", "EditProfile");
                 }
                 else
                 {
