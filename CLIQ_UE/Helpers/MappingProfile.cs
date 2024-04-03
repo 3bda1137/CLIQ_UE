@@ -11,6 +11,10 @@ namespace CLIQ_UE.Helpers
 			//////////TSource              TDestination
 			CreateMap<AddCommentViewModel, Comment>();
 			CreateMap<Comment, AddCommentViewModel>();
-		}
-	}
+
+            CreateMap<LikeCommentVM, UserLikeComment>();
+            CreateMap<UserLikeComment, LikeCommentVM>();
+
+        }
+    }
 }

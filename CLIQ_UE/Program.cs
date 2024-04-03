@@ -54,7 +54,7 @@ namespace CLIQ_UE
             builder.Services.AddScoped<IViewService, ViewService>();
 
             builder.Services.AddScoped<IEditUserServices, EditUserServices>();
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IEditUserRepository, EditUserRepository>();
 
             builder.Services.AddSignalR();
             //AutoMapper
