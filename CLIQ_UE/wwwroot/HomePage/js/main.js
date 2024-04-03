@@ -125,6 +125,39 @@
     });
 
 
+//! Toggle profile menu 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const profileBox = document.getElementById('profile-box');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+
+    profileBox.addEventListener('click', function (event) {
+        event.stopPropagation();
+        profileBox.classList.toggle('active');
+    });
+
+    // Close the dropdown menu when clicking outside 
+    document.addEventListener('click', function () {
+        profileBox.classList.remove('active');
+    });
+
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    dropdownItems.forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            const action = this.getAttribute('data-action');
+            console.log('Clicked on:', action);
+        });
+    });
+});
+
+
+// DropDown Menu Functions --> 
+logout.addEventListener("click", () => {
+
+})
+
+
+
     //! Change Privacy ====>
     // Show or hide the dropdown menu when privacy dropdown is clicked
     privacyDropdown.addEventListener('click', function (event) {
@@ -385,104 +418,7 @@ window.addEventListener('scroll', loadMore);
     function updateComments(postId, numberOfComments) {
     }
 
-    // Function to add a new post 
-    //async function addPost() {
-    //    const postContent = add_post_text.value.trim();
-    //    if (postContent || add_post_img.src) {
-    //        const selectedPrivacy = dropdownMenu.querySelector('.selected');
-    //        const privacyValue = selectedPrivacy ? selectedPrivacy.dataset.value : 'public';
-    //        const currentDate = new Date();
-    //        const postImageSrc = add_post_img.src;
 
-    //        // Convert the image to Base64
-    //        const postImageBase64 = await getBase64FromImageUrl(postImageSrc);
-
-    //        // Send the data to action
-    //        const postData = {
-    //            postContent: postContent,
-    //            privacyValue: privacyValue,
-    //            postImageSrc: postImageSrc,
-    //            postImageBase64: postImageBase64 // Add this property
-    //        };
-    //        console.log(postData);
-    //        try {
-    //            const response = await fetch('/Posts/CreatePost', {
-    //                method: 'POST',
-    //                headers: {
-    //                    'Content-Type': 'application/json'
-    //                },
-    //                body: JSON.stringify(postData)
-    //            });
-
-    //            if (response.ok) {
-
-    //                console.log(' successfully!');
-    //            } else {
-    //                console.error('Error :', response.statusText);
-    //            }
-    //        } catch (error) {
-    //            console.error('Network error:', error);
-    //        }
-
-    //        add_post_text.value = '';
-    //        add_post_img.src = '';
-    //    }
-    //}
-
-    //// Function to convert image to Base64
-    //function getBase64FromImageUrl(imageUrl) {
-    //    return new Promise((resolve, reject) => {
-    //        const img = new Image();
-    //        img.setAttribute('crossOrigin', 'anonymous');
-    //        img.onload = () => {
-    //            const canvas = document.createElement('canvas');
-    //            canvas.width = img.width;
-    //            canvas.height = img.height;
-    //            const ctx = canvas.getContext('2d');
-    //            ctx.drawImage(img, 0, 0);
-    //            const dataURL = canvas.toDataURL('image/png');
-    //            resolve(dataURL.replace(/^data:image\/(png|jpg);base64,/, ''));
-    //        };
-    //        img.onerror = error => reject(error);
-    //        img.src = imageUrl;
-    //    });
-    //}
-
-
-    //// Event  for the "Post" button
-    //btn_post.addEventListener('click', addPost);
-
-
-    //! Toggle profile menu 
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const profileBox = document.getElementById('profile-box');
-        const dropdownMenu = document.getElementById('dropdown-menu');
-
-        profileBox.addEventListener('click', function (event) {
-            event.stopPropagation();
-            profileBox.classList.toggle('active');
-        });
-
-        // Close the dropdown menu when clicking outside 
-        document.addEventListener('click', function () {
-            profileBox.classList.remove('active');
-        });
-
-        const dropdownItems = document.querySelectorAll('.dropdown-item');
-        dropdownItems.forEach(function (item) {
-            item.addEventListener('click', function (event) {
-                const action = this.getAttribute('data-action');
-                console.log('Clicked on:', action);
-            });
-        });
-    });
-
-
-    // DropDown Menu Functions --> 
-    logout.addEventListener("click", () => {
-
-    })
 
     ////////////////////////////////////////////////// SignalR //////////////////////////////////////////////////////////////
     document.addEventListener("DOMContentLoaded", function () {
