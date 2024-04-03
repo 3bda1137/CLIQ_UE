@@ -24,6 +24,14 @@ namespace CLIQ_UE.Repositories
             throw new NotImplementedException();
         }
 
+        public Comment? GetCommentById(int Id)
+        {
+            return context
+                        .Comments
+                        .Find(Id);
+
+        }
+
         public List<Comment> GetCommentsByPost(int postId)
         {
             return context
@@ -35,7 +43,10 @@ namespace CLIQ_UE.Repositories
 
         public void UpdateComment(Comment comment)
         {
-            throw new NotImplementedException();
+            context
+                .Comments
+                .Update(comment);
+            context.SaveChanges();
         }
     }
 }

@@ -8,5 +8,6 @@ namespace CLIQ_UE.Repositories
         List<Comment> GetCommentsByPost(int postId);
         void UpdateComment(Comment comment);
         void DeleteComment(Comment comment);
+        Comment? GetCommentById(int Id);
     }
 }
