@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CLIQ_UE.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240329212307_addDB")]
-    partial class addDB
+    [Migration("20240401172020_UserLikeComment")]
+    partial class UserLikeComment
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -319,6 +319,21 @@ namespace CLIQ_UE.Migrations
                     b.ToTable("Reactions");
                 });
 
+            modelBuilder.Entity("CLIQ_UE.Models.UserLikeComment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CommentId", "ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("UserLikeComments");
+                });
+
             modelBuilder.Entity("CLIQ_UE.Models.View", b =>
                 {
                     b.Property<int>("ViewId")
@@ -499,6 +514,25 @@ namespace CLIQ_UE.Migrations
                     b.Navigation("Post");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CLIQ_UE.Models.UserLikeComment", b =>
+                {
+                    b.HasOne("CLIQ_UE.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CLIQ_UE.Models.Comment", "Comment")
+                        .WithMany()
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Comment");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.View", b =>

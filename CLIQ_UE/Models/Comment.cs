@@ -9,7 +9,7 @@
         public DateTime CommentDate { get; set; }
         public string? CommentImage { get; set; }
         public int LikeCount { get; set; }
-
+        
         // Navigation properties
         public Post? Post { get; set; }
         public ApplicationUser? User { get; set; }

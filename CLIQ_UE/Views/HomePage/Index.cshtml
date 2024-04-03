@@ -7,7 +7,111 @@
     Layout = "_HomePageLayout";
 }
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
 
+
+    function getPostComments(postId) {
+        console.log("Get Post Comments");
+        $('#commentsModal').html("");
+        $.ajax({
+            url: `/comments/getComments?postId=` + postId, // Endpoint URL
+            type: 'GET',
+            //data: { postId: postId, commentText: commentText }, // Include the postId and commentText parameters
+            success: function (response) {
+                // Handle the success response from the server
+                console.log('AJAX request successful');
+                console.log(response);
+                let a = ``;
+                $('#commentsModal').append(a);
+                for (let comment of response) {
+                    let profileImage = @Url.Content("~/images/");
+                    profileImage += comment.user.profileImage;
+                    a = `<div id="${comment.commentId}" class="comment">
+                                    <div class="profile">
+                                                    <img class="profile-pic" src=${profileImage} alt="Profile image">
+                                        <div class="name">
+                                                    <p class="username">${comment.user.firstName} ${comment.user.lastName}</p>
+                                            <p class="comment-time">1 hour ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="comment-content">
+                                        <p class="comment-text">${comment.commentText}</p>
+                                    </div>
+                                    <div class="love-icon">
+                                        <i id="likeIcon${comment.commentId}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="likeComment(${comment.commentId})"></i>
+                                        <span>${comment.likeCount}</span>
+                                    </div>
+                                </div>`
+                    $('#commentsModal').append(a);
+                }
+                $('#show_comments').modal('show');
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('AJAX request failed');
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+
+
+    function addNewComment(PostId) {
+        console.log("Works");
+        //var postId = $('#postId').val(); // Get the postId value from the hidden input field
+        var commentText = $(`#` + PostId).val(); // Get the commentText value from the input field
+        var Image = $("#Image").val();
+        if (commentText == "")
+            return;
+        console.log(PostId);
+        $.ajax({
+            url: `/comments/newcomment/`, // Endpoint URL
+            type: 'POST',
+            data: { postId: PostId, commenttext: commentText }, // Include the postId and commentText parameters
+
+            success: function (response) {
+                // Handle the success response from the server
+                console.log('AJAX request successful');
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('AJAX request failed');
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+</script>
+<script>
+    function likeComment(commentId) {
+        console.log(commentId);
+        var color = $(`#likeIcon${commentId}`).css('color');
+        if(color = "grey"){
+            $(`#likeIcon${commentId}`).css('color', 'red');
+        }
+        else{
+            $(`#likeIcon${commentId}`).css('color', 'grey');
+        }
+        
+        $.ajax({
+            url: `/comments/LikeComment?commentId=${commentId}`,
+            type: 'POST',
+            //data: {commentId:commentId  }, // Include the postId and commentText parameters
+            success: function (response) {
+                // Handle the success response from the server
+                console.log('AJAX request successful');
+                console.log(response)
+                },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('AJAX request failed');
+                console.error(xhr.responseText);
+            }
+        });
+    }
+</script>
 <!-- ! Navbar -->
 <div class="row">
     <div class="col-12">
@@ -281,7 +385,7 @@
                                         <div class="box">
                                             @* <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"> </i> *@
                                             @* We want to access post to extract comments *@
-                                            <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(1)"> </i>
+                                            <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(@post.Id)"> </i>
                                             <span>@post.CommentCount</span>
                                         </div>
 
@@ -297,6 +401,11 @@
                                     <img class="profile-pic" src="@Model.UserImage" alt="">
                                     <input id="@post.Id" name="commenttext" type="text" placeholder="Add a comment">
                                     <input id="postId" name="postId" hidden value="@post.Id"/>
+                                    <label for="add-img-post" class="add-post-pic-label">
+                                        <!-- Label to trigger file input -->
+                                        <i class="fa-solid fa-images img-btn"></i>
+                                    </label>
+                                    <input type="file" id="add-img-comment" name="Image" accept="image/*,video/*" style="opacity:0; width:0;height:0">
                                     <i id="commentBtn" class="fa-solid fa-hand-pointer add-comment-icon"
                                     onclick="addNewComment(@post.Id)"></i>
                                 </div>
@@ -453,93 +562,3 @@
 
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-
-    function showModal(){
-        
-        let a = ` <div class="comment">
-                        <div class="profile">
-                            <img class="profile-pic" src="/HomePage/images/giphy.gif" alt="Profile image">
-                            <div class="name">
-                                <p class="username">moudy rasmy</p>
-                                <p class="comment-time">1 hour ago</p>
-                            </div>
-                        </div>
-                        <div class="comment-content">
-                            <p class="comment-text">This is a comment.</p>
-                        </div>
-                        <div class="love-icon">
-                            <i class="fa-solid fa-heart like-icon"></i>
-                            <span>12</span>
-                        </div>
-                    </div>`;
-        $('#commentsModal').html(a);
-        $('#show_comments').modal('show');
-    }
-    
-    function getPostComments(postId){
-        console.log("Get Post Comments");
-        $.ajax({
-            url: `/comments/getComments?postId=` + postId, // Endpoint URL
-            type: 'GET',
-            //data: { postId: postId, commentText: commentText }, // Include the postId and commentText parameters
-            success: function (response) {
-                // Handle the success response from the server
-                console.log('AJAX request successful');
-                console.log(response);
-                let a = ``;
-                $('#commentsModal').append(a);
-                for (let instructor of response) {
-                    a = `<div class="comment">
-                                <div class="profile">
-                                    <img class="profile-pic" src="/HomePage/images/giphy.gif" alt="Profile image">
-                                    <div class="name">
-                                        <p class="username">moudy rasmy</p>
-                                        <p class="comment-time">1 hour ago</p>
-                                    </div>
-                                </div>
-                                <div class="comment-content">
-                                    <p class="comment-text">${instructor.commentText}</p>
-                                </div>
-                                <div class="love-icon">
-                                    <i class="fa-solid fa-heart like-icon"></i>
-                                    <span>12</span>
-                                </div>
-                            </div>`
-                    $('#commentsModal').append(a);
-                }
-                $('#show_comments').modal('show');
-            },
-            error: function (xhr, status, error) {
-                // Handle errors
-                console.error('AJAX request failed');
-                console.error(xhr.responseText);
-            }
-        });
-    }
-
-    function addNewComment(postId) {
-        console.log("Works");
-        //var postId = $('#postId').val(); // Get the postId value from the hidden input field
-        var commentText = $(`#` + postId).val(); // Get the commentText value from the input field
-        if (commentText == "")
-            return;
-        console.log(postId);
-        $.ajax({
-            url: `/comments/newcomment?postId=` + postId + `&commenttext=` + commentText, // Endpoint URL
-            type: 'POST',
-            //data: { postId: postId, commentText: commentText }, // Include the postId and commentText parameters
-            success: function (response) {
-                // Handle the success response from the server
-                console.log('AJAX request successful');
-                console.log(response);
-            },
-            error: function (xhr, status, error) {
-                // Handle errors
-                console.error('AJAX request failed');
-                console.error(xhr.responseText);
-            }
-        });
-    }
-</script>

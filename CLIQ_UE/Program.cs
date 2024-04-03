@@ -49,6 +49,9 @@ namespace CLIQ_UE
 
             builder.Services.AddScoped<IEditUserServices, EditUserServices>();
             builder.Services.AddScoped<IEditUserRepository, EditUserRepository>();
+            builder.Services.AddScoped<IUserLikeCommentRepository, UserLikeCommentRepository>();
+            builder.Services.AddScoped<IUserLikeCommentService, UserLikeCommentService>();
+            
 
             builder.Services.AddSignalR();
             //AutoMapper
