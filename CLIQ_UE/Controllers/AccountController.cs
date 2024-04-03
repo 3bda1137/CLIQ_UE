@@ -12,12 +12,14 @@ namespace CLIQ_UE.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IUserServices userServices;
+        private readonly IConfiguration configuration;
 
-        public AccountController(UserManager<ApplicationUser> _UserManager, SignInManager<ApplicationUser> _SignInManager, IUserServices _UserServices)
+        public AccountController(UserManager<ApplicationUser> _UserManager, SignInManager<ApplicationUser> _SignInManager, IUserServices _UserServices, IConfiguration _Configuration)
         {
             userManager = _UserManager;
             signInManager = _SignInManager;
             userServices = _UserServices;
+            configuration = _Configuration;
         }
 
         [HttpGet]
@@ -32,19 +34,32 @@ namespace CLIQ_UE.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser applicationUser = userServices.MapRegisterViewModelToAppUser(registerViewModel);
-                IdentityResult result = await userManager.CreateAsync(applicationUser, registerViewModel.Password);
-                if (result.Succeeded)
+                ApplicationUser ExistingUser = await userManager.FindByEmailAsync(registerViewModel.Email);
+                if (ExistingUser == null)
                 {
-                    await signInManager.SignInAsync(applicationUser, false);
-                    return RedirectToAction("EditProfile", "EditProfile");
+
+
+
+
+                    ApplicationUser applicationUser = userServices.MapRegisterViewModelToAppUser(registerViewModel);
+                    IdentityResult result = await userManager.CreateAsync(applicationUser, registerViewModel.Password);
+                    if (result.Succeeded)
+                    {
+                        await signInManager.SignInAsync(applicationUser, false);
+                        return RedirectToAction("CompleteProfile", "EditProfile");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
+
                 }
                 else
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
+                    ModelState.AddModelError(registerViewModel.Email, "Email already exist");
                 }
             }
             return View(registerViewModel);
@@ -98,13 +113,9 @@ namespace CLIQ_UE.Controllers
                 if (user != null)
                 {
                     string token = await userManager.GeneratePasswordResetTokenAsync(user);
-                    var urlForResetPassword = Url.Action("ResetPassword", "Account", new
-                    {
-                        email = forgotPasswordViewModel.Email,
-                        token = token
-                    }, protocol: Request.Scheme);
-                    string body = FormatEmail.CreateDesignOfEmail(urlForResetPassword);
-                    SendEmail sendEmail = new SendEmail();
+                    var urlForResetPassword = Url.Action("ResetPassword", "Account", null, protocol: Request.Scheme);
+                    string body = FormatEmail.CreateDesignOfEmail(urlForResetPassword, forgotPasswordViewModel.Email, token);
+                    SendEmail sendEmail = new SendEmail(configuration);
                     await sendEmail.SendEmailAsync(forgotPasswordViewModel.Email, body);
 
                     return RedirectToAction("ResetMessage", "Account");
@@ -119,6 +130,7 @@ namespace CLIQ_UE.Controllers
             return View();
         }
 
+        [HttpPost]
         public IActionResult ResetPassword(string email, string token)
         {
             TempData["email"] = email;
@@ -127,12 +139,15 @@ namespace CLIQ_UE.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+        public async Task<IActionResult> SaveResetPassword(ResetPasswordViewModel resetPasswordViewModel)
         {
             if (ModelState.IsValid)
             {
                 string email = TempData["email"].ToString();
                 string token = TempData["token"].ToString();
+                if (email == null || token == null)
+                    return RedirectToAction("Login", "Account");
+
 
                 ApplicationUser user = await userManager.FindByEmailAsync(email);
                 if (user != null)

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CLIQ_UE.ViewModels
 {
-    public class EditBioAndUploadImageViewModel
+    public class CompleteProfileViewModel
     {
         [MaxLength(25, ErrorMessage = "Length must be less than 25")]
         [MinLength(3, ErrorMessage = "Length must be more than 3")]

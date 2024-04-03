@@ -6,50 +6,45 @@ using MimeKit;
 
 namespace CLIQ_UE.Helpers
 {
-	public class SendEmail
-	{
+    public class SendEmail
+    {
+        private readonly IConfiguration configuration;
+        private EmailSetting emailSetting;
+        public SendEmail(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+            emailSetting = new EmailSetting();
+            SettingOfEmail();
+        }
+        public void SettingOfEmail()
+        {
+            emailSetting.Email = configuration["MailSettings:Mail"] ?? "CLIQ_UE@outlook.com";
+            emailSetting.DisplayName = configuration["MailSettings:DisplayName"] ?? "CLIQ UE";
+            emailSetting.Password = configuration["MailSettings:Password"] ?? "AAMMMM1234";
+            emailSetting.Host = configuration["MailSettings:Host"] ?? "smtp-mail.outlook.com";
+            emailSetting.Port = int.Parse(configuration["MailSettings:Port"]);
+            emailSetting.Subject = "System Mail";
+        }
+        public async Task SendEmailAsync(string mailTo, string body)
+        {
+            emailSetting.Body = body;
+            var email = new MimeMessage
+            {
+                Sender = MailboxAddress.Parse(emailSetting.Email),
+                Subject = emailSetting.Subject
+            };
+            // email.HtmlBody = true;
+            email.To.Add(MailboxAddress.Parse(mailTo));
+            var builder = new BodyBuilder();
+            builder.HtmlBody = emailSetting.Body;
+            email.Body = builder.ToMessageBody();
+            email.From.Add(new MailboxAddress(emailSetting.DisplayName, emailSetting.Email));
 
-		public string Email { get; set; }
-		public string DisplayName { get; set; }
-		public string Password { get; set; }
-		public string Host { get; set; }
-		public int Port { get; set; }
-		public string ToEmail { get; set; }
-		public string Subject { get; set; }
-		public string Body { get; set; }
-
-		public SendEmail()
-		{
-			Email = "CLIQ_UE@outlook.com";
-			DisplayName = "CLIQ UE";
-			Password = "AAMMMM1234";
-			Host = "smtp-mail.outlook.com";
-			Port = 587;
-			Subject = "System Mail";
-
-		}
-		public async Task SendEmailAsync(string mailTo, string body)
-		{
-			Body = body;
-			var email = new MimeMessage
-			{
-				Sender = MailboxAddress.Parse(Email),
-				Subject = Subject
-			};
-			// email.HtmlBody = true;
-
-			email.To.Add(MailboxAddress.Parse(mailTo));
-			var builder = new BodyBuilder();
-			builder.HtmlBody = Body;
-			email.Body = builder.ToMessageBody();
-			email.From.Add(new MailboxAddress(DisplayName, Email));
-
-			var smtp = new SmtpClient();
-
-			smtp.Connect(Host, Port, SecureSocketOptions.StartTls);
-			smtp.Authenticate(Email, Password);
-			object value = await smtp.SendAsync(email);
-			smtp.Disconnect(true);
-		}
-	}
+            var smtp = new SmtpClient();
+            smtp.Connect(emailSetting.Host, emailSetting.Port, SecureSocketOptions.StartTls);
+            smtp.Authenticate(emailSetting.Email, emailSetting.Password);
+            await smtp.SendAsync(email);
+            smtp.Disconnect(true);
+        }
+    }
 }
