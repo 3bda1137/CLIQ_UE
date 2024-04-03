@@ -27,7 +27,7 @@ namespace CLIQ_UE.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewComment([FromBody]AddCommentViewModel commentVM)
+        public async Task<IActionResult> NewComment(AddCommentViewModel commentVM)
         {
             bool res = await commentService.AddComment(commentVM, User);
             if (res)

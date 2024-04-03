@@ -35,7 +35,7 @@ namespace CLIQ_UE.Services
                 //No user, anonymous may be
                 return false;
             }
-            if(commentVM.Image != null)
+            /*if(commentVM.Image != null)
             {
                 string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(commentVM.Image.FileName);
 
@@ -51,7 +51,7 @@ namespace CLIQ_UE.Services
 
                 // Set the new filename in the bio object
                 comment.CommentImage = uniqueFileName;
-            }
+            }*/
             comment.LikeCount = 0;
             commentRepository.AddComment(comment);
             return true;

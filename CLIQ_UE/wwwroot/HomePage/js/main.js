@@ -303,6 +303,7 @@ function fetchPosts(pageIndex) {
 
 // Function to display posts
 function displayPosts(Model) {
+    console.log("Model posts")
     console.log(Model)
         console.log(Model.posts)
     Model.posts.forEach(post => {
@@ -349,7 +350,7 @@ function displayPosts(Model) {
                                 <span>${post.repostCount}</span>
                             </div>
                             <div class="box">
-                                <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"></i>
+                                <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
                                 <span>${post.commentCount}</span>
                             </div>
                         </div>
@@ -358,8 +359,8 @@ function displayPosts(Model) {
                     <!-- Add Comment -->
                     <div class="add-comment">
                         <img class="profile-pic" src="${Model.currentUserImage}" alt="">
-                        <input type="text" placeholder="Add a comment">
-                        <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
+                        <input id="postId${post.id}" type="text" placeholder="Add a comment">
+                        <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})""></i>
                     </div>
                 </div>
             </div>`;
