@@ -491,4 +491,33 @@
         });
     }
 
+
+
+    function likeComment(commentId) {
+        console.log(commentId);
+        var color = $(`#likeIcon${commentId}`).css('color');
+        if (color = "grey") {
+            $(`#likeIcon${commentId}`).css('color', 'red');
+        }
+        else {
+            $(`#likeIcon${commentId}`).css('color', 'grey');
+        }
+
+        $.ajax({
+            url: `/comments/LikeComment?commentId=${commentId}`,
+            type: 'POST',
+            //data: {commentId:commentId  }, // Include the postId and commentText parameters
+            success: function (response) {
+                // Handle the success response from the server
+                console.log('AJAX request successful');
+                console.log(response)
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('AJAX request failed');
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
 </script>
