@@ -58,5 +58,12 @@ namespace CLIQ_UE.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<int> IncreasePostComments(int postId)
+        {
+            Post Post = postRepository.GetPostById(postId);
+            Post.CommentCount += 1;
+            return postRepository.UpdatePost(Post);
+        }
     }
 }

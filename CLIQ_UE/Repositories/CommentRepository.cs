@@ -11,12 +11,12 @@ namespace CLIQ_UE.Repositories
         {
             this.context = context;
         }
-        public void AddComment(Comment comment)
+        public async Task<int> AddComment(Comment comment)
         {
             context
                 .Comments
                 .Add(comment);
-            context.SaveChanges();
+            return await context.SaveChangesAsync();
         }
 
         public void DeleteComment(Comment comment)
@@ -32,12 +32,13 @@ namespace CLIQ_UE.Repositories
 
         }
 
-        public List<Comment> GetCommentsByPost(int postId)
+        public List<Comment> GetCommentsByPost(int postId, string UID)
         {
             return context
                 .Comments
                 .Where(c => c.PostId == postId)
                 .Include(c => c.User)
+                .Include(c => c.UserLikeComments.Where(ULK => ULK != null && ULK.ApplicationUserId == UID))
                 .ToList();
         }
 

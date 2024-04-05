@@ -331,7 +331,7 @@ function displayPosts(Model) {
                         </div>
                     </div>
                     <!-- Post Content -->
-                    <div class="post-content">
+                    <div id="post${post.id}" class="post-content">
                         ${post.textContent ? `<p>${post.textContent}</p>` : ''}
                         <div class="post-img">
                             ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
@@ -351,7 +351,7 @@ function displayPosts(Model) {
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
-                                <span>${post.commentCount}</span>
+                                <span id="postCommentCount${post.id}">${post.commentCount}</span>
                             </div>
                         </div>
                         ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
