@@ -315,7 +315,7 @@ function displayPosts(Model) {
                         <div class="profile">
                             <img class="profile-pic" src="${post.user.personalImage}"  alt="Profile image">
                             <div class="name">
-                                <p class="username">${post.user.userName}</p>
+                                <p class="username">${post.user.userName} <i class="bi bi-patch-check-fill text-primary"></i> </p>
                                 <!-- Using js function to calculate the time -->
                                 <p class="post-time">${post.postAddedTime}</p>
                             </div>
@@ -485,7 +485,7 @@ window.addEventListener('scroll', loadMore);
                                 <div class="profile">
                                     <img class="profile-pic" src= "${post.user.personalImage}"  alt="Profile image">
                                     <div class="name">
-                                        <p class="username">${post.user.userName}</p>
+                                        <p class="username">${post.user.userName} <i class="bi bi-patch-check-fill text-primary"></i> </p>
                                         <!-- Using js function to calculate the time -->
                                         <p class="post-time">Just now</p>
                                     </div>
