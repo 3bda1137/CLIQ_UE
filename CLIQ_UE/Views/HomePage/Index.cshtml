@@ -411,6 +411,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
+    
     function getPostComments(postId) {
         console.log(postId);
         console.log("Post id" + postId);
@@ -428,14 +429,14 @@
                 $('#commentsModal').append(a);
                 for (let comment of response) {
                     let profileImage = @Url.Content("~/images/");
-                    profileImage += comment.user.profileImage;
+                    profileImage += comment.userProfileImage;
                     console.log(comment);
                     console.log(profileImage);
                     a = `<div id="${comment.commentId}" class="comment">
                                         <div class="profile">
                                                         <img class="profile-pic" src=${profileImage} alt="Profile image">
                                             <div class="name">
-                                                        <p class="username">${comment.user.firstName} ${comment.user.lastName}</p>
+                                                        <p class="username">${comment.userFirstName} ${comment.userLastName}</p>
                                                 <p class="comment-time">1 hour ago</p>
                                             </div>
                                         </div>
@@ -443,7 +444,7 @@
                                             <p class="comment-text">${comment.commentText}</p>
                                         </div>
                                         <div class="love-icon">
-                                            <i id="likeIcon${comment.commentId}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="likeComment(${comment.commentId})"></i>
+                                                <i id="likeIcon${comment.commentId}" class="fa-solid fa-heart like-icon" style="color: ${comment.isLikedByMe == true? 'red' : 'grey'}" onclick="likeComment(${comment.commentId})"></i>
                                             <span>${comment.likeCount}</span>
                                         </div>
                                     </div>`
@@ -466,13 +467,17 @@
 
     function addNewComment(PostId) {
         console.log("Works");
-        //var postId = $('#postId').val(); // Get the postId value from the hidden input field
-        var commentText = $(`#postId` + PostId).val(); // Get the commentText value from the input field
-        //var Image = $("#Image").val();
-        console.log(commentText);
+        let commentText = $(`#postId` + PostId).val(); // Get the commentText value from the input field
+        
         
         if (commentText == "")
-        console.log(PostId);
+            return;
+
+        let commentsViewsCount = $(`#postCommentCount` + PostId).text();
+        console.log(commentsViewsCount);
+        $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) + 1)
+
+        
         $.ajax({
             url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}`, // Endpoint URL
             type: 'POST',
@@ -487,6 +492,8 @@
                 // Handle errors
                 console.error('AJAX request failed');
                 console.error(xhr.responseText);
+                $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) - 1)
+                //(`#postCommentCount` + PostId).val() = numOfComments - 1;
             }
         });
     }
@@ -496,10 +503,13 @@
     function likeComment(commentId) {
         console.log(commentId);
         var color = $(`#likeIcon${commentId}`).css('color');
-        if (color = "grey") {
+        console.log(color)
+        if (color == 'rgb(128, 128, 128)') {
+            console.log("From grey to red");
             $(`#likeIcon${commentId}`).css('color', 'red');
         }
         else {
+            console.log("From red to grey");
             $(`#likeIcon${commentId}`).css('color', 'grey');
         }
 

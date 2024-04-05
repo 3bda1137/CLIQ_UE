@@ -9,7 +9,7 @@ namespace CLIQ_UE.Repositories
         List<Post> GetLatestPosts(int pageIndex, int pageSize);
         Post CreatePost(CreatePostViewModel post, ApplicationUser user);
 
-        void UpdatePost(Post post);
+        Task<int> UpdatePost(Post post);
         void DeletePost(int id);
 
         void Save();

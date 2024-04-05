@@ -62,9 +62,9 @@ namespace CLIQ_UE.Services
             throw new NotImplementedException();
         }
 
-        public List<Comment> GetCommentsByPost(int postId)
+        public List<Comment> GetCommentsByPost(int postId, string UID)
         {
-            return commentRepository.GetCommentsByPost(postId);
+            return commentRepository.GetCommentsByPost(postId, UID);
         }
 
         public void UpdateComment(Comment comment)

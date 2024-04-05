@@ -7,5 +7,6 @@ namespace CLIQ_UE.Repositories
         void LikeComment(UserLikeComment like);
         void UnLikeComment(UserLikeComment like);
         UserLikeComment? Get(UserLikeComment userLikeComment);
+        //List<UserLikeComment> GetCurUserLikeComments(string UID);
     }
 }

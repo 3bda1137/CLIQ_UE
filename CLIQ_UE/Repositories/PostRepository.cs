@@ -92,7 +92,7 @@ namespace CLIQ_UE.Repositories
                 {
                     postAddedTime = FormatTime.FormatingTime(p.PostDate),
                     CommentCount = p.CommentCount,
-                    Comments = p.Comments,
+                    //Comments = p.Comments,
                     ViewsCount = p.ViewsCount,
                     DislikeCount = p.DislikeCount,
                     LikeCount = p.LikeCount,
@@ -114,11 +114,11 @@ namespace CLIQ_UE.Repositories
             return latestPosts;
         }
 
-        public Post GetPostById(int id)
+        public Post? GetPostById(int id)
         {
             return context.Posts.Include(p => p.User)
                   .Include(p => p.Reactions)
-                  .Include(p => p.Comments)
+                  //.Include(p => p.Comments)
                   .Include(p => p.Views)
                   .FirstOrDefault(p => p.Id == id);
         }
@@ -133,9 +133,10 @@ namespace CLIQ_UE.Repositories
             context.SaveChanges();
         }
 
-        public void UpdatePost(Post post)
+        public async Task<int> UpdatePost(Post post)
         {
-            throw new NotImplementedException();
+            context.Posts.Update(post);
+            return await context.SaveChangesAsync();
         }
     }
 }
