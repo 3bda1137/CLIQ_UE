@@ -11,15 +11,18 @@ namespace CLIQ_UE.Controllers
     {
         private readonly ICommentService commentService;
         private readonly IUserLikeCommentService userLikeCommentService;
+        private readonly IPostService postService;
         private readonly IMapper mapper;
 
         public CommentsController(ICommentService commentService
             , IMapper mapper
-            , IUserLikeCommentService userLikeCommentService)
+            , IUserLikeCommentService userLikeCommentService
+            ,IPostService postService)
         {
             this.commentService = commentService;
             this.mapper = mapper;
             this.userLikeCommentService = userLikeCommentService;
+            this.postService = postService;
         }
         public IActionResult Index()
         {
@@ -32,6 +35,7 @@ namespace CLIQ_UE.Controllers
             bool res = await commentService.AddComment(commentVM, User);
             if (res)
             {
+                await postService.IncreasePostComments(commentVM.PostId);
                 return Ok();
             }
             return BadRequest();
@@ -40,7 +44,16 @@ namespace CLIQ_UE.Controllers
         [HttpGet]
         public IActionResult GetComments(int postId)
         {
-            return Json(commentService.GetCommentsByPost(postId));
+            string UID = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            List<Comment> comments = commentService.GetCommentsByPost(postId,UID);
+            List<RespCommentVM> respCommentVMs = new List<RespCommentVM>();
+            foreach (Comment comment in comments)
+            {
+                var respCommentVM = mapper.Map<Comment, RespCommentVM>(comment);
+
+                respCommentVMs.Add(respCommentVM);
+            }
+            return Json(respCommentVMs);
         }
 
         public IActionResult LikeComment(int commentId)

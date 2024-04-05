@@ -18,6 +18,13 @@ namespace CLIQ_UE.Repositories
                     .Find(userLikeComment.CommentId, userLikeComment.ApplicationUserId);
         }
 
+        /*public List<UserLikeComment> GetCurUserLikeComments(string UID)
+        {
+            return _context
+                    .UserLikeComments
+                    .Where(u => u.ApplicationUserId == UID).ToList();
+        }*/
+
         public void LikeComment(UserLikeComment like)
         {
             _context
