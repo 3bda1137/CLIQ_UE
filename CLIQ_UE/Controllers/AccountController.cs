@@ -37,6 +37,10 @@ namespace CLIQ_UE.Controllers
                 ApplicationUser ExistingUser = await userManager.FindByEmailAsync(registerViewModel.Email);
                 if (ExistingUser == null)
                 {
+
+
+
+
                     ApplicationUser applicationUser = userServices.MapRegisterViewModelToAppUser(registerViewModel);
                     IdentityResult result = await userManager.CreateAsync(applicationUser, registerViewModel.Password);
                     if (result.Succeeded)
@@ -51,6 +55,7 @@ namespace CLIQ_UE.Controllers
                             ModelState.AddModelError("", error.Description);
                         }
                     }
+
                 }
                 else
                 {
