@@ -337,7 +337,8 @@ function displayPosts(Model) {
                             ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
                         </div>
                         <div class="interactions">
-                            <div class="box">
+                        <div class="interactions-container">
+                              <div class="box">
                                 <i class="fa-solid fa-heart like-icon"></i>
                                 <span>${post.likeCount}</span>
                             </div>
@@ -353,6 +354,9 @@ function displayPosts(Model) {
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
                                 <span>${post.commentCount}</span>
                             </div>
+                        </div>
+
+                                <i class="bi bi-bookmark-fill"></i>
                         </div>
                         ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
                     </div>
@@ -506,24 +510,28 @@ window.addEventListener('scroll', loadMore);
                                 <div class="post-img">
                                     ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
                                 </div>
-                                <div class="interactions">
-                                    <div class="box">
-                                        <i class="fa-solid fa-heart like-icon"></i>
-                                        <span>${post.likeCount}</span>
-                                    </div>
-                                    <div class="box">
-                                        <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                                        <span>${post.dislikeCount}</span>
-                                    </div>
-                                    <div class="box">
-                                        <i class="fa-solid fa-retweet repost-icon"></i>
-                                        <span>${post.repostCount}</span>
-                                    </div>
-                                    <div class="box">
-                                        <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"></i>
-                                        <span>${post.commentCount}</span>
-                                    </div>
-                                </div>
+                        <div class="interactions">
+                        <div class="interactions-container">
+                              <div class="box">
+                                <i class="fa-solid fa-heart like-icon"></i>
+                                <span>${post.likeCount}</span>
+                            </div>
+                            <div class="box">
+                                <i class="fa-solid fa-thumbs-down dislike-icon"></i>
+                                <span>${post.dislikeCount}</span>
+                            </div>
+                            <div class="box">
+                                <i class="fa-solid fa-retweet repost-icon"></i>
+                                <span>${post.repostCount}</span>
+                            </div>
+                            <div class="box">
+                                <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
+                                <span>${post.commentCount}</span>
+                            </div>
+                        </div>
+
+                                <i class="bi bi-bookmark-fill"></i>
+                        </div>
                                 ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
                             </div>
                             <!-- Add Comment -->

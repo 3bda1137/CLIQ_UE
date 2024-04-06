@@ -1012,21 +1012,27 @@ nav .nav-content {
                 .posts-container .post .box .post-content .interactions {
                     display: flex;
                     align-items: center;
-                    justify-content: space-around;
+                    justify-content: space-between;
                     width: 100%;
                     color: var(--font-color);
                     gap: 1.3rem;
                 }
+.interactions-container{
+    display:flex;
+   align-items:center;
+   justify-content:center;
+   gap:2rem;
+}
 
-                    .posts-container .post .box .post-content .interactions .box {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex-direction: row;
-                        gap: .5rem;
-                        padding: 0;
-                        width: fit-content;
-                    }
+.posts-container .post .box .post-content .interactions .box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: .5rem;
+    padding: 0;
+    width: fit-content;
+}
 
                     .posts-container .post .box .post-content .interactions i {
                         cursor: pointer;

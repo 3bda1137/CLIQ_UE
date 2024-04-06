@@ -322,12 +322,9 @@ function fetchImages() {
         });
 }
 
-// Function to display posts
 function displayPostsImages(images) {
-    // Clear previous content
-    post_container.innerHTML = "";
 
-    // Loop through the fetched images and add them to the timeline
+
     images.forEach(image => {
         let imageHtml = `
             <div class="gallery-item">
@@ -381,15 +378,18 @@ function displayImagesInGallery(images) {
 
     post_container.appendChild(galleryContainer);
 }
-
 function fetchContent(filter) {
 
     if (filter === 'ALL') {
         post_container.innerHTML = "";
         fetchPosts(pageIndex);
+        console.log("All")
+
     } else if (filter === 'Photos') {
         post_container.innerHTML = "";
         fetchImages()
+        console.log("Images")
+
     }
 }
 
@@ -428,7 +428,8 @@ function displayPosts(Model) {
                             ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
                         </div>
                         <div class="interactions">
-                            <div class="box">
+                        <div class="interactions-container">
+                              <div class="box">
                                 <i class="fa-solid fa-heart like-icon"></i>
                                 <span>${post.likeCount}</span>
                             </div>
@@ -444,6 +445,9 @@ function displayPosts(Model) {
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
                                 <span>${post.commentCount}</span>
                             </div>
+                        </div>
+
+                                <i class="bi bi-bookmark-fill"></i>
                         </div>
                         ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
                     </div>
@@ -584,25 +588,29 @@ document.addEventListener("DOMContentLoaded", function () {
                                 ${post.textContent ? `<p>${post.textContent}</p>` : ''}
                                 <div class="post-img">
                                     ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
-                                </div>
-                                <div class="interactions">
-                                    <div class="box">
-                                        <i class="fa-solid fa-heart like-icon"></i>
-                                        <span>${post.likeCount}</span>
-                                    </div>
-                                    <div class="box">
-                                        <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                                        <span>${post.dislikeCount}</span>
-                                    </div>
-                                    <div class="box">
-                                        <i class="fa-solid fa-retweet repost-icon"></i>
-                                        <span>${post.repostCount}</span>
-                                    </div>
-                                    <div class="box">
-                                        <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"></i>
-                                        <span>${post.commentCount}</span>
-                                    </div>
-                                </div>
+                                 </div>
+                        <div class="interactions">
+                        <div class="interactions-container">
+                              <div class="box">
+                                <i class="fa-solid fa-heart like-icon"></i>
+                                <span>${post.likeCount}</span>
+                            </div>
+                            <div class="box">
+                                <i class="fa-solid fa-thumbs-down dislike-icon"></i>
+                                <span>${post.dislikeCount}</span>
+                            </div>
+                            <div class="box">
+                                <i class="fa-solid fa-retweet repost-icon"></i>
+                                <span>${post.repostCount}</span>
+                            </div>
+                            <div class="box">
+                                <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
+                                <span>${post.commentCount}</span>
+                            </div>
+                        </div>
+
+                                <i class="bi bi-bookmark-fill"></i>
+                        </div>
                                 ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
                             </div>
                             <!-- Add Comment -->
