@@ -56,6 +56,12 @@ namespace CLIQ_UE
             builder.Services.AddScoped<IEditUserServices, EditUserServices>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+            builder.Services.AddScoped<IFollowersServices, FollowersServices>();
+            builder.Services.AddScoped<IFollowersRepository, FollowersRepository>();
+
+            builder.Services.AddScoped<ILastMessageServices, LastMessageServices>();
+            builder.Services.AddScoped<ILastMessageRepository, LastMessageRepository>();
+
             builder.Services.AddSignalR();
             //AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

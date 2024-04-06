@@ -18,6 +18,9 @@ namespace CLIQ_UE.Models
         public DbSet<View> Views { get; set; }
         public DbSet<ChatIndividual> ChatIndividual { get; set; }
         public DbSet<OnlineUser> OnlineUsers { get; set; }
+        public DbSet<Followers> Followers { get; set; }
+        public virtual DbSet<LastMessage> LastMessages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -251,7 +251,7 @@ body {
    list-style-type: none;
    padding: 8px 0;
 }
-.Content_Message_list > * > a
+.Content_Message_list > * > div
 {
     display: flex;
     align-items: center;

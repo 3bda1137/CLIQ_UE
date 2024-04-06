@@ -1,0 +1,414 @@
+﻿@using CLIQ_UE.ViewModels
+@model List<UserConntactViewModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    @* <link rel="stylesheet" href="css/Chat.css">
+       <link rel="stylesheet" href="css/tailwindcss-colors.css">*@
+    <link href="~/css/chat.css" rel="stylesheet" />
+    <link href="~/css/tailwindcss-colors.css" rel="stylesheet" />
+    
+    <title>Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/@@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+</head>
+<body>
+    <!-- Start Chat -->
+    <section class="chat_Section">
+        <div class="Chat_Container">
+            <!-- Start Sidebar -->
+            <aside class="Chat_sidebar">
+                <a href="#" class="Chat_sidebar_Logo">
+                    <i class="ri-chat-3-fill"></i>
+                </a>
+                <ul class="Chat_sidebar_menu">
+                    <li class="active"><a href="#" data-title="chats"><i class="ri-chat-3-line"></i> </a></li>
+                    <li><a href="#" data-title="Contacts"><i class="ri-contacts-line"></i> </a></li>
+                    <li><a href="#" data-title="Documents"><i class="ri-folder-download-line"></i> </a></li>
+                    <li><a href="#" data-title="Settings"><i class="ri-settings-5-line"></i> </a></li>
+                    <li class="Chat_sidebar_profile">
+                        <button type="button" class="Chat_sidebar_profile_toggle">
+                            <img src="Images/user.avif">
+                        </button>
+                        <ul class="Chat_sidebar_profile_dropdown active">
+                            <li>
+                                <a href="#"><i class="ri-user-line"></i>Profile</a>
+                                <a href="#"><i class="ri-logout-circle-line"></i>LogOut</a>
+
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+
+
+            </aside>
+            <!-- End Sidebar -->
+            <!-- Start Content-->
+
+            <div class="chat_content">
+                <!-- Start Content side  -->
+                <div class="content_sidebar">
+                    <div class="Content_sidebar_title"> chats</div>
+                    <form class="content_sidebar_form">
+                        <input type="search" class="content_sidebar_input" placeholder="Search ...">
+                        <button type="submit" class="content_sidebar_submit"><i class="ri-search-line"></i></button>
+                    </form>
+                    <div class="Content_Message">
+                        <ul class="Content_Message_list">
+                            <li class="Content_Message_Title"><span>Recently</span></li>
+                            
+                            
+                                <li>
+                                @foreach (var user in Model)
+                                {
+                                    <div onclick="showChat('@user.UserId')" @* data-conversation="#Conversation1" *@>
+                                        <img class="Content_Message_image" src="~/images/@user.ImageUrl">
+                                        <span class="Content_Message_info">
+                                            <span class="Content_Message_Name">@user.UserName</span>
+                                            @if (@user.LastMessage!=null)
+                                            {
+                                                <span class="Content_Message_Text">@user.LastMessage.Message</span>
+                                            }
+                                            <span class="Content_Message_Text">Lorem, ipsum dolor sit amet consectetur</span>
+                                        </span>
+                                        <span class="Content_Message_More">
+                                            <span class="Content_Message_unread">5</span>
+                                            <span class="Content_Message_Time">12:41</span>
+
+                                        </span>
+                                    </div>
+                                }
+                                </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+                <!-- End Content Side -->
+                <!-- Start Conversation -->
+                <div class="Conversation Conversation_default active">
+                    <i class="ri-chat-3-line"></i>
+                    <p>Select Chat and View Conversation !</p>
+                </div>
+                <div class="Conversation" id="Conversation1">
+                    <div class="Conversation_Top">
+                        <button type="button" class="Conversation_Back"> <i class="ri-arrow-left-line"></i></button>
+                        <div class="Conversation_User">
+                            <img src="Images/user.avif" class="Conversation_User_Image">
+                            <div class="">
+                                <div class="Conversation_User_Name">Manar</div>
+                                <div class="Conversation_User_Status online">Online</div>
+                            </div>
+                        </div>
+                        <div class="Conversation_buttons">
+                            <button type="button"><i class="ri-phone-fill"></i></button>
+                            <button type="button"><i class="ri-vidicon-line"></i></button>
+                            <button type="button"><i class="ri-information-line"></i></button>
+
+                        </div>
+
+
+                    </div>
+                    <div class="Conversation_Main">
+                        <ul class="Conversation_Wrapper">
+                            <div class="Conversation_Divider">
+                                <span>
+                                    Today
+                                </span>
+
+                            </div>
+                            <li class="Conversation_Item me">
+                                <div class="Conversation_Item_Side">
+                                    <img src="Images/user.avif" class="Conversation_Item_Image">
+                                </div>
+                                <div class="Conversation_Item_Content">
+                                    <div class="Conversation_Item_Wrapper">
+                                        <div class="Conversation_Item_Box">
+                                            <div class="Conversation_Item_text">
+                                                <p>
+                                                    Hi there! How's your day going?
+                                                </p>
+                                                <span class="Conversation_Item_Time"> 11:05 </span>
+                                            </div>
+                                            <div class="Conversation_Item_dropdown">
+                                                <button type="button" class="Conversation_Item_dropdown_toggle">
+                                                    <i class="ri-more-2-line"></i>
+                                                </button>
+                                                <ul class="Conversation_Item_dropdown_List">
+                                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
+                                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li class="Conversation_Item">
+                                <div class="Conversation_Item_Side">
+                                    <img src="Images/user.avif" class="Conversation_Item_Image">
+                                </div>
+                                <div class="Conversation_Item_Content">
+                                    <div class="Conversation_Item_Wrapper">
+                                        <div class="Conversation_Item_Box">
+                                            <div class="Conversation_Item_text">
+                                                <p>
+                                                    Hey! It's going pretty well, thanks for asking. How about you?
+                                                </p>
+                                                <span class="Conversation_Item_Time"> 11:05 </span>
+                                            </div>
+                                            <div class="Conversation_Item_dropdown">
+                                                <button type="button" class="Conversation_Item_dropdown_toggle">
+                                                    <i class="ri-more-2-line"></i>
+                                                </button>
+                                                <ul class="Conversation_Item_dropdown_List">
+                                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
+                                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li class="Conversation_Item me">
+                                <div class="Conversation_Item_Side">
+                                    <img src="Images/user.avif" class="Conversation_Item_Image">
+                                </div>
+                                <div class="Conversation_Item_Content">
+                                    <div class="Conversation_Item_Wrapper">
+                                        <div class="Conversation_Item_Box">
+                                            <div class="Conversation_Item_text">
+                                                <p>
+                                                    Not too bad, just trying to stay productive. Have you been up to anything interesting lately?
+                                                </p>
+                                                <span class="Conversation_Item_Time"> 11:05 </span>
+                                            </div>
+                                            <div class="Conversation_Item_dropdown">
+                                                <button type="button" class="Conversation_Item_dropdown_toggle">
+                                                    <i class="ri-more-2-line"></i>
+                                                </button>
+                                                <ul class="Conversation_Item_dropdown_List">
+                                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
+                                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li class="Conversation_Item">
+                                <div class="Conversation_Item_Side">
+                                    <img src="Images/user.avif" class="Conversation_Item_Image">
+                                </div>
+                                <div class="Conversation_Item_Content">
+                                    <div class="Conversation_Item_Wrapper">
+                                        <div class="Conversation_Item_Box">
+                                            <div class="Conversation_Item_text">
+                                                <p>
+                                                    Well, actually, I've been diving into a new hobby—gardening. It's surprisingly therapeutic.
+                                                </p>
+                                                <span class="Conversation_Item_Time"> 11:05 </span>
+                                            </div>
+                                            <div class="Conversation_Item_dropdown">
+                                                <button type="button" class="Conversation_Item_dropdown_toggle">
+                                                    <i class="ri-more-2-line"></i>
+                                                </button>
+                                                <ul class="Conversation_Item_dropdown_List">
+                                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
+                                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li class="Conversation_Item me">
+                                <div class="Conversation_Item_Side">
+                                    <img src="Images/user.avif" class="Conversation_Item_Image">
+                                </div>
+                                <div class="Conversation_Item_Content">
+                                    <div class="Conversation_Item_Wrapper">
+                                        <div class="Conversation_Item_Box">
+                                            <div class="Conversation_Item_text">
+                                                <p>
+                                                    Gardening sounds lovely! What are you growing?                                           <span class="Conversation_Item_Time"> 11:05 </span>
+                                            </div>
+                                            <div class="Conversation_Item_dropdown">
+                                                <button type="button" class="Conversation_Item_dropdown_toggle">
+                                                    <i class="ri-more-2-line"></i>
+                                                </button>
+                                                <ul class="Conversation_Item_dropdown_List">
+                                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
+                                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li class="Conversation_Item">
+                                <div class="Conversation_Item_Side">
+                                    <img src="Images/user.avif" class="Conversation_Item_Image">
+                                </div>
+                                <div class="Conversation_Item_Content">
+                                    <div class="Conversation_Item_Wrapper">
+                                        <div class="Conversation_Item_Box">
+                                            <div class="Conversation_Item_text">
+                                                <p>
+                                                    Right now, I've got some tomatoes, basil, and peppers going.
+                                                    I'm hoping to expand to some flowers soon too. How about you? Any hobbies keeping you busy?
+                                                </p>
+                                                <span class="Conversation_Item_Time"> 11:05 </span>
+                                            </div>
+                                            <div class="Conversation_Item_dropdown">
+                                                <button type="button" class="Conversation_Item_dropdown_toggle">
+                                                    <i class="ri-more-2-line"></i>
+                                                </button>
+                                                <ul class="Conversation_Item_dropdown_List">
+                                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
+                                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li class="Conversation_Item me">
+                                <div class="Conversation_Item_Side">
+                                    <img src="Images/user.avif" class="Conversation_Item_Image">
+                                </div>
+                                <div class="Conversation_Item_Content">
+                                    <div class="Conversation_Item_Wrapper">
+                                        <div class="Conversation_Item_Box">
+                                            <div class="Conversation_Item_text">
+                                                <p>
+                                                    Lately, I've been getting back into painting.
+                                                    It's been years since I've picked up a brush, but there's something so calming about it.                                           <span class="Conversation_Item_Time"> 11:05 </span>
+                                            </div>
+                                            <div class="Conversation_Item_dropdown">
+                                                <button type="button" class="Conversation_Item_dropdown_toggle">
+                                                    <i class="ri-more-2-line"></i>
+                                                </button>
+                                                <ul class="Conversation_Item_dropdown_List">
+                                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
+                                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li class="Conversation_Item">
+                                <div class="Conversation_Item_Side">
+                                    <img src="Images/user.avif" class="Conversation_Item_Image">
+                                </div>
+                                <div class="Conversation_Item_Content">
+                                    <div class="Conversation_Item_Wrapper">
+                                        <div class="Conversation_Item_Box">
+                                            <div class="Conversation_Item_text">
+                                                <p>
+                                                    That's fantastic! What kind of paintings do you usually do?
+                                                </p>
+                                                <span class="Conversation_Item_Time"> 11:05 </span>
+                                            </div>
+                                            <div class="Conversation_Item_dropdown">
+                                                <button type="button" class="Conversation_Item_dropdown_toggle">
+                                                    <i class="ri-more-2-line"></i>
+                                                </button>
+                                                <ul class="Conversation_Item_dropdown_List">
+                                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
+                                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li class="Conversation_Item me">
+                                <div class="Conversation_Item_Side">
+                                    <img src="Images/user.avif" class="Conversation_Item_Image">
+                                </div>
+                                <div class="Conversation_Item_Content">
+                                    <div class="Conversation_Item_Wrapper">
+                                        <div class="Conversation_Item_Box">
+                                            <div class="Conversation_Item_text">
+                                                <p>
+                                                    Mostly landscapes and abstracts, but I've been experimenting with portraits lately.
+                                                    It's challenging, but I'm enjoying the process.
+                                                </p>
+                                                <span class="Conversation_Item_Time"> 11:05 </span>
+                                            </div>
+                                            <div class="Conversation_Item_dropdown">
+                                                <button type="button" class="Conversation_Item_dropdown_toggle">
+                                                    <i class="ri-more-2-line"></i>
+                                                </button>
+                                                <ul class="Conversation_Item_dropdown_List">
+                                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
+                                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="Conversation_form">
+                        <button type="button" class="Conversation_form_button" id="emoji-button">
+                            <i class="ri-emotion-line"></i>
+                        </button>
+                        <div class="Conversation_form_group">
+                            <textarea class="Conversation_form_input" rows="1" placeholder="Message"> </textarea>
+                            <button type="button" class="Conversation_form_Record">
+                                <i class="ri-mic-line"></i>
+                            </button>
+                        </div>
+                        <button type="button" class="Conversation_form_button Conversation_form_submit">
+                            <i class="ri-send-plane-2-line"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- End Conversation -->
+            </div>
+            <!-- End Content-->
+
+        </div>
+
+    </section>
+    <!-- End Chat -->
+
+    @* <script src="js/Chat.js"></script> *@
+    <script src="~/js/chat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+
+    <script>
+        function showChat(id) {
+            console.log(id);
+        }
+    </script>
+</body>
+</html>
