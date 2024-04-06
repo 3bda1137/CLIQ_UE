@@ -6,7 +6,7 @@ namespace CLIQ_UE.Repositories
     {
         Task<int> AddComment(Comment comment);
         List<Comment> GetCommentsByPost(int postId, string UID);
-        void UpdateComment(Comment comment);
+        Task<int> UpdateComment(Comment comment);
         void DeleteComment(Comment comment);
         Comment? GetCommentById(int Id);
     }

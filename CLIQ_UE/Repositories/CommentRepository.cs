@@ -42,12 +42,12 @@ namespace CLIQ_UE.Repositories
                 .ToList();
         }
 
-        public void UpdateComment(Comment comment)
+        public async Task<int> UpdateComment(Comment comment)
         {
             context
                 .Comments
                 .Update(comment);
-            context.SaveChanges();
+            return await context.SaveChangesAsync();
         }
     }
 }
