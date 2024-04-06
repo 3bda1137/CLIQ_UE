@@ -26,6 +26,12 @@ namespace CLIQ_UE.Repositories
             throw new NotImplementedException();
         }
 
+        public List<string> allPostsImagesById(string id)
+        {
+            List<string> images = context.Posts.Where(p => p.UserId == id).OrderByDescending(p => p.PostDate).Select(p => p.PostImage).ToList();
+            return images;
+        }
+
         public Post CreatePost(CreatePostViewModel postModel, ApplicationUser user)
         {
             byte[] imageData = null;
@@ -114,7 +120,47 @@ namespace CLIQ_UE.Repositories
             return latestPosts;
         }
 
+
+        public List<Post> GetLatestPostsByUserId(string id, int pageIndex, int pageSize)
+        {
+            int postsToSkip = pageIndex * pageSize;
+
+            List<Post> latestPosts = context.Posts
+                .Include(p => p.User)
+                .Where(p => p.UserId == id)
+                .OrderByDescending(p => p.PostDate)
+                .Skip(postsToSkip)
+                .Take(pageSize)
+                .Select(p => new Post
+                {
+                    postAddedTime = FormatTime.FormatingTime(p.PostDate),
+                    CommentCount = p.CommentCount,
+                    Comments = p.Comments,
+                    ViewsCount = p.ViewsCount,
+                    DislikeCount = p.DislikeCount,
+                    LikeCount = p.LikeCount,
+                    RepostCount = p.RepostCount,
+                    TextContent = p.TextContent,
+                    Id = p.Id,
+                    PostDate = p.PostDate,
+                    PostImage = p.PostImage,
+                    User = p.User,
+                    privacy = p.privacy,
+                })
+                .ToList();
+
+            foreach (var post in latestPosts)
+            {
+                post.postAddedTime = FormatTime.FormatingTime(post.PostDate);
+            }
+
+            return latestPosts;
+        }
+
+
+
         public Post? GetPostById(int id)
+
         {
             return context.Posts.Include(p => p.User)
                   .Include(p => p.Reactions)
@@ -139,4 +185,6 @@ namespace CLIQ_UE.Repositories
             return await context.SaveChangesAsync();
         }
     }
+
+
 }

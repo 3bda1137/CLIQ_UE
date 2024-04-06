@@ -39,6 +39,7 @@ namespace CLIQ_UE.Services
             return postRepository.GetLatestPosts(pageIndex, pageSize);
         }
 
+
         public Post GetPostById(int id)
         {
             return postRepository.GetPostById(id);
@@ -59,11 +60,22 @@ namespace CLIQ_UE.Services
             throw new NotImplementedException();
         }
 
+
+        public List<Post> GetLatestPostsByUserId(string id, int pageIndex, int pageSize)
+        {
+            return postRepository.GetLatestPostsByUserId(id, pageIndex, pageSize);
+        }
+
+        public List<string> allPostsImagesById(string id)
+        {
+            return postRepository.allPostsImagesById(id);
+}
         public Task<int> IncreasePostComments(int postId)
         {
             Post Post = postRepository.GetPostById(postId);
             Post.CommentCount += 1;
             return postRepository.UpdatePost(Post);
+
         }
     }
 }
