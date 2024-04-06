@@ -7,6 +7,8 @@ namespace CLIQ_UE.Repositories
     {
         Post GetPostById(int id);
         List<Post> GetLatestPosts(int pageIndex, int pageSize);
+        List<Post> GetLatestPostsByUserId(string id, int pageIndex, int pageSize);
+
         Post CreatePost(CreatePostViewModel post, ApplicationUser user);
 
         void UpdatePost(Post post);
@@ -17,5 +19,7 @@ namespace CLIQ_UE.Repositories
         void AddReaction(Reaction reaction);
         void AddView(View view);
         List<Reaction> GetReactionsByPostID(int id);
+
+        List<string> allPostsImagesById(string id);
     }
 }
