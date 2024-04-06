@@ -15,24 +15,24 @@ namespace CLIQ_UE.Services
             _commentRepository = commentRepository;
         }
 
-        public bool LikeComment(UserLikeComment like)
+        public async Task<bool> LikeComment(UserLikeComment like)
         {
             
-            Comment? comment = _commentRepository.GetCommentById(like.CommentId);
+            Comment? comment =  _commentRepository.GetCommentById(like.CommentId);
             UserLikeComment? userLikeCommentFromDb = _userLikeCommentRepository.Get(like);
             if(comment != null)
             {
                 if(userLikeCommentFromDb == null)
                 {
                     comment.LikeCount += 1;
-                    _commentRepository.UpdateComment(comment);
-                    _userLikeCommentRepository.LikeComment(like!);
+                    await _commentRepository.UpdateComment(comment);
+                    await _userLikeCommentRepository.LikeComment(like!);
                 }
                 else
                 {
                     comment.LikeCount -= 1;
-                    _commentRepository.UpdateComment(comment);
-                    _userLikeCommentRepository.UnLikeComment(userLikeCommentFromDb!);
+                    await _commentRepository.UpdateComment(comment);
+                    await _userLikeCommentRepository.UnLikeComment(userLikeCommentFromDb!);
                 }
                 return true;
             }

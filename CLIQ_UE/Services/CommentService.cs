@@ -53,7 +53,7 @@ namespace CLIQ_UE.Services
                 comment.CommentImage = uniqueFileName;
             }*/
             comment.LikeCount = 0;
-            commentRepository.AddComment(comment);
+            await commentRepository.AddComment(comment);
             return true;
         }
 

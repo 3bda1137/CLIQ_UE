@@ -13,7 +13,7 @@ namespace CLIQ_UE.Repositories
 
         public UserLikeComment? Get(UserLikeComment userLikeComment)
         {
-            return _context
+            return  _context
                     .UserLikeComments
                     .Find(userLikeComment.CommentId, userLikeComment.ApplicationUserId);
         }
@@ -25,20 +25,20 @@ namespace CLIQ_UE.Repositories
                     .Where(u => u.ApplicationUserId == UID).ToList();
         }*/
 
-        public void LikeComment(UserLikeComment like)
+        public async Task<int> LikeComment(UserLikeComment like)
         {
             _context
                 .UserLikeComments
                 .Add(like);
-            _context.SaveChanges();
+           return await _context.SaveChangesAsync();
         }
 
-        public void UnLikeComment(UserLikeComment like)
+        public async Task<int> UnLikeComment(UserLikeComment like)
         {
             _context
                 .UserLikeComments
                 .Remove(like);
-            _context.SaveChanges();
+           return await _context.SaveChangesAsync();
         }
     }
 }

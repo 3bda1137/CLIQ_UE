@@ -50,13 +50,27 @@ namespace CLIQ_UE.Controllers
             foreach (Comment comment in comments)
             {
                 var respCommentVM = mapper.Map<Comment, RespCommentVM>(comment);
+                /*respCommentVMs.Add(new RespCommentVM()
+                {
+                    CommentId = comment.CommentId,
+                    CommentDate = comment.CommentDate,
+                    CommentImage = comment.CommentImage,
+                    CommentText = comment.CommentText,
+                    LikeCount = comment.LikeCount,
+                    PostId = comment.PostId,
+                    UserFirstName = comment.User.FirstName,
+                    UserLastName = comment.User.LastName,
+                    UserId = comment.User.Id,
+                    UserProfileImage = comment.User.ProfileImage,
+                    IsLikedByMe = comment.UserLikeComments != null && comment.UserLikeComments.Count > 0
+                });*/
 
                 respCommentVMs.Add(respCommentVM);
             }
             return Json(respCommentVMs);
         }
 
-        public IActionResult LikeComment(int commentId)
+        public async Task<IActionResult> LikeComment(int commentId)
         {
             int Id = commentId;
             if (ModelState.IsValid)
@@ -66,7 +80,8 @@ namespace CLIQ_UE.Controllers
                     CommentId = Id,
                     ApplicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier)!
                 };
-                return Json(userLikeCommentService.LikeComment(userLikeComment));
+                var res = await userLikeCommentService.LikeComment(userLikeComment);
+                return Ok();
             }
             return Json(ModelState);
         }
