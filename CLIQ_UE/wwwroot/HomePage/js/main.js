@@ -526,7 +526,7 @@ window.addEventListener('scroll', loadMore);
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
-                                <span>${post.commentCount}</span>
+                                <span id="postCommentCount${post.id}">${post.commentCount}</span>
                             </div>
                         </div>
 
@@ -537,8 +537,8 @@ window.addEventListener('scroll', loadMore);
                             <!-- Add Comment -->
                             <div class="add-comment">
                                 <img class="profile-pic" src="${post.user.personalImage}" alt="">
-                                <input type="text" placeholder="Add a comment">
-                                <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
+                                <input id="postId${post.id}" type="text" placeholder="Add a comment">
+                                <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})"></i>
                             </div>
                         </div>
                     </div>
