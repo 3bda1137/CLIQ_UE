@@ -17,6 +17,11 @@ namespace CLIQ_UE.Services
         void AddReaction(Reaction reaction);
         void AddView(View view);
         List<Reaction> GetReactionsByPostID(int id);
+
         public List<string> allPostsImagesById(string id);
+
+
+        Task<int> IncreasePostComments(int postId);
+
     }
 }
