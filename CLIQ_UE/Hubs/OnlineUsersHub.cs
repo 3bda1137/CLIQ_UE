@@ -1,5 +1,6 @@
 ﻿using CLIQ_UE.Models;
 using CLIQ_UE.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace CLIQ_UE.Hubs
@@ -14,7 +15,7 @@ namespace CLIQ_UE.Hubs
             this.onlineUserServices = onlineUserServices;
             this.userServices = userServices;
         }
-
+        [Authorize]
         public void SaveOnlineUser(string connectionId)
         {
             var userName = Context.User.Identity.Name;
