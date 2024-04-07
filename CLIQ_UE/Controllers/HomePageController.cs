@@ -53,8 +53,6 @@ namespace CLIQ_UE.Controllers
             displayPostViewModel.currentUserFirstName = user.FirstName;
             displayPostViewModel.currentUserLastName = user.LastName;
 
-
-
             return Json(displayPostViewModel);
         }
 

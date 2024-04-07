@@ -17,5 +17,7 @@ namespace CLIQ_UE.Models
         public string? Language { get; set; } // new
         public string? Gender { get; set; } // new
         public string? Country { get; set; } // new
+
+        public List<UserLikeComment>? UserLikeComments { get; set; }
     }
 }

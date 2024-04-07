@@ -11,12 +11,12 @@ namespace CLIQ_UE.Repositories
         {
             this.context = context;
         }
-        public void AddComment(Comment comment)
+        public async Task<int> AddComment(Comment comment)
         {
             context
                 .Comments
                 .Add(comment);
-            context.SaveChanges();
+            return await context.SaveChangesAsync();
         }
 
         public void DeleteComment(Comment comment)
@@ -24,18 +24,30 @@ namespace CLIQ_UE.Repositories
             throw new NotImplementedException();
         }
 
-        public List<Comment> GetCommentsByPost(int postId)
+        public Comment? GetCommentById(int Id)
+        {
+            return context
+                        .Comments
+                        .Find(Id);
+
+        }
+
+        public List<Comment> GetCommentsByPost(int postId, string UID)
         {
             return context
                 .Comments
                 .Where(c => c.PostId == postId)
                 .Include(c => c.User)
+                .Include(c => c.UserLikeComments.Where(ULK => ULK != null && ULK.ApplicationUserId == UID))
                 .ToList();
         }
 
         public void UpdateComment(Comment comment)
         {
-            throw new NotImplementedException();
+            context
+                .Comments
+                .Update(comment);
+            context.SaveChanges();
         }
     }
 }

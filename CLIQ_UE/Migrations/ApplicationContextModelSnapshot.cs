@@ -185,7 +185,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChatIndividual");
+                    b.ToTable("ChatIndividual", (string)null);
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Comment", b =>
@@ -222,7 +222,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Followers", b =>
@@ -303,7 +303,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OnlineUsers");
+                    b.ToTable("OnlineUsers", (string)null);
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Post", b =>
@@ -362,7 +362,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Reaction", b =>
@@ -389,7 +389,22 @@ namespace CLIQ_UE.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reactions");
+                    b.ToTable("Reactions", (string)null);
+                });
+
+            modelBuilder.Entity("CLIQ_UE.Models.UserLikeComment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CommentId", "ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("UserLikeComments", (string)null);
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.UserLikeComment", b =>
@@ -431,7 +446,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Views");
+                    b.ToTable("Views", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -125,6 +125,39 @@
     });
 
 
+//! Toggle profile menu 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const profileBox = document.getElementById('profile-box');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+
+    profileBox.addEventListener('click', function (event) {
+        event.stopPropagation();
+        profileBox.classList.toggle('active');
+    });
+
+    // Close the dropdown menu when clicking outside 
+    document.addEventListener('click', function () {
+        profileBox.classList.remove('active');
+    });
+
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    dropdownItems.forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            const action = this.getAttribute('data-action');
+            console.log('Clicked on:', action);
+        });
+    });
+});
+
+
+// DropDown Menu Functions --> 
+logout.addEventListener("click", () => {
+
+})
+
+
+
     //! Change Privacy ====>
     // Show or hide the dropdown menu when privacy dropdown is clicked
     privacyDropdown.addEventListener('click', function (event) {
@@ -270,6 +303,7 @@ function fetchPosts(pageIndex) {
 
 // Function to display posts
 function displayPosts(Model) {
+    console.log("Model posts")
     console.log(Model)
         console.log(Model.posts)
     Model.posts.forEach(post => {
@@ -281,7 +315,7 @@ function displayPosts(Model) {
                         <div class="profile">
                             <img class="profile-pic" src="${post.user.personalImage}"  alt="Profile image">
                             <div class="name">
-                                <p class="username">${post.user.userName}</p>
+                                <p class="username">${post.user.userName} <i class="bi bi-patch-check-fill text-primary"></i> </p>
                                 <!-- Using js function to calculate the time -->
                                 <p class="post-time">${post.postAddedTime}</p>
                             </div>
@@ -297,13 +331,14 @@ function displayPosts(Model) {
                         </div>
                     </div>
                     <!-- Post Content -->
-                    <div class="post-content">
+                    <div id="post${post.id}" class="post-content">
                         ${post.textContent ? `<p>${post.textContent}</p>` : ''}
                         <div class="post-img">
                             ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
                         </div>
                         <div class="interactions">
-                            <div class="box">
+                        <div class="interactions-container">
+                              <div class="box">
                                 <i class="fa-solid fa-heart like-icon"></i>
                                 <span>${post.likeCount}</span>
                             </div>
@@ -316,17 +351,20 @@ function displayPosts(Model) {
                                 <span>${post.repostCount}</span>
                             </div>
                             <div class="box">
-                                <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"></i>
-                                <span>${post.commentCount}</span>
+                                <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
+                                <span id="postCommentCount${post.id}">${post.commentCount}</span>
                             </div>
+                        </div>
+
+                                <i class="bi bi-bookmark-fill"></i>
                         </div>
                         ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
                     </div>
                     <!-- Add Comment -->
                     <div class="add-comment">
                         <img class="profile-pic" src="${Model.currentUserImage}" alt="">
-                        <input type="text" placeholder="Add a comment">
-                        <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
+                        <input id="postId${post.id}" type="text" placeholder="Add a comment">
+                        <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})""></i>
                     </div>
                 </div>
             </div>`;
@@ -385,104 +423,7 @@ window.addEventListener('scroll', loadMore);
     function updateComments(postId, numberOfComments) {
     }
 
-    // Function to add a new post 
-    //async function addPost() {
-    //    const postContent = add_post_text.value.trim();
-    //    if (postContent || add_post_img.src) {
-    //        const selectedPrivacy = dropdownMenu.querySelector('.selected');
-    //        const privacyValue = selectedPrivacy ? selectedPrivacy.dataset.value : 'public';
-    //        const currentDate = new Date();
-    //        const postImageSrc = add_post_img.src;
 
-    //        // Convert the image to Base64
-    //        const postImageBase64 = await getBase64FromImageUrl(postImageSrc);
-
-    //        // Send the data to action
-    //        const postData = {
-    //            postContent: postContent,
-    //            privacyValue: privacyValue,
-    //            postImageSrc: postImageSrc,
-    //            postImageBase64: postImageBase64 // Add this property
-    //        };
-    //        console.log(postData);
-    //        try {
-    //            const response = await fetch('/Posts/CreatePost', {
-    //                method: 'POST',
-    //                headers: {
-    //                    'Content-Type': 'application/json'
-    //                },
-    //                body: JSON.stringify(postData)
-    //            });
-
-    //            if (response.ok) {
-
-    //                console.log(' successfully!');
-    //            } else {
-    //                console.error('Error :', response.statusText);
-    //            }
-    //        } catch (error) {
-    //            console.error('Network error:', error);
-    //        }
-
-    //        add_post_text.value = '';
-    //        add_post_img.src = '';
-    //    }
-    //}
-
-    //// Function to convert image to Base64
-    //function getBase64FromImageUrl(imageUrl) {
-    //    return new Promise((resolve, reject) => {
-    //        const img = new Image();
-    //        img.setAttribute('crossOrigin', 'anonymous');
-    //        img.onload = () => {
-    //            const canvas = document.createElement('canvas');
-    //            canvas.width = img.width;
-    //            canvas.height = img.height;
-    //            const ctx = canvas.getContext('2d');
-    //            ctx.drawImage(img, 0, 0);
-    //            const dataURL = canvas.toDataURL('image/png');
-    //            resolve(dataURL.replace(/^data:image\/(png|jpg);base64,/, ''));
-    //        };
-    //        img.onerror = error => reject(error);
-    //        img.src = imageUrl;
-    //    });
-    //}
-
-
-    //// Event  for the "Post" button
-    //btn_post.addEventListener('click', addPost);
-
-
-    //! Toggle profile menu 
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const profileBox = document.getElementById('profile-box');
-        const dropdownMenu = document.getElementById('dropdown-menu');
-
-        profileBox.addEventListener('click', function (event) {
-            event.stopPropagation();
-            profileBox.classList.toggle('active');
-        });
-
-        // Close the dropdown menu when clicking outside 
-        document.addEventListener('click', function () {
-            profileBox.classList.remove('active');
-        });
-
-        const dropdownItems = document.querySelectorAll('.dropdown-item');
-        dropdownItems.forEach(function (item) {
-            item.addEventListener('click', function (event) {
-                const action = this.getAttribute('data-action');
-                console.log('Clicked on:', action);
-            });
-        });
-    });
-
-
-    // DropDown Menu Functions --> 
-    logout.addEventListener("click", () => {
-
-    })
 
     ////////////////////////////////////////////////// SignalR //////////////////////////////////////////////////////////////
     document.addEventListener("DOMContentLoaded", function () {
@@ -548,7 +489,7 @@ window.addEventListener('scroll', loadMore);
                                 <div class="profile">
                                     <img class="profile-pic" src= "${post.user.personalImage}"  alt="Profile image">
                                     <div class="name">
-                                        <p class="username">${post.user.userName}</p>
+                                        <p class="username">${post.user.userName} <i class="bi bi-patch-check-fill text-primary"></i> </p>
                                         <!-- Using js function to calculate the time -->
                                         <p class="post-time">Just now</p>
                                     </div>
@@ -569,24 +510,28 @@ window.addEventListener('scroll', loadMore);
                                 <div class="post-img">
                                     ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
                                 </div>
-                                <div class="interactions">
-                                    <div class="box">
-                                        <i class="fa-solid fa-heart like-icon"></i>
-                                        <span>${post.likeCount}</span>
-                                    </div>
-                                    <div class="box">
-                                        <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                                        <span>${post.dislikeCount}</span>
-                                    </div>
-                                    <div class="box">
-                                        <i class="fa-solid fa-retweet repost-icon"></i>
-                                        <span>${post.repostCount}</span>
-                                    </div>
-                                    <div class="box">
-                                        <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"></i>
-                                        <span>${post.commentCount}</span>
-                                    </div>
-                                </div>
+                        <div class="interactions">
+                        <div class="interactions-container">
+                              <div class="box">
+                                <i class="fa-solid fa-heart like-icon"></i>
+                                <span>${post.likeCount}</span>
+                            </div>
+                            <div class="box">
+                                <i class="fa-solid fa-thumbs-down dislike-icon"></i>
+                                <span>${post.dislikeCount}</span>
+                            </div>
+                            <div class="box">
+                                <i class="fa-solid fa-retweet repost-icon"></i>
+                                <span>${post.repostCount}</span>
+                            </div>
+                            <div class="box">
+                                <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
+                                <span>${post.commentCount}</span>
+                            </div>
+                        </div>
+
+                                <i class="bi bi-bookmark-fill"></i>
+                        </div>
                                 ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
                             </div>
                             <!-- Add Comment -->

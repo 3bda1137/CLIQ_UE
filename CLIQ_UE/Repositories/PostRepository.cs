@@ -26,6 +26,12 @@ namespace CLIQ_UE.Repositories
             throw new NotImplementedException();
         }
 
+        public List<string> allPostsImagesById(string id)
+        {
+            List<string> images = context.Posts.Where(p => p.UserId == id).OrderByDescending(p => p.PostDate).Select(p => p.PostImage).ToList();
+            return images;
+        }
+
         public Post CreatePost(CreatePostViewModel postModel, ApplicationUser user)
         {
             byte[] imageData = null;
@@ -92,6 +98,43 @@ namespace CLIQ_UE.Repositories
                 {
                     postAddedTime = FormatTime.FormatingTime(p.PostDate),
                     CommentCount = p.CommentCount,
+                    //Comments = p.Comments,
+                    ViewsCount = p.ViewsCount,
+                    DislikeCount = p.DislikeCount,
+                    LikeCount = p.LikeCount,
+                    RepostCount = p.RepostCount,
+                    TextContent = p.TextContent,
+                    Id = p.Id,
+                    PostDate = p.PostDate,
+                    PostImage = p.PostImage,
+                    User = p.User,
+                    privacy = p.privacy,
+                })
+                .ToList();
+
+            foreach (var post in latestPosts)
+            {
+                post.postAddedTime = FormatTime.FormatingTime(post.PostDate);
+            }
+
+            return latestPosts;
+        }
+
+
+        public List<Post> GetLatestPostsByUserId(string id, int pageIndex, int pageSize)
+        {
+            int postsToSkip = pageIndex * pageSize;
+
+            List<Post> latestPosts = context.Posts
+                .Include(p => p.User)
+                .Where(p => p.UserId == id)
+                .OrderByDescending(p => p.PostDate)
+                .Skip(postsToSkip)
+                .Take(pageSize)
+                .Select(p => new Post
+                {
+                    postAddedTime = FormatTime.FormatingTime(p.PostDate),
+                    CommentCount = p.CommentCount,
                     Comments = p.Comments,
                     ViewsCount = p.ViewsCount,
                     DislikeCount = p.DislikeCount,
@@ -114,11 +157,14 @@ namespace CLIQ_UE.Repositories
             return latestPosts;
         }
 
-        public Post GetPostById(int id)
+
+
+        public Post? GetPostById(int id)
+
         {
             return context.Posts.Include(p => p.User)
                   .Include(p => p.Reactions)
-                  .Include(p => p.Comments)
+                  //.Include(p => p.Comments)
                   .Include(p => p.Views)
                   .FirstOrDefault(p => p.Id == id);
         }
@@ -133,9 +179,12 @@ namespace CLIQ_UE.Repositories
             context.SaveChanges();
         }
 
-        public void UpdatePost(Post post)
+        public async Task<int> UpdatePost(Post post)
         {
-            throw new NotImplementedException();
+            context.Posts.Update(post);
+            return await context.SaveChangesAsync();
         }
     }
+
+
 }

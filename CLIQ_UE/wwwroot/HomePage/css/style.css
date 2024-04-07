@@ -165,26 +165,32 @@ i {
     flex-direction: column;
     gap: 1.2rem;
     margin-bottom: 30px;
+    background-color: #80808014;
+    opacity: .6;
+    transition:var(--transition);
+}
+.links-container:hover{
+    opacity:1;
 }
 
-    .links-container .link {
-        color: var(--font-color);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1.5rem;
-        font-weight: 700;
-        font-size: 1rem;
-        transition: var(--transition);
-    }
+.links-container .link {
+    color: var(--font-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: var(--transition);
+}
 
         .links-container .link:hover a {
             color: black;
         }
 
         .links-container .link img {
-            width: 25px;
-            height: 25px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
         }
 
@@ -892,14 +898,22 @@ nav .nav-content {
         .posts-container .post .box {
             width: 100%;
             display: flex;
-            align-items: ؤcenter;
             justify-content: center;
             flex-direction: column;
             padding: 1.1rem;
             gap: 1.5rem;
             background-color: rgb(238 238 238 / 40%);
             border-radius: var(--border-radius);
+            transition: var(--transition);
         }
+
+            .posts-container .post .box:hover {
+                background-color: #f0f0f0; 
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
+            }
+
+ 
+
 
             /* *  TOP Row * */
             .posts-container .post .box .top {
@@ -998,21 +1012,27 @@ nav .nav-content {
                 .posts-container .post .box .post-content .interactions {
                     display: flex;
                     align-items: center;
-                    justify-content: space-around;
+                    justify-content: space-between;
                     width: 100%;
                     color: var(--font-color);
                     gap: 1.3rem;
                 }
+.interactions-container{
+    display:flex;
+   align-items:center;
+   justify-content:center;
+   gap:2rem;
+}
 
-                    .posts-container .post .box .post-content .interactions .box {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex-direction: row;
-                        gap: .5rem;
-                        padding: 0;
-                        width: fit-content;
-                    }
+.posts-container .post .box .post-content .interactions .box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: .5rem;
+    padding: 0;
+    width: fit-content;
+}
 
                     .posts-container .post .box .post-content .interactions i {
                         cursor: pointer;

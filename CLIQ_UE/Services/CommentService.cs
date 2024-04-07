@@ -3,6 +3,7 @@ using CLIQ_UE.Models;
 using CLIQ_UE.Repositories;
 using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CLIQ_UE.Services
@@ -19,7 +20,7 @@ namespace CLIQ_UE.Services
 			this.userManager = userManager;
 		}
 
-
+        [HttpPost]
 		public async Task<bool> AddComment(AddCommentViewModel commentVM, ClaimsPrincipal User)
         {
             Comment comment = mapper.Map<Comment>(commentVM);
@@ -34,6 +35,23 @@ namespace CLIQ_UE.Services
                 //No user, anonymous may be
                 return false;
             }
+            /*if(commentVM.Image != null)
+            {
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(commentVM.Image.FileName);
+
+                // Path to save the image
+                var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images");
+                var filePath = Path.Combine(uploads, uniqueFileName);
+
+                // Save the uploaded image
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    commentVM.Image.CopyTo(fileStream);
+                }
+
+                // Set the new filename in the bio object
+                comment.CommentImage = uniqueFileName;
+            }*/
             comment.LikeCount = 0;
             commentRepository.AddComment(comment);
             return true;
@@ -44,9 +62,9 @@ namespace CLIQ_UE.Services
             throw new NotImplementedException();
         }
 
-        public List<Comment> GetCommentsByPost(int postId)
+        public List<Comment> GetCommentsByPost(int postId, string UID)
         {
-            return commentRepository.GetCommentsByPost(postId);
+            return commentRepository.GetCommentsByPost(postId, UID);
         }
 
         public void UpdateComment(Comment comment)
