@@ -237,10 +237,18 @@ namespace CLIQ_UE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FollowerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("FollowingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FollowingId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -397,6 +405,21 @@ namespace CLIQ_UE.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("UserLikeComments", (string)null);
+                });
+
+            modelBuilder.Entity("CLIQ_UE.Models.UserLikeComment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CommentId", "ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("UserLikeComments");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.View", b =>
@@ -584,13 +607,13 @@ namespace CLIQ_UE.Migrations
             modelBuilder.Entity("CLIQ_UE.Models.UserLikeComment", b =>
                 {
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("UserLikeComments")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CLIQ_UE.Models.Comment", "Comment")
-                        .WithMany()
+                        .WithMany("UserLikeComments")
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -668,6 +691,16 @@ namespace CLIQ_UE.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CLIQ_UE.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("UserLikeComments");
+                });
+
+            modelBuilder.Entity("CLIQ_UE.Models.Comment", b =>
+                {
+                    b.Navigation("UserLikeComments");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Post", b =>

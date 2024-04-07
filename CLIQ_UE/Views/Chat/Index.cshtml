@@ -1,7 +1,7 @@
 ﻿@using CLIQ_UE.ViewModels
 @model List<UserConntactViewModel>
 @{
-    Layout = null;
+    Layout = "_HomePageLayout";
 }
 
 <!DOCTYPE html>
@@ -11,10 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
     @* <link rel="stylesheet" href="css/Chat.css">
-       <link rel="stylesheet" href="css/tailwindcss-colors.css">*@
+    <link rel="stylesheet" href="css/tailwindcss-colors.css">*@
     <link href="~/css/chat.css" rel="stylesheet" />
     <link href="~/css/tailwindcss-colors.css" rel="stylesheet" />
-    
+
     <title>Chat</title>
     <script src="https://cdn.jsdelivr.net/npm/@@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
 </head>
@@ -56,27 +56,29 @@
                 <!-- Start Content side  -->
                 <div class="content_sidebar">
                     <div class="Content_sidebar_title"> chats</div>
-                    <form class="content_sidebar_form">
-                        <input type="search" class="content_sidebar_input" placeholder="Search ...">
-                        <button type="submit" class="content_sidebar_submit"><i class="ri-search-line"></i></button>
-                    </form>
+                    <div class="content_sidebar_form">
+                        <input id="searchTerm" type="search" class="content_sidebar_input" placeholder="Search ...">
+                        <button @* type="submit" *@ class="content_sidebar_submit"><i class="ri-search-line"></i></button>
+                    </div>
                     <div class="Content_Message">
-                        <ul class="Content_Message_list">
+                        <ul id="myFollowingUsers" class="Content_Message_list">
                             <li class="Content_Message_Title"><span>Recently</span></li>
-                            
-                            
-                                <li>
+
+                            <li>
                                 @foreach (var user in Model)
                                 {
                                     <div onclick="showChat('@user.UserId')" @* data-conversation="#Conversation1" *@>
-                                        <img class="Content_Message_image" src="~/images/@user.ImageUrl">
+                                        <img class="Content_Message_image" src="@user.ImageUrl">
                                         <span class="Content_Message_info">
                                             <span class="Content_Message_Name">@user.UserName</span>
-                                            @if (@user.LastMessage!=null)
+                                            @if (@user.LastMessage != null)
                                             {
                                                 <span class="Content_Message_Text">@user.LastMessage.Message</span>
                                             }
+                                            else
+                                            {
                                             <span class="Content_Message_Text">Lorem, ipsum dolor sit amet consectetur</span>
+                                            }
                                         </span>
                                         <span class="Content_Message_More">
                                             <span class="Content_Message_unread">5</span>
@@ -85,7 +87,7 @@
                                         </span>
                                     </div>
                                 }
-                                </li>
+                            </li>
                         </ul>
 
                     </div>
@@ -400,15 +402,14 @@
 
     </section>
     <!-- End Chat -->
-
     @* <script src="js/Chat.js"></script> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/chat.js"></script>
+    <script src="~/js/searchinchat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
 
     <script>
-        function showChat(id) {
-            console.log(id);
-        }
+       
     </script>
 </body>
 </html>
