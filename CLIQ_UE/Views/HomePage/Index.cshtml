@@ -212,8 +212,8 @@
                                             </a>
                                             <ul class="dropdown-menu" aria-labelledby="privacyDropdown">
                                                 <li data-value="public"><i class="fa-solid fa-earth-americas"></i> Public</li>
-                                                <li data-value="friends"><i class="fa-solid fa-users"></i> Friends</li>
-                                                <li data-value="private"><i class="fa-solid fa-lock"></i> Private</li>
+                                                <li data-value="friends"><i class="fa-solid fa-users"></i> Followers</li>
+                                                <li data-value="private"><i class="fa-solid fa-lock"></i> Only me</li>
                                             </ul>
                                             <input type="hidden" name="privacyValue" id="selected-privacy" value="Public">
                                         </div>
@@ -255,7 +255,9 @@
                     <p>set your profile pictuer <span class="checked">✓✓</span> </p>
                 </div>
 
-                <div class="links-container box-with-two-cols">
+
+                <!---------------------------------------------------------------------------------------------------- Trending-------------------------------------------------------------------------------------------------- -->
+      @*           <div class="links-container box-with-two-cols">
                     <div class="header">
                         <div class="left">
                             <img src="~/HomePage/images/fire.svg" alt="Fire svg">
@@ -280,7 +282,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> *@
 
                 <div class="links-container box-with-two-cols friends-box">
                     <div class="header">
@@ -291,7 +293,7 @@
                         <a href="#">See more</a>
                     </div>
 
-                    <div class="box-row">
+ @*                    <div class="box-row">
                         <div class="profile">
                             <img src="~/HomePage/images/3.jpg" alt="profile pictuer">
                             <p>Moudy Rasmy</p>
@@ -299,21 +301,28 @@
                         <div class="follow">
                             <a href="#"><i class="fa-solid fa-circle-plus"></i> Fllow</a>
                         </div>
-                    </div>
+                    </div> *@
 
 
-                    <div class="box-row">
-                        <div class="profile">
-                            <img src="~/HomePage/images/6.jpg" alt="profile pictuer">
-                            <p>Mahmoud salah</p>
+                    @foreach(var user in Model.SuggestesUsers)
+                    {
+                        <div class="box-row">
+                            <div class="profile">
+                                <img src="@user.PersonalImage" alt="profile picture">
+                                <p>@user.FirstName @user.LastName</p>
+                            </div>
+                            <div class="follow follow-btn" data-user-id="@user.Id">
+                                <a><i class="fa-solid fa-circle-plus"></i> Follow</a>
+                            </div>
                         </div>
-                        <div class="follow">
-                            <a href="#"><i class="fa-solid fa-circle-plus"></i> Fllow</a>
-                        </div>
-                    </div>
+
+                    }
 
                 </div>
-                <div class="links-container box-with-two-cols group-box">
+
+                <!---------------------------------------------------------------------------------------------------- Group Box-------------------------------------------------------------------------------------------------- -->
+
+            @*     <div class="links-container box-with-two-cols group-box">
                     <div class="header">
                         <div class="left">
                             <i class="fa-solid fa-user-group Friends-icon"></i>
@@ -346,7 +355,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> *@
 
 
 

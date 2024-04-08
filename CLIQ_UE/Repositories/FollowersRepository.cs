@@ -12,12 +12,29 @@ namespace CLIQ_UE.Repositories
         }
         public void Add(Followers follower)
         {
-            context.Followers.Add(follower);
-            context.SaveChanges();
+            var followerId = follower.FollowerId;
+            var followingId = follower.FollowingId;
+
+            bool isFollowingEachOther = context.Followers.Any(f => f.FollowerId == followerId && f.FollowingId == followingId);
+            if (!isFollowingEachOther)
+            {
+                context.Followers.Add(follower);
+                context.SaveChanges();
+            }
+
         }
 
-        public void Delete(string id)
+        public void UnFollow(Followers follower)
         {
+            var followerId = follower.FollowerId;
+            var followingId = follower.FollowingId;
+
+            bool isFollowingEachOther = context.Followers.Any(f => f.FollowerId == followerId && f.FollowingId == followingId);
+            if (isFollowingEachOther)
+            {
+                context.Followers.Remove(follower);
+                context.SaveChanges();
+            }
 
         }
 

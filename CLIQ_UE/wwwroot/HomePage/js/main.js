@@ -1,6 +1,8 @@
 "use strict";
 
 
+
+
     const profile_pic = document.querySelector('.profile-pic');
     const searchInput = document.querySelector('.nav-content .search-bar .search-input');
     const notification_icon = document.querySelector('.nav-content .right-items .items .notification i');
@@ -304,8 +306,6 @@ function fetchPosts(pageIndex) {
 // Function to display posts
 function displayPosts(Model) {
     console.log("Model posts")
-    console.log(Model)
-        console.log(Model.posts)
     Model.posts.forEach(post => {
         let postHtml = `
             <div class="post" data-post-date="Just now">
@@ -571,3 +571,36 @@ window.addEventListener('scroll', loadMore);
         })
 
     });
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////  Follow Users -->
+document.querySelectorAll('.follow-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const userId = this.getAttribute('data-user-id');
+        clickOnFollow(userId, button);
+    });
+});
+
+function clickOnFollow(followingId,button) {
+
+    fetch('/Follow/FollowUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(followingId)
+    })
+        .then(response => {
+            if (response.ok) {
+                    console.log(button)
+                button.innerHTML = "";
+                button.innerHTML = `
+                       <a >  <i class="fa-solid fa-check text-primary"></i> Following</a>
+                    `
+            } else {
+                console.log("Error")
+            }
+        })
+        .catch(error => {
+            console.log("Error")
+        });
+}
