@@ -8,10 +8,13 @@ namespace CLIQ_UE.Controllers
     public class ChatController : Controller
     {
         private readonly IFollowersServices followersServices;
-
-        public ChatController(IFollowersServices followersServices)
+        private readonly IChatIndividualServices chatIndividualServices;
+        //private string userId; 
+        public ChatController(IFollowersServices followersServices,IChatIndividualServices chatIndividualServices)
         {
             this.followersServices = followersServices;
+            this.chatIndividualServices = chatIndividualServices;
+            //this.userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
         public IActionResult Index()
         {
@@ -33,6 +36,13 @@ namespace CLIQ_UE.Controllers
                 followersServices.GetAllByFollowingId(userId);
 
             return Json(userConntactViewModels);
+        }
+
+        public IActionResult GetMessages(string otherUserId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var chat = chatIndividualServices.GetChat(otherUserId, userId);
+            return Json(chat);
         }
     }
 }

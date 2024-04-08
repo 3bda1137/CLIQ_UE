@@ -29,7 +29,7 @@ function displaySearchResults(results) {
         var user =
             `
     <li>
-        <div onclick="showChat('${results[index].userId}')">
+        <div onclick="showChat('${results[index].userId}')" data-conversation="#Conversation1">
             <img class="Content_Message_image" src="${results[index].imageUrl}">
             <span class="Content_Message_info">
                 <span class="Content_Message_Name">${results[index].userName}</span>
@@ -47,3 +47,5 @@ function displaySearchResults(results) {
         searchResultsContainer.append(user); 
     });
 }
+
+
