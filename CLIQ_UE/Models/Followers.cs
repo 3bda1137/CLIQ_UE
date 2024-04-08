@@ -8,5 +8,8 @@
         public string FollowerName { get; set; }
         public string ImageUrl { get; set; }
         public DateTime FollowingDate { get; set; }
+
+        public ApplicationUser? Follower { get; set; }
+        public ApplicationUser? Following { get; set; }
     }
 }

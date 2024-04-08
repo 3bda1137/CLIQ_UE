@@ -1212,6 +1212,7 @@ height: 65px; */
 }
 .active {
   color: var(--secondary-color);
+  font-weight:bold;
 }
 .gallery {
     display: grid;
@@ -1251,6 +1252,11 @@ height: 65px; */
         color: white;
     }
 
+
+/* Profile Name   */
+.profile  h4{
+    filter: drop-shadow(2px 2px 2px black);
+}
 .profile-image {
     width: 100px;
     border-radius: 30px;

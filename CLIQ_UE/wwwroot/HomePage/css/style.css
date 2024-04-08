@@ -306,11 +306,13 @@ i {
         padding: 5px 15px;
         opacity: .5;
         transition: var(--transition);
+        cursor:pointer;
     }
 
-        .right-boxes .links-container.box-with-two-cols .box-row .follow:hover {
-            opacity: 1;
-        }
+
+    .right-boxes .links-container.box-with-two-cols .box-row .follow:hover {
+        opacity: 1;
+    }
 
         .right-boxes .links-container.box-with-two-cols .box-row .follow a {
             display: flex;

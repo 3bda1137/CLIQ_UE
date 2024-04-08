@@ -10,6 +10,6 @@ namespace CLIQ_UE.Services
         public List<UserConntactViewModel> GetAllByFollowingId(string followingId);
         public List<UserConntactViewModel> GetAllBySeachWords(string searchword,string followingId);
         public void Update(Followers follower);
-        public void Delete(string id);
+        public void UnFollow(Followers follower);
     }
 }

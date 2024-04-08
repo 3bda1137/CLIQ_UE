@@ -50,6 +50,10 @@ namespace CLIQ_UE
             builder.Services.AddScoped<IReactionRepository, ReactionRepository>();
             builder.Services.AddScoped<IReactionService, ReactionService>();
 
+            builder.Services.AddScoped<ISuggestesUsersRepository, SuggestesUsersRepository>();
+            builder.Services.AddScoped<ISuggestesUsersService, SuggestesUsersService>();
+
+
             builder.Services.AddScoped<IViewRepository, ViewRepository>();
             builder.Services.AddScoped<IViewService, ViewService>();
             builder.Services.AddScoped<IEditUserServices, EditUserServices>();
