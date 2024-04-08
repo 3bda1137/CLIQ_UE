@@ -152,6 +152,9 @@ i {
 .links-container a {
     text-decoration: none;
     color: var(--font-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .links-container {
@@ -306,11 +309,13 @@ i {
         padding: 5px 15px;
         opacity: .5;
         transition: var(--transition);
+        cursor:pointer;
     }
 
-        .right-boxes .links-container.box-with-two-cols .box-row .follow:hover {
-            opacity: 1;
-        }
+
+    .right-boxes .links-container.box-with-two-cols .box-row .follow:hover {
+        opacity: 1;
+    }
 
         .right-boxes .links-container.box-with-two-cols .box-row .follow a {
             display: flex;
@@ -361,6 +366,7 @@ i {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    cursor:pointer;
 }
 
     .right-boxes .links-container.box-with-two-cols .box-row .profile img {

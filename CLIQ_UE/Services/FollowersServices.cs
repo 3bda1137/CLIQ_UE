@@ -1,7 +1,6 @@
 ﻿using CLIQ_UE.Models;
 using CLIQ_UE.Repositories;
 using CLIQ_UE.ViewModels;
-using System.Collections.Generic;
 
 namespace CLIQ_UE.Services
 {
@@ -11,8 +10,8 @@ namespace CLIQ_UE.Services
         private readonly ILastMessageServices lastMessageServices;
         private readonly IUserServices userServices;
 
-        public FollowersServices(IFollowersRepository followersRepository 
-                                    ,ILastMessageServices lastMessageServices
+        public FollowersServices(IFollowersRepository followersRepository
+                                    , ILastMessageServices lastMessageServices
                                     , IUserServices userServices)
         {
             this.followersRepository = followersRepository;
@@ -24,26 +23,28 @@ namespace CLIQ_UE.Services
             followersRepository.Add(follower);
         }
 
-        public void Delete(string id)
+        public void UnFollow(Followers follower)
         {
-            throw new NotImplementedException();
+            followersRepository.UnFollow(follower);
         }
 
         public List<UserConntactViewModel> GetAllByFollowingId(string followingId)
         {
-            List<Followers> followers=followersRepository.GetAllByFollowingId(followingId);
+            List<Followers> followers = followersRepository.GetAllByFollowingId(followingId);
             List<UserConntactViewModel> userConntactViewModel = new List<UserConntactViewModel>();
             foreach (Followers follower in followers)
             {
                 UserConntactViewModel viewModel = new UserConntactViewModel();
-             
+
                 if (follower.FollowingId == followingId)//FollowingId ==me
                 {
-                    //ApplicationUser user = userServices.GetByID(follower.FollowerId);
-                    viewModel.UserId = follower.FollowerId;
-                    viewModel.UserName= follower.FollowerName;
-                    viewModel.ImageUrl = follower.ImageUrl;
-                    viewModel.LastMessage = lastMessageServices.Get(followingId, follower.FollowerId);
+
+                    ApplicationUser user = userServices.GetByID(follower.FollowerId);
+                    viewModel.UserId = user.Id;
+                    viewModel.UserName = user.FirstName + " " + user.LastName;
+                    viewModel.ImageUrl = user.PersonalImage;
+                    viewModel.LastMessage = lastMessageServices.Get(followingId, user.Id);
+
                 }
 
                 userConntactViewModel.Add(viewModel);
@@ -66,6 +67,7 @@ namespace CLIQ_UE.Services
                     viewModel.UserName = follower.FollowerName;
                     viewModel.ImageUrl = follower.ImageUrl;
                     viewModel.LastMessage = lastMessageServices.Get(followingId, follower.FollowerId);
+
                 }
 
                 userConntactViewModel.Add(viewModel);
@@ -82,6 +84,20 @@ namespace CLIQ_UE.Services
         public void Update(Followers follower)
         {
             followersRepository.Update(follower);
+        }
+
+        public bool IsUserFollowing(string followerId, string followingId)
+        {
+            return followersRepository.IsUserFollowing(followerId, followingId);
+        }
+
+        public int GetFollowingCount(string followerId)
+        {
+            return followersRepository.GetFollowingCount(followerId);
+        }
+        public int GetFollowerCount(string followingId)
+        {
+            return followersRepository.GetFollowerCount(followingId);
         }
     }
 }

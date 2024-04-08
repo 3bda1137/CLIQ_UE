@@ -11,6 +11,6 @@ namespace CLIQ_UE.ViewModels
         public List<Post>? LatestPosts { get; set; }
         ApplicationUser user { get; set; }
 
-
+       public List<ApplicationUser> SuggestesUsers { get; set; }
     }
 }
