@@ -38,11 +38,36 @@ namespace CLIQ_UE.Services
 
                 if (follower.FollowingId == followingId)//FollowingId ==me
                 {
+
                     ApplicationUser user = userServices.GetByID(follower.FollowerId);
                     viewModel.UserId = user.Id;
                     viewModel.UserName = user.FirstName + " " + user.LastName;
                     viewModel.ImageUrl = user.PersonalImage;
                     viewModel.LastMessage = lastMessageServices.Get(followingId, user.Id);
+
+                }
+
+                userConntactViewModel.Add(viewModel);
+            }
+            return userConntactViewModel;
+        }
+
+        public List<UserConntactViewModel> GetAllBySeachWords(string searchword,string followingId)
+        {
+            List<Followers> followers = followersRepository.GetAllBySeachWords(searchword, followingId);
+            List<UserConntactViewModel> userConntactViewModel = new List<UserConntactViewModel>();
+            foreach (Followers follower in followers)
+            {
+                UserConntactViewModel viewModel = new UserConntactViewModel();
+
+                if (follower.FollowingId == followingId)//FollowingId ==me
+                {
+                    //ApplicationUser user = userServices.GetByID(follower.FollowerId);
+                    viewModel.UserId = follower.FollowerId;
+                    viewModel.UserName = follower.FollowerName;
+                    viewModel.ImageUrl = follower.ImageUrl;
+                    viewModel.LastMessage = lastMessageServices.Get(followingId, follower.FollowerId);
+
                 }
 
                 userConntactViewModel.Add(viewModel);
