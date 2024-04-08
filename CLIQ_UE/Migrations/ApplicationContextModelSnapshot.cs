@@ -235,7 +235,7 @@ namespace CLIQ_UE.Migrations
 
                     b.Property<string>("FollowerId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FollowerName")
                         .IsRequired()
@@ -246,13 +246,17 @@ namespace CLIQ_UE.Migrations
 
                     b.Property<string>("FollowingId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasIndex("FollowingId");
 
                     b.ToTable("Followers");
                 });
@@ -390,21 +394,6 @@ namespace CLIQ_UE.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reactions");
-                });
-
-            modelBuilder.Entity("CLIQ_UE.Models.UserLikeComment", b =>
-                {
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CommentId", "ApplicationUserId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("UserLikeComments");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.UserLikeComment", b =>
@@ -572,6 +561,25 @@ namespace CLIQ_UE.Migrations
                     b.Navigation("Post");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CLIQ_UE.Models.Followers", b =>
+                {
+                    b.HasOne("CLIQ_UE.Models.ApplicationUser", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CLIQ_UE.Models.ApplicationUser", "Following")
+                        .WithMany()
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("Following");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Post", b =>
