@@ -679,7 +679,7 @@ function getPostComments(postId) {
                                                         <img class="profile-pic" src=${profileImage} alt="Profile image">
                                             <div class="name">
                                                         <p class="username">${comment.userFirstName} ${comment.userLastName}</p>
-                                                <p class="comment-time">1 hour ago</p>
+                                                <p class="comment-time">${comment.commentDate}o</p>
                                             </div>
                                         </div>
                                         <div class="comment-content">
