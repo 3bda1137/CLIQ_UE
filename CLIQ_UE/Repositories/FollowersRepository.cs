@@ -46,6 +46,14 @@ namespace CLIQ_UE.Repositories
             return followers;
         }
 
+        public List<Followers> GetAllBySeachWords(string search,string followingId)
+        {
+            List<Followers> followers = context.Followers
+                .Where(f => f.FollowerName.Contains(search) && f.FollowingId==followingId)
+                .ToList();
+            return followers;
+        }
+
         public Followers GetByFollowerId(string followingId, string followerId)
         {
             Followers follower = context.Followers
