@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CLIQ_UE.Helpers;
 using CLIQ_UE.Models;
 using CLIQ_UE.Services;
 using CLIQ_UE.ViewModels;
@@ -50,6 +51,7 @@ namespace CLIQ_UE.Controllers
             foreach (Comment comment in comments)
             {
                 var respCommentVM = mapper.Map<Comment, RespCommentVM>(comment);
+                respCommentVM.CommentDate = FormatTime.FormatingTime(comment.CommentDate);
                 /*respCommentVMs.Add(new RespCommentVM()
                 {
                     CommentId = comment.CommentId,

@@ -398,6 +398,7 @@ function fetchContent(filter) {
 // Function to display posts
 function displayPosts(Model) {
     Model.posts.forEach(post => {
+        
         let postHtml = `
             <div class="post" data-post-date="Just now">
                 <div class="box">
@@ -422,7 +423,7 @@ function displayPosts(Model) {
                         </div>
                     </div>
                     <!-- Post Content -->
-                    <div class="post-content">
+                    <div id="post${post.id}" class="post-content">
                         ${post.textContent ? `<p>${post.textContent}</p>` : ''}
                         <div class="post-img">
                             ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
@@ -443,7 +444,7 @@ function displayPosts(Model) {
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
-                                <span>${post.commentCount}</span>
+                                <span id="postCommentCount${post.id}">${post.commentCount}</span>
                             </div>
                         </div>
 
@@ -605,7 +606,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
-                                <span>${post.commentCount}</span>
+                                <span id="postCommentCount${post.id}">${post.commentCount}</span>
                             </div>
                         </div>
 
@@ -616,9 +617,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             <!-- Add Comment -->
                             <div class="add-comment">
                                 <img class="profile-pic" src="${post.user.personalImage}" alt="">
-                                <input type="text" placeholder="Add a comment">
-                                <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
+                                <input id="postId${post.id}" type="text" placeholder="Add a comment">
+                                <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})""></i>
                             </div>
+                            
                         </div>
                     </div>
 
@@ -650,5 +652,129 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
 });
+
+function getPostComments(postId) {
+    console.log(postId);
+    console.log("Post id" + postId);
+    console.log("Get Post Comments");
+    $('#commentsModal').html("");
+    $.ajax({
+        url: `/comments/getComments?postId=` + postId, // Endpoint URL
+        type: 'GET',
+        //data: { postId: postId, commentText: commentText }, // Include the postId and commentText parameters
+        success: function (response) {
+            // Handle the success response from the server
+            console.log('AJAX request successful');
+            console.log(response);
+            let a = ``;
+            $('#commentsModal').append(a);
+            for (let comment of response) {
+
+                let profileImage = '/images/';
+                profileImage += comment.userProfileImage;
+                console.log(comment);
+                console.log(profileImage);
+                a = `<div id="${comment.commentId}" class="comment">
+                                        <div class="profile">
+                                                        <img class="profile-pic" src=${profileImage} alt="Profile image">
+                                            <div class="name">
+                                                        <p class="username">${comment.userFirstName} ${comment.userLastName}</p>
+                                                <p class="comment-time">${comment.commentDate}o</p>
+                                            </div>
+                                        </div>
+                                        <div class="comment-content">
+                                            <p class="comment-text">${comment.commentText}</p>
+                                        </div>
+                                        <div class="love-icon">
+                                                <i id="likeIcon${comment.commentId}" class="fa-solid fa-heart like-icon" style="color: ${comment.isLikedByMe == true ? 'red' : 'grey'}" onclick="likeComment(${comment.commentId})"></i>
+                                                <span id="likeCommentIcon${comment.commentId}">${comment.likeCount}</span>
+                                        </div>
+                                    </div>`
+                $('#commentsModal').append(a);
+            }
+            $(`#postCommentCount` + postId).text(response.length);
+            $('#show_comments').modal('show');
+        },
+        error: function (xhr, status, error) {
+            // Handle errors
+            console.error('AJAX request failed');
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
+
+
+
+
+function addNewComment(PostId) {
+    console.log("Works");
+    let commentText = $(`#postId` + PostId).val(); // Get the commentText value from the input field
+    $(`#postId` + PostId).val("");
+
+    if (commentText == "")
+        return;
+
+    let commentsViewsCount = $(`#postCommentCount` + PostId).text();
+    console.log(commentsViewsCount);
+    $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) + 1)
+
+
+    $.ajax({
+        url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}`, // Endpoint URL
+        type: 'POST',
+        //data: { postId: PostId, commenttext: commentText }, // Include the postId and commentText parameters
+
+        success: function (response) {
+            // Handle the success response from the server
+            console.log('AJAX request successful');
+            console.log(response);
+        },
+        error: function (xhr, status, error) {
+            // Handle errors
+            console.error('AJAX request failed');
+            console.error(xhr.responseText);
+            $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) - 1)
+            //(`#postCommentCount` + PostId).val() = numOfComments - 1;
+        }
+    });
+}
+
+
+//asd
+function likeComment(commentId) {
+    console.log(commentId);
+    var color = $(`#likeIcon${commentId}`).css('color');
+    console.log(color)
+    if (color == 'rgb(128, 128, 128)') {
+        console.log("From grey to red");
+        $(`#likeIcon${commentId}`).css('color', 'red');
+        $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) + 1)
+    }
+    else {
+        console.log("From red to grey");
+        $(`#likeIcon${commentId}`).css('color', 'grey');
+        $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) - 1)
+    }
+
+    $.ajax({
+        url: `/comments/LikeComment?commentId=${commentId}`,
+        type: 'POST',
+        //data: {commentId:commentId  }, // Include the postId and commentText parameters
+        success: function (response) {
+        },
+        error: function (xhr, status, error) {
+            if (color == 'red') {
+                $(`#likeIcon${commentId}`).css('color', 'grey');
+                $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) - 1)
+            }
+            else {
+                $(`#likeIcon${commentId}`).css('color', 'red');
+                $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) + 1)
+            }
+        }
+    });
+}
 
 
