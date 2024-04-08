@@ -152,6 +152,9 @@ i {
 .links-container a {
     text-decoration: none;
     color: var(--font-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .links-container {
@@ -363,6 +366,7 @@ i {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    cursor:pointer;
 }
 
     .right-boxes .links-container.box-with-two-cols .box-row .profile img {

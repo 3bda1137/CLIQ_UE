@@ -307,9 +307,11 @@
                     @foreach(var user in Model.SuggestesUsers)
                     {
                         <div class="box-row">
-                            <div class="profile">
-                                <img src="@user.PersonalImage" alt="profile picture">
-                                <p>@user.FirstName @user.LastName</p>
+                            <div class="profile d-flex justify-content-center align-content-center">
+                                <a asp-controller="ViewUserProfile" asp-action="Index" asp-route-userId="@user.Id">
+                                    <img src="@user.PersonalImage" alt="profile picture">
+                                    <p>@user.FirstName @user.LastName</p>
+                                </a>
                             </div>
                             <div class="follow follow-btn" data-user-id="@user.Id">
                                 <a><i class="fa-solid fa-circle-plus"></i> Follow</a>

@@ -81,21 +81,6 @@ namespace CLIQ_UE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Followers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FollowerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FollowingId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FollowingDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Followers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LastMessages",
                 columns: table => new
                 {
@@ -226,6 +211,35 @@ namespace CLIQ_UE.Migrations
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Followers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FollowerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FollowingId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FollowerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FollowingDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Followers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Followers_AspNetUsers_FollowerId",
+                        column: x => x.FollowerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Followers_AspNetUsers_FollowingId",
+                        column: x => x.FollowingId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
@@ -418,6 +432,16 @@ namespace CLIQ_UE.Migrations
                 name: "IX_Comments_UserId",
                 table: "Comments",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Followers_FollowerId",
+                table: "Followers",
+                column: "FollowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Followers_FollowingId",
+                table: "Followers",
+                column: "FollowingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",

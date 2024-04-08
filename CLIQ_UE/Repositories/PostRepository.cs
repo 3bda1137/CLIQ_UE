@@ -174,6 +174,12 @@ namespace CLIQ_UE.Repositories
             throw new NotImplementedException();
         }
 
+        public int GetUserPostCount(string userId)
+        {
+            return  context.Posts.Count(p=>p.UserId == userId);
+            
+        }
+
         public void Save()
         {
             context.SaveChanges();

@@ -85,5 +85,19 @@ namespace CLIQ_UE.Services
         {
             followersRepository.Update(follower);
         }
+
+        public bool IsUserFollowing(string followerId, string followingId)
+        {
+            return followersRepository.IsUserFollowing(followerId, followingId);
+        }
+
+        public int GetFollowingCount(string followerId)
+        {
+            return followersRepository.GetFollowingCount(followerId);
+        }
+        public int GetFollowerCount(string followingId)
+        {
+            return followersRepository.GetFollowerCount(followingId);
+        }
     }
 }
