@@ -28,22 +28,27 @@ namespace CLIQ_UE.Services
             followersRepository.UnFollow(follower);
         }
 
-        public List<UserConntactViewModel> GetAllByFollowingId(string followingId)
+        public List<UserConntactViewModel> GetAllByFollowingId(string followerId)
         {
-            List<Followers> followers = followersRepository.GetAllByFollowingId(followingId);
+            List<Followers> followers = followersRepository.GetAllByFollowingId(followerId);
             List<UserConntactViewModel> userConntactViewModel = new List<UserConntactViewModel>();
             foreach (Followers follower in followers)
             {
                 UserConntactViewModel viewModel = new UserConntactViewModel();
 
-                if (follower.FollowingId == followingId)//FollowingId ==me
+                if (follower.FollowerId == followerId)//FollowerId ==me
                 {
 
-                    ApplicationUser user = userServices.GetByID(follower.FollowerId);
-                    viewModel.UserId = user.Id;
-                    viewModel.UserName = user.FirstName + " " + user.LastName;
-                    viewModel.ImageUrl = user.PersonalImage;
-                    viewModel.LastMessage = lastMessageServices.Get(followingId, user.Id);
+                    //ApplicationUser user = userServices.GetByID(follower.FollowerId);
+                    //viewModel.UserId = user.Id;
+                    //viewModel.UserName = user.FirstName + " " + user.LastName;
+                    //viewModel.ImageUrl = user.PersonalImage;
+                    //viewModel.LastMessage = lastMessageServices.Get(followerId, user.Id);
+
+                    viewModel.UserId = follower.FollowingId;
+                    viewModel.UserName = follower.FollowingName;
+                    viewModel.ImageUrl = follower.ImageUrl;
+                    viewModel.LastMessage = lastMessageServices.Get(followerId, follower.FollowingId);
 
                 }
 
@@ -64,7 +69,7 @@ namespace CLIQ_UE.Services
                 {
                     //ApplicationUser user = userServices.GetByID(follower.FollowerId);
                     viewModel.UserId = follower.FollowerId;
-                    viewModel.UserName = follower.FollowerName;
+                    viewModel.UserName = follower.FollowingName;
                     viewModel.ImageUrl = follower.ImageUrl;
                     viewModel.LastMessage = lastMessageServices.Get(followingId, follower.FollowerId);
 
