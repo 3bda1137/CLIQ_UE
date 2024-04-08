@@ -11,5 +11,8 @@ namespace CLIQ_UE.Services
         public List<UserConntactViewModel> GetAllBySeachWords(string searchword,string followingId);
         public void Update(Followers follower);
         public void UnFollow(Followers follower);
+        public bool IsUserFollowing(string followerId, string followingId);
+        int GetFollowingCount(string followerId);
+        int GetFollowerCount(string followingId);
     }
 }

@@ -69,13 +69,18 @@ namespace CLIQ_UE.Services
         public List<string> allPostsImagesById(string id)
         {
             return postRepository.allPostsImagesById(id);
-}
+        }
         public Task<int> IncreasePostComments(int postId)
         {
             Post Post = postRepository.GetPostById(postId);
             Post.CommentCount += 1;
             return postRepository.UpdatePost(Post);
 
+        }
+
+        public int GetUserPostCount(string userId)
+        {
+            return postRepository.GetUserPostCount(userId);
         }
     }
 }

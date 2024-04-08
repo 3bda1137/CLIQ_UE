@@ -549,13 +549,13 @@ namespace CLIQ_UE.Migrations
                     b.HasOne("CLIQ_UE.Models.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Post");
@@ -568,13 +568,13 @@ namespace CLIQ_UE.Migrations
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", "Follower")
                         .WithMany()
                         .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", "Following")
                         .WithMany()
                         .HasForeignKey("FollowingId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Follower");
@@ -587,7 +587,7 @@ namespace CLIQ_UE.Migrations
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -598,13 +598,13 @@ namespace CLIQ_UE.Migrations
                     b.HasOne("CLIQ_UE.Models.Post", "Post")
                         .WithMany("Reactions")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Post");
@@ -617,13 +617,13 @@ namespace CLIQ_UE.Migrations
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("UserLikeComments")
                         .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CLIQ_UE.Models.Comment", "Comment")
                         .WithMany("UserLikeComments")
                         .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
@@ -636,13 +636,13 @@ namespace CLIQ_UE.Migrations
                     b.HasOne("CLIQ_UE.Models.Post", "Post")
                         .WithMany("Views")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Post");
@@ -655,7 +655,7 @@ namespace CLIQ_UE.Migrations
                     b.HasOne("CLIQ_UE.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -664,7 +664,7 @@ namespace CLIQ_UE.Migrations
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -673,7 +673,7 @@ namespace CLIQ_UE.Migrations
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -682,13 +682,13 @@ namespace CLIQ_UE.Migrations
                     b.HasOne("CLIQ_UE.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -697,7 +697,7 @@ namespace CLIQ_UE.Migrations
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
