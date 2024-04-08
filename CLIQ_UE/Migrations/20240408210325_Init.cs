@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CLIQ_UE.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,7 +41,6 @@ namespace CLIQ_UE.Migrations
                     Language = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BookMark = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -63,19 +62,6 @@ namespace CLIQ_UE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "bookMarks",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PostID = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserID = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_bookMarks", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ChatIndividual",
                 columns: table => new
                 {
@@ -93,23 +79,6 @@ namespace CLIQ_UE.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ChatIndividual", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Followers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FollowerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FollowingId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FollowerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FollowingDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Followers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -249,6 +218,35 @@ namespace CLIQ_UE.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Followers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FollowerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FollowingId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FollowerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FollowingDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Followers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Followers_AspNetUsers_FollowerId",
+                        column: x => x.FollowerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Followers_AspNetUsers_FollowingId",
+                        column: x => x.FollowingId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
@@ -266,8 +264,7 @@ namespace CLIQ_UE.Migrations
                     RepostCount = table.Column<int>(type: "int", nullable: false),
                     CommentCount = table.Column<int>(type: "int", nullable: false),
                     ViewsCount = table.Column<int>(type: "int", nullable: false),
-                    privacy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BookMarkId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    privacy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -277,12 +274,7 @@ namespace CLIQ_UE.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Posts_bookMarks_BookMarkId",
-                        column: x => x.BookMarkId,
-                        principalTable: "bookMarks",
-                        principalColumn: "Id");
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -443,9 +435,14 @@ namespace CLIQ_UE.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_BookMarkId",
-                table: "Posts",
-                column: "BookMarkId");
+                name: "IX_Followers_FollowerId",
+                table: "Followers",
+                column: "FollowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Followers_FollowingId",
+                table: "Followers",
+                column: "FollowingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",
@@ -528,9 +525,6 @@ namespace CLIQ_UE.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "bookMarks");
         }
     }
 }
