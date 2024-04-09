@@ -38,7 +38,7 @@ namespace CLIQ_UE.Repositories
         public List<Followers> GetAllByFollowingId(string followingId)
         {
             List<Followers> followers = context.Followers
-                .Where(f => f.FollowingId == followingId)
+                .Where(f => f.FollowerId == followingId)
                 .ToList();
             return followers;
         }
@@ -46,7 +46,7 @@ namespace CLIQ_UE.Repositories
         public List<Followers> GetAllBySeachWords(string search,string followingId)
         {
             List<Followers> followers = context.Followers
-                .Where(f => f.FollowerName.Contains(search) && f.FollowingId==followingId)
+                .Where(f => f.FollowingName.Contains(search) && f.FollowingId==followingId)
                 .ToList();
             return followers;
         }
