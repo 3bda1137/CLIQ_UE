@@ -25,11 +25,13 @@ function displaySearchResults(results) {
     var searchResultsContainer = $('#myFollowingUsers');
     searchResultsContainer.empty();
     $.each(results, function (index, result) {
-
+        console.log("###################");
+        console.log(result);
+        console.log("###################");
         var user =
             `
     <li>
-        <div onclick="showChat('${results[index].userId}')" data-conversation="#Conversation1">
+        <div onclick="showChat('${results[index].userId}','${results[index].userName}','${results[index].imageUrl}')" data-conversation="#Conversation1">
             <img class="Content_Message_image" src="${results[index].imageUrl}">
             <span class="Content_Message_info">
                 <span class="Content_Message_Name">${results[index].userName}</span>

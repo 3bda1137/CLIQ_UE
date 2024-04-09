@@ -19,6 +19,7 @@ namespace CLIQ_UE.Controllers
         public IActionResult Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewBag.UserId = userId;
             List<UserConntactViewModel> userConntactVM = followersServices.GetAllByFollowingId(userId);
             return View(userConntactVM);
         }

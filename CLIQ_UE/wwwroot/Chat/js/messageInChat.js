@@ -1,7 +1,11 @@
 
 var otherUser = 0;
-function showChat(otherUserId) {
+var followingImageUrl = "";
+var followingName = "";
+function showChat(otherUserId,otherUserName,otherUserImageUrl) {
     otherUser = otherUserId;
+    followingImageUrl = otherUserImageUrl;
+    followingName = otherUserName;
     console.log("----------------------------")
     console.log(otherUserId)
     console.log("----------------------------")
@@ -14,7 +18,7 @@ function showChat(otherUserId) {
 
             console.log(data);
             displayChat(data);
-        },
+        }, 
         error: function () {
             console.error('Error occurred while fetching search results.');
         }
@@ -39,6 +43,24 @@ function displayChat(results) {
     let chat = "";
     $.each(results, function (index, result) {
         console.log("length -----= ", results.length)
+
+        if (index + 1 < results.length) {
+            var t1 = results[index].createdAt;
+            var t2 = results[index + 1].createdAt;
+            t1 = t1.split("T")[0];
+            t2 = t2.split("T")[0];
+        }
+        if (index == 0) {
+            msg +=
+                `
+                    <div class="Conversation_Divider">
+                        <span>
+                            ${compareDate(t1)}
+                        </span>
+                    </div>
+                    `
+        }
+
         if (results[index].senderId == otherUser) {
             
             msg += `
@@ -103,26 +125,25 @@ function displayChat(results) {
                 </li>
                 `
         };
-        if (index + 1< results.length) { 
-            if (results[index].createdAt != results[index + 1].createdAt) {
-                msg +=
-                    `
+        if (t1 != t2) {
+            msg +=
+                `
                     <div class="Conversation_Divider">
                         <span>
-                            ${results[index].createdAt}
+                            ${compareDate(t2)}
                         </span>
                     </div>
                     `
-            }
         }
+        
     });
     chat = `
                 <div class="Conversation_Top">
                     <button onclick="closeChat()" type="button" class="Conversation_Back"> <i class="ri-arrow-left-line"></i></button>
                     <div class="Conversation_User">
-                        <img  src="/chat/images/test.jpg" class="Conversation_User_Image">
+                        <img  src="${followingImageUrl}" class="Conversation_User_Image">
                         <div class="">
-                            <div class="Conversation_User_Name">Manar</div>
+                            <div class="Conversation_User_Name">${followingName}</div>
                             <div class="Conversation_User_Status online">Online</div>
                         </div>
                     </div>
@@ -134,7 +155,7 @@ function displayChat(results) {
                     </div>
                 </div>
                 <div class="Conversation_Main">
-                    <ul class="Conversation_Wrapper">
+                    <ul id="massegeList" class="Conversation_Wrapper">
                         
                         ${msg}
                         
@@ -145,12 +166,12 @@ function displayChat(results) {
                         <i class="ri-emotion-line"></i>
                     </button>
                     <div class="Conversation_form_group">
-                        <textarea class="Conversation_form_input" rows="1" placeholder="Message"> </textarea>
-                        <button type="button" class="Conversation_form_Record">
+                        <textarea id="messageContant" class="Conversation_form_input" rows="1" placeholder="Message"> </textarea>
+                        <button  type="button" class="Conversation_form_Record">
                             <i class="ri-mic-line"></i>
                         </button>
                     </div>
-                    <button type="button"  class="Conversation_form_button Conversation_form_submit">
+                    <button id="${otherUser}" onclick="sendMessage('${otherUser}')" type="button"  class="Conversation_form_button Conversation_form_submit">
                         <i class="ri-send-plane-2-line"></i>
                     </button>
                 </div>
@@ -167,3 +188,50 @@ function closeChat() {
     document.querySelector('.Conversation_default').classList.add('active');
     document.querySelector('#Conversation1').classList.remove('active');
 }
+
+function compareDate(dateString) {
+    // Convert the input date string to a Date object
+    const inputDate = new Date(dateString);
+
+    // Get today's date
+    const currentDate = new Date();
+
+    // Format today's date to match the input date format (yyyy-mm-dd)
+    const todayFormatted = currentDate.toISOString().split('T')[0];
+
+    // Check if the input date is equal to today's date
+    if (dateString === todayFormatted) {
+        return "Today";
+    }
+
+    // Create a new date object for yesterday
+    const yesterday = new Date(currentDate);
+    yesterday.setDate(currentDate.getDate() - 1);
+    const yesterdayFormatted = yesterday.toISOString().split('T')[0];
+
+    // Check if the input date is equal to yesterday's date
+    if (dateString === yesterdayFormatted) {
+        return "Yesterday";
+    }
+
+    // Get the difference in milliseconds between the input date and today's date
+    const differenceInMs = currentDate - inputDate;
+
+    // Calculate the number of days in the difference
+    const differenceInDays = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+
+    // If the difference is less than 7 days, return the day name of the input date
+    if (differenceInDays < 7) {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const dayIndex = inputDate.getDay();
+        const dayName = days[dayIndex];
+        return `${dayName}, ${dateString}`;
+    }
+
+    // If none of the above conditions are met, return the input date as is
+    return dateString;
+}
+
+////////////////////////////////////////////
+
+
