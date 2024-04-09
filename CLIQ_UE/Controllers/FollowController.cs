@@ -26,12 +26,12 @@ namespace CLIQ_UE.Controllers
         {
             ApplicationUser applicationUser = userServices.GetByID(followingId);
             var currentUser = await userManager.GetUserAsync(User);
-            ApplicationUser applicationUser = userServices.GetByID(followingId);
+            
             Followers newFollow = new Followers();
 
 
             newFollow.ImageUrl = applicationUser.PersonalImage;
-            newFollow.FollowerName = applicationUser.FirstName + " " + applicationUser.LastName;
+            newFollow.FollowingName = applicationUser.FirstName + " " + applicationUser.LastName;
 
             newFollow.FollowingId = followingId;
             newFollow.FollowerId = currentUser.Id;
