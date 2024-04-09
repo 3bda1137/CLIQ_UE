@@ -9,7 +9,7 @@
         public string UserLastName { get; set; }
         public string UserProfileImage { get; set; }
         public string CommentText { get; set; }
-        public DateTime CommentDate { get; set; }
+        public string CommentDate { get; set; }
         public string? CommentImage { get; set; }
         public int LikeCount { get; set; }
         public bool IsLikedByMe { get; set; } = false;
