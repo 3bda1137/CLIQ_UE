@@ -12,8 +12,15 @@ namespace CLIQ_UE.Services
             this.chatIndividualRepository = chatIndividualRepository;
         }
 
-        public void AddMessageToChat(ChatIndividual chatIndividual)
+        public void AddMessageToChat(string message,string currentId, string otherUserId)
         {
+            DateTime currentTime = DateTime.Now;
+            ChatIndividual chatIndividual = new ChatIndividual();
+            chatIndividual.SenderId = currentId;
+            chatIndividual.ReceiverId = otherUserId;
+            chatIndividual.MessageContant = message;
+            chatIndividual.CreatedAt = DateTime.Now;
+            chatIndividual.Time = currentTime.ToString("HH:mm tt");
             chatIndividualRepository.AddMessageToChat(chatIndividual);
         }
 
@@ -22,6 +29,12 @@ namespace CLIQ_UE.Services
             List<ChatIndividual> chat = chatIndividualRepository
                 .GetChat(userId, otherUserId);
             return chat;
+        }
+
+        public ChatIndividual GetOneMessage(string userId, string otherUserId)
+        {
+            ChatIndividual message= chatIndividualRepository.GetOneMessage(userId, otherUserId);
+            return message;
         }
 
         public void RemoveMessageFromChat(ChatIndividual chatIndividual)

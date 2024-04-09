@@ -27,6 +27,15 @@ namespace CLIQ_UE.Repositories
             return chat;
         }
 
+        public ChatIndividual GetOneMessage(string userId, string otherUserId)
+        {
+            ChatIndividual? message= context.ChatIndividual
+                .Where(e => e.SenderId == userId && e.ReceiverId == otherUserId)
+                .OrderByDescending(e => e.CreatedAt)
+                .FirstOrDefault();
+            return message;
+        }
+
         public void RemoveMessageFromChat(ChatIndividual chatIndividual)
         {
             context.ChatIndividual.Remove(chatIndividual);

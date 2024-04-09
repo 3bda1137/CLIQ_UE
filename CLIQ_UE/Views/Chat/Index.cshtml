@@ -1,4 +1,5 @@
 ﻿@using CLIQ_UE.ViewModels
+@using System.Security.Claims
 @model List<UserConntactViewModel>
 @{
     Layout = "_HomePageLayout";
@@ -6,17 +7,24 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
-  
+
     <link href="~/chat/css/chat.css" rel="stylesheet" />
     <link href="~/chat/css/tailwindcss-colors.css" rel="stylesheet" />
 
     <title>Chat</title>
     <script src="https://cdn.jsdelivr.net/npm/@@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+<style>
+    p{
+            overflow-wrap:break-word;
+        }
+</style>
 </head>
+
 <body>
     <!-- Start Chat -->
     <section class="chat_Section">
@@ -39,10 +47,8 @@
                             <li>
                                 <a href="#"><i class="ri-user-line"></i>Profile</a>
                                 <a href="#"><i class="ri-logout-circle-line"></i>LogOut</a>
-
                             </li>
                         </ul>
-
                     </li>
                 </ul>
             </aside>
@@ -51,11 +57,13 @@
 
             <div class="chat_content">
                 <!-- Start Content side  -->
-                <div  class="content_sidebar">
+                <div class="content_sidebar">
                     <div class="Content_sidebar_title"> chats</div>
                     <div class="content_sidebar_form">
                         <input id="searchTerm" type="search" class="content_sidebar_input" placeholder="Search ...">
-                        <button @* type="submit" *@ class="content_sidebar_submit"><i class="ri-search-line"></i></button>
+                        <button @* type="submit" *@ class="content_sidebar_submit">
+                            <i class="ri-search-line"></i>
+                        </button>
                     </div>
                     <div class="Content_Message">
                         <ul id="myFollowingUsers" class="Content_Message_list">
@@ -64,7 +72,8 @@
                             <li>
                                 @foreach (var user in Model)
                                 {
-                                    <div onclick="showChat('@user.UserId')" data-conversation="#Conversation1">
+                                    <div onclick="showChat('@user.UserId','@user.UserName','@user.ImageUrl')"
+                                         data-conversation="#Conversation1">
                                         <img class="Content_Message_image" src="@user.ImageUrl">
                                         <span class="Content_Message_info">
                                             <span class="Content_Message_Name">@user.UserName</span>
@@ -74,7 +83,10 @@
                                             }
                                             else
                                             {
-                                            <span class="Content_Message_Text">Lorem, ipsum dolor sit amet consectetur</span>
+                                                <span class="Content_Message_Text">
+                                                    Lorem, ipsum dolor sit amet
+                                                    consectetur
+                                                </span>
                                             }
                                         </span>
                                         <span class="Content_Message_More">
@@ -88,16 +100,16 @@
                         </ul>
 
                     </div>
-
                 </div>
                 <!-- End Content Side -->
                 <!-- Start Conversation -->
                 <div class="Conversation Conversation_default active">
                     <i class="ri-chat-3-line"></i>
                     <p>Select Chat and View Conversation !</p>
-                </div >
-                <div class="Conversation" id="Conversation1">
                     
+                </div>
+                <div class="Conversation" id="Conversation1">
+
                     @* <div class="Conversation_Top">
                         <button type="button" class="Conversation_Back"> <i class="ri-arrow-left-line"></i></button>
                         <div class="Conversation_User">
@@ -112,7 +124,7 @@
                             <button type="button"><i class="ri-vidicon-line"></i></button>
                             <button type="button"><i class="ri-information-line"></i></button>
                         </div>
-                    </div> *@
+                    </div>
                     <div class="Conversation_Main">
                         <ul class="Conversation_Wrapper">
                             <div class="Conversation_Divider">
@@ -139,8 +151,12 @@
                                                     <i class="ri-more-2-line"></i>
                                                 </button>
                                                 <ul class="Conversation_Item_dropdown_List">
-                                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
-                                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+                                                    <li>
+                                                        <a href="#"><i class="ri-share-forward-line"></i>Forward</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#"><i class="ri-delete-bin-line"></i>Delete</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -166,8 +182,12 @@
                                                     <i class="ri-more-2-line"></i>
                                                 </button>
                                                 <ul class="Conversation_Item_dropdown_List">
-                                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
-                                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+                                                    <li>
+                                                        <a href="#"><i class="ri-share-forward-line"></i>Forward</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#"><i class="ri-delete-bin-line"></i>Delete</a>
+                                                    </li>
 
                                                 </ul>
                                             </div>
@@ -178,55 +198,135 @@
                             </li>
                         </ul>
                     </div>
-                        <div class="Conversation_form">
-                            <button type="button" class="Conversation_form_button" id="emoji-button">
-                                <i class="ri-emotion-line"></i>
+                    <div class="Conversation_form">
+                        <button type="button" class="Conversation_form_button" id="emoji-button">
+                            <i class="ri-emotion-line"></i>
+                        </button>
+                        <div class="Conversation_form_group">
+                            <textarea class="Conversation_form_input" rows="1" placeholder="Message"> </textarea>
+                            <button type="button" class="Conversation_form_Record">
+                                <i class="ri-mic-line"></i>
                             </button>
-                            <div class="Conversation_form_group">
-                                <textarea class="Conversation_form_input" rows="1" placeholder="Message"> </textarea>
-                                <button type="button" class="Conversation_form_Record">
-                                    <i class="ri-mic-line"></i>
-                                </button>
-                            </div>
-                            <button type="button" class="Conversation_form_button Conversation_form_submit">
-                                <i class="ri-send-plane-2-line"></i>
-                            </button>
-                    </div
-                 </div>
-               
+                        </div>
+                        <button type="button" class="Conversation_form_button Conversation_form_submit">
+                            <i class="ri-send-plane-2-line"></i>
+                        </button>
+                    </div>
+ *@
+                </div>
+
                 <!-- End Conversation -->
             </div>
             <!-- End Content-->
-
+            <span hidden id="currentId">@ViewBag.UserId</span>
         </div>
-
     </section>
     <!-- End Chat -->
-  
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-   
+
     <script src="~/chat/js/searchinchat.js"></script>
     <script src="~/chat/js/messageinchat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
-     <script src="~/chat/js/chat.js"></script>
+    <script src="~/chat/js/chat.js"></script>
+    <script src="/lib/microsoft-signalr/signalr.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script>
-        // function showChat(otherUserId) {
-        //     var otherUser = otherUserId;
+        
+        var chatHub = new signalR.HubConnectionBuilder().withUrl("/ChatIndividual").build();
+        chatHub.start().then(function () {
+            console.log("/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/");
+            console.log("start Connection with ChatIndividual");
+            console.log("/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/");
+        });
 
-        //     $.ajax({
-        //         url: '/chat/GetMessages',
-        //         type: 'GET',
-        //         data: { otherUserId: otherUserId },
-        //         success: function (data) {
+        function sendMessage(otherUser) {
+            console.log("*********************");
+            var inputMessage = document.getElementById("messageContant");
+            let message = inputMessage.value;
+            inputMessage.value = "";
+            console.log(message);
+            console.log("*********************");   
+            const currentId = document.querySelector('#currentId').textContent;
+            console.log(currentId);
+            chatHub.invoke("SaveMessage", message, currentId, otherUser);
+            console.log("invoke complete");
+        }
+        chatHub.on("displayMessage", function (messageresevd) {
+            let msg = "";
 
-        //             console.log(data);
-        //             displayChat(data);
-        //         },
-        //         error: function () {
-        //             console.error('Error occurred while fetching search results.');
-        //         }
-        //     });
-        // }
+            if (messageresevd.senderId == otherUser) {
+
+                msg += `
+                    <li class="Conversation_Item">
+                        <div class="Conversation_Item_Side">
+                            <img src="/chat/images/test.jpg" class="Conversation_Item_Image">
+                        </div>
+                        <div class="Conversation_Item_Content">
+                            <div class="Conversation_Item_Wrapper">
+                                <div class="Conversation_Item_Box">
+                                    <div class="Conversation_Item_text">
+                                        <p>
+                                            ${messageresevd.messageContant}
+                                        </p>
+                                        <span class="Conversation_Item_Time"> ${messageresevd.time}</span>
+                                    </div>
+                                    <div class="Conversation_Item_dropdown">
+                                        <button type="button" class="Conversation_Item_dropdown_toggle">
+                                            <i class="ri-more-2-line"></i>
+                                        </button>
+                                        <ul class="Conversation_Item_dropdown_List">
+                                            <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
+                                            <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    `
+            }
+            else {
+                msg +=
+                    `
+                    <li class="Conversation_Item me">
+                            <div class="Conversation_Item_Side">
+                                <img src="/chat/images/test.jpg" class="Conversation_Item_Image">
+                            </div>
+                            <div class="Conversation_Item_Content">
+                                <div class="Conversation_Item_Wrapper">
+                                    <div class="Conversation_Item_Box">
+                                        <div class="Conversation_Item_text">
+                                            <p>
+                                                ${messageresevd.messageContant}
+                                            </p>
+                                            <span class="Conversation_Item_Time">  ${messageresevd.time}</span>
+                                        </div>
+                                        <div class="Conversation_Item_dropdown">
+                                            <button type="button" class="Conversation_Item_dropdown_toggle">
+                                                <i class="ri-more-2-line"></i>
+                                            </button>
+                                            <ul class="Conversation_Item_dropdown_List">
+                                                <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
+                                                <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                     </li>
+                    `
+            };
+            document.getElementById("massegeList").innerHTML += msg;
+            console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            console.log(msg);
+            console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+
+        })
+
     </script>
 </body>
+
 </html>

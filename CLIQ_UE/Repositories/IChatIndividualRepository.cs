@@ -7,5 +7,7 @@ namespace CLIQ_UE.Repositories
 		public void AddMessageToChat(ChatIndividual chatIndividual);
 		public void RemoveMessageFromChat(ChatIndividual chatIndividual);
 		public List<ChatIndividual> GetChat(string userId,string otherUserId);
-	}
+		public ChatIndividual GetOneMessage(string userId, string otherUserId);
+
+    }
 }
