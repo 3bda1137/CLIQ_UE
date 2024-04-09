@@ -7,5 +7,6 @@
         public string UserName { get; set; }
         public string UserImage { get; set; }
         public string CoverImage { get; set; }
+        public int newNotificationCount { get; set; }
     }
 }

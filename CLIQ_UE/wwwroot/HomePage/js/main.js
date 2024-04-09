@@ -1,11 +1,13 @@
-"use strict";
+﻿"use strict";
+
+
 
 
 
 
     const profile_pic = document.querySelector('.profile-pic');
     const searchInput = document.querySelector('.nav-content .search-bar .search-input');
-    const notification_icon = document.querySelector('.nav-content .right-items .items .notification i');
+    //const notification_icon = document.querySelector('.nav-content .right-items .items .notification i');
     const more_options = document.querySelector('.nav-content .right-items .profile-box .profile-name');
 
     const btn_chat = document.querySelector('.chat');
@@ -50,6 +52,10 @@
     const comment_text = document.querySelector('.comment-text');
     const add_comment = document.querySelector('.add-comment-icon')
     const comments_number = document.querySelector('.post-comments');
+
+
+// Notification Icon
+const notification__icon = document.getElementById('notification-container')
 
     // Drop Down menu
     const logout = document.querySelector(".logout")
@@ -114,17 +120,7 @@
     });
 
 
-    // Notification menu
-    document.getElementById('notification-icon').addEventListener('click', function (event) {
-        event.stopPropagation();
-        document.getElementById('notification-container').classList.toggle('active');
-    });
 
-    document.body.addEventListener('click', function (event) {
-        if (!event.target.closest('#notification-container')) {
-            document.getElementById('notification-container').classList.remove('active');
-        }
-    });
 
 
 //! Toggle profile menu 
@@ -305,7 +301,7 @@ function fetchPosts(pageIndex) {
 
 // Function to display posts
 function displayPosts(Model) {
-    console.log("Model posts")
+    //console.log("Model posts")
     Model.posts.forEach(post => {
         let postHtml = `
             <div class="post" data-post-date="Just now">
@@ -604,3 +600,119 @@ function clickOnFollow(followingId,button) {
             console.log("Error")
         });
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////    Get Notifications  //////////////////////////////////////////////////////////
+
+const notificationCountElement = document.querySelector('.notification-count');
+
+/////////////////////// Notification SignalR /////////////////////////////////////
+const notificationConnection = new signalR.HubConnectionBuilder()
+    .withUrl("/NotificationHub")
+    .build();
+
+notificationConnection.start()
+    .then(() => console.log("Connected to the notification Hub"))
+    .catch(err => console.log("Error =>", err.toString()))
+
+notificationConnection.on("ReceiveFollowNotification", () => {
+    //alert("GOOOOOOOOOOOOOOOOOOOT Follow 🔥🔥🔥")
+    NewNotificationAriived();
+});
+
+notificationConnection.on("ReceiveUnfollowNotification", () => {
+    NewNotificationAriived();
+
+});
+
+
+function NewNotificationAriived() {
+
+    if (parseInt(notificationCountElement.textContent) === 9) {
+
+        notificationCountElement.textContent = '+9 ';
+    } else {
+        const newCount = Number(notificationCountElement.textContent) + 1;
+        notificationCountElement.textContent = newCount;
+    }
+        notificationCountElement.style.display = 'block';
+
+
+    
+}
+
+////////////////////////////////////// Notification Toggle Menu //////////////////////////////////////
+// Notification menu
+document.getElementById('notification-icon').addEventListener('click', function (event) {
+    event.stopPropagation();
+    document.getElementById('notification-container').classList.toggle('active');
+
+    /// Get Notifications =>
+
+    fetch('/HomePage/GetNotifications')
+        .then(res => {
+            if (res.ok) {
+                return res.json(); 
+            } else {
+                console.log("Error in response");
+            }
+        })
+        .then(notificationList => {
+            //console.log("-------------->" + notificationList);
+            ShowNotifications(notificationList); 
+        })
+        .catch(err => console.log(err.toString()))
+
+});
+
+
+
+const notificationList = document.querySelector(".notification-list")
+/////////////////// Get and show notifications when click on the notification icon /////////////////////////////
+
+function ShowNotifications(notifications) {
+    console.log(notifications);
+        //// Remove the new notification number -->
+        notificationCountElement.textContent = 0;
+        notificationCountElement.style.display = 'none'
+
+
+    notificationList.innerHTML = " ";
+    notifications.forEach(notification => {
+        const HTML = `
+<div class="notification-item ${notification.isSeen ? 'seen' : 'unseen'}">
+        <input type="hidden" name="notificationUserId" value="${notification.createdByUserId}">
+        ${notification.content === 'followed you' ? '<i class="fa-solid fa-user-plus text-primary"></i>' : ''}
+        ${notification.content === 'unfollowed your profile' ? '<i class="fa-solid fa-user-xmark text-danger"></i>' : ''}
+        ${notification.content === 'loved your post' ? '<i class="fa-solid fa-heart text-danger"></i>' : ''}
+        ${notification.content === 'commented on your post' ? '<i class="fa-solid fa-comment-alt text-primary"></i>' : ''}
+        ${notification.content === 'disliked your post' ? '<i class="fa-solid fa-thumbs-down text-warning"></i>' : ''}
+        ${notification.content === 'sent you a message' ? '<i class="fa-solid fa-envelope text-info"></i>' : ''}
+        <img src="${notification.userImage}" alt="User" class="user-avatar">
+        <div class="notification-details">
+            <span class="user-name"><span>${notification.userName}</span></span>
+            <span class="notification-text">${notification.content} <br><strong>${notification.notificationShowDate}</strong></span>
+        </div>
+    </div>
+`;
+
+        notificationList.insertAdjacentHTML('afterbegin', HTML); 
+    });
+
+    const notificationItems = document.querySelectorAll('.notification-item');
+
+    notificationItems.forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            console.log("Click on notification ===>")
+            event.preventDefault();
+
+            const userId = item.querySelector('input[name="notificationUserId"]').value;
+
+            const userProfileUrl = `ViewUserProfile?userId=${userId}`;
+
+            // Navigate to the user profile page
+            window.location.href = userProfileUrl;
+        });
+    });
+}
+

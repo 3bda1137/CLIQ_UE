@@ -14,14 +14,16 @@ namespace CLIQ_UE.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IPostService postService;
         private readonly ISuggestesUsersService suggestesUsersService;
+        private readonly INotificationService notificationService;
 
         // Injection in the constructor 
-        public HomePageController(UserManager<ApplicationUser> userManager, IPostService postService,ISuggestesUsersService suggestesUsersService)
+        public HomePageController(UserManager<ApplicationUser> userManager, IPostService postService, ISuggestesUsersService suggestesUsersService, INotificationService notificationService)
         {
 
             this.userManager = userManager;
             this.postService = postService;
             this.suggestesUsersService = suggestesUsersService;
+            this.notificationService = notificationService;
         }
 
         public async Task<IActionResult> Index(HomePageViewModel model)
@@ -33,7 +35,8 @@ namespace CLIQ_UE.Controllers
             {
                 model.UserName = user.UserName;
                 model.UserImage = user.PersonalImage;
-               model.SuggestesUsers = suggestesUsersService.GetSuggestesUsers(user.Id);
+                model.SuggestesUsers = suggestesUsersService.GetSuggestesUsers(user.Id);
+                model.newNotificationCount = notificationService.GetNewNotifications(user.Id).Count();
                 return View(model);
             }
             return RedirectToAction("Login", "Account");
@@ -58,6 +61,18 @@ namespace CLIQ_UE.Controllers
 
             return Json(displayPostViewModel);
         }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetNotifications()
+        {
+            ApplicationUser user = await userManager.GetUserAsync(User);
+            List<Notification> notifications = notificationService.GetAllNotifications(user.Id);
+            return Json(notifications);
+        }
+
+
 
 
     }
