@@ -24,6 +24,7 @@ namespace CLIQ_UE.Models
         public virtual DbSet<LastMessage> LastMessages { get; set; }
 
         public DbSet<UserLikeComment> UserLikeComments { get; set; }
+        public DbSet<UserLikePost> UserLikePosts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,6 +32,9 @@ namespace CLIQ_UE.Models
 
             builder.Entity<UserLikeComment>()
                 .HasKey(x => new { x.CommentId, x.ApplicationUserId });
+
+            builder.Entity<UserLikePost>()
+                .HasKey(x => new { x.PostId, x.ApplicationUserId });
 
 
             //For comment's likes

@@ -55,9 +55,9 @@ namespace CLIQ_UE.Services
             postRepository.Save();
         }
 
-        public void UpdatePost(Post post)
+        public async Task<int> UpdatePost(Post post)
         {
-            throw new NotImplementedException();
+            return await postRepository.UpdatePost(post);
         }
 
 
