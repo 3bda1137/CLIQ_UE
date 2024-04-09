@@ -11,7 +11,9 @@ namespace CLIQ_UE.Controllers
         private readonly IFollowersServices followersServices;
         private readonly IUserServices userServices;
 
-        public FollowController(UserManager<ApplicationUser> userManager, IFollowersServices followersServices,IUserServices userServices)
+
+        public FollowController(UserManager<ApplicationUser> userManager, IFollowersServices followersServices, IUserServices userServices)
+
         {
             this.userManager = userManager;
             this.followersServices = followersServices;
@@ -22,11 +24,15 @@ namespace CLIQ_UE.Controllers
         [HttpPost]
         public async Task<IActionResult> FollowUser([FromBody] string followingId)
         {
+            ApplicationUser applicationUser = userServices.GetByID(followingId);
             var currentUser = await userManager.GetUserAsync(User);
             ApplicationUser applicationUser = userServices.GetByID(followingId);
             Followers newFollow = new Followers();
+
+
             newFollow.ImageUrl = applicationUser.PersonalImage;
-            newFollow.FollowingName = applicationUser.FirstName + " " + applicationUser.LastName;
+            newFollow.FollowerName = applicationUser.FirstName + " " + applicationUser.LastName;
+
             newFollow.FollowingId = followingId;
             newFollow.FollowerId = currentUser.Id;
             newFollow.FollowingDate = DateTime.Now;
