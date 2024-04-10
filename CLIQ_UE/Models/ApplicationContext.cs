@@ -24,6 +24,8 @@ namespace CLIQ_UE.Models
         public virtual DbSet<LastMessage> LastMessages { get; set; }
 
         public DbSet<UserLikeComment> UserLikeComments { get; set; }
+        public DbSet<UserLikePost> UserLikePosts { get; set; }
+        public DbSet<LastSeen> LastSeens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

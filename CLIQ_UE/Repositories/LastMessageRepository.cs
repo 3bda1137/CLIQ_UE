@@ -24,8 +24,9 @@ namespace CLIQ_UE.Repositories
 
         public LastMessage Get(string senderId, string ReseverId)
         {
-            LastMessage lastMessage = context.LastMessages
-                .FirstOrDefault(lm => lm.SendId == senderId && lm.ReseverID == ReseverId);
+            LastMessage? lastMessage = context.LastMessages
+                .FirstOrDefault(lm => (lm.SendId == senderId && lm.ReseverID == ReseverId)
+                                      || (lm.SendId == ReseverId && lm.ReseverID == senderId));
             return lastMessage;
         }
 
