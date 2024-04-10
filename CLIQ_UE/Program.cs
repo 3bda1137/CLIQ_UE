@@ -82,6 +82,10 @@ namespace CLIQ_UE
             builder.Services.AddScoped<IUserLikePostService, UserLikePostService>();
             builder.Services.AddScoped<IUserLikePostRepository, UserLikePostRepository>();
 
+
+            builder.Services.AddScoped<ILastSeenRepository, LastSeenRepository>();
+            builder.Services.AddScoped<ILastSeenServices, LastSeenServices>();
+
             builder.Services.AddSignalR();
             //AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

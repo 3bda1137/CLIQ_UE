@@ -5,15 +5,18 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace CLIQ_UE.Hubs
 {
+    [Authorize]
     public class OnlineUsersHub : Hub
     {
         private readonly IOnlineUserServices onlineUserServices;
         private readonly IUserServices userServices;
+        private readonly ILastSeenServices lastSeenServices;
 
-        public OnlineUsersHub(IOnlineUserServices onlineUserServices, IUserServices userServices)
+        public OnlineUsersHub(IOnlineUserServices onlineUserServices, IUserServices userServices,ILastSeenServices lastSeenServices)
         {
             this.onlineUserServices = onlineUserServices;
             this.userServices = userServices;
+            this.lastSeenServices = lastSeenServices;
         }
         [Authorize]
         public void SaveOnlineUser(string connectionId)
@@ -49,8 +52,28 @@ namespace CLIQ_UE.Hubs
             }
         }
 
+        private void UpDateLastSeen()
+        {
+            var userName = Context.User.Identity.Name;
+            if (userName != null)
+            {
+                string userId = userServices.GetUserByUserName(userName).Id;
+                LastSeen lastSeen= lastSeenServices.GetByUserId(userId);
+                if(lastSeen==null)
+                {
+                    lastSeen= new LastSeen();
+                    lastSeen.LastSeenTime = DateTime.Now;
+                    lastSeen.UserID= userId;
+                    lastSeenServices.Add(lastSeen);
+                }
+                else
+                {
+                    lastSeen.LastSeenTime= DateTime.Now;
+                    lastSeenServices.Update(lastSeen);
+                }
+            }
 
-
+        }
         public override Task OnConnectedAsync()
         {
             SaveOnlineUser(Context.ConnectionId);
@@ -60,7 +83,10 @@ namespace CLIQ_UE.Hubs
         public override Task OnDisconnectedAsync(Exception? exception)
         {
             DeleteOnlineUser(Context.ConnectionId);
+            UpDateLastSeen();
             return base.OnDisconnectedAsync(exception);
         }
+
+       
     }
 }

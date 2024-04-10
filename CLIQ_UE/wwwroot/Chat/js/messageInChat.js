@@ -2,23 +2,40 @@
 var otherUser = 0;
 var followingImageUrl = "";
 var followingName = "";
+var lastSeen = "";
+var tagOfLastSeen = "";
 function showChat(otherUserId,otherUserName,otherUserImageUrl) {
     otherUser = otherUserId;
     followingImageUrl = otherUserImageUrl;
     followingName = otherUserName;
-    console.log("----------------------------")
-    console.log(otherUserId)
-    console.log("----------------------------")
-
+    //console.log("----------------------------")
+    //console.log(otherUserId)
+    //console.log("----------------------------")
+    //get messages 
     $.ajax({
         url: '/chat/GetMessages',
         type: 'GET',
         data: { otherUserId: otherUserId },
         success: function (data) {
 
-            console.log(data);
+            //console.log(data);
             displayChat(data);
         }, 
+        error: function () {
+            console.error('Error occurred while fetching search results.');
+        }
+    });
+
+    //get last seen
+    $.ajax({
+        url: '/chat/GetLastSeen',
+        type: 'GET',
+        data: { otherUserId: otherUserId },
+        success: function (data) {
+
+            //console.log("Last seen : "+data);
+            lastSeen = data;
+        },
         error: function () {
             console.error('Error occurred while fetching search results.');
         }
@@ -42,7 +59,7 @@ function displayChat(results) {
     let msg = "";
     let chat = "";
     $.each(results, function (index, result) {
-        console.log("length -----= ", results.length)
+        //console.log("length -----= ", results.length)
 
         if (index + 1 < results.length) {
             var t1 = results[index].createdAt;
@@ -137,6 +154,11 @@ function displayChat(results) {
         }
         
     });
+    if (lastSeen == "Online") {
+        tagOfLastSeen = `<div class="Conversation_User_Status online">${lastSeen}</div>`;
+    } else {
+        tagOfLastSeen = `<div class="Conversation_User_Status ">${lastSeen}</div>`;
+    };
     chat = `
                 <div class="Conversation_Top">
                     <button onclick="closeChat()" type="button" class="Conversation_Back"> <i class="ri-arrow-left-line"></i></button>
@@ -144,7 +166,7 @@ function displayChat(results) {
                         <img  src="${followingImageUrl}" class="Conversation_User_Image">
                         <div class="">
                             <div class="Conversation_User_Name">${followingName}</div>
-                            <div class="Conversation_User_Status online">Online</div>
+                            ${tagOfLastSeen}
                         </div>
                     </div>
                     <div class="Conversation_buttons">
@@ -178,9 +200,9 @@ function displayChat(results) {
     `;
     document.querySelector('.Conversation_default').classList.remove('active');
     document.querySelector('#Conversation1').classList.add('active');
-    console.log(chat);
+    //console.log(chat);
     var searchResultsContainer = $('#Conversation1');
-    console.log(searchResultsContainer)
+    //console.log(searchResultsContainer)
     searchResultsContainer.empty();
     searchResultsContainer.html(chat);
 }
