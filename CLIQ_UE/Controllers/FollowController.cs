@@ -31,6 +31,7 @@ namespace CLIQ_UE.Controllers
         {
             ApplicationUser applicationUser = userServices.GetByID(followingId);
             var currentUser = await userManager.GetUserAsync(User);
+
             Followers newFollow = new Followers();
 
             if (!followersServices.IsUserFollowing(currentUser.Id, followingId))
@@ -48,7 +49,8 @@ namespace CLIQ_UE.Controllers
                 await notificationHub.Clients.User(followingId).SendAsync("ReceiveFollowNotification");
             }
 
-
+            newFollow.ImageUrl = applicationUser.PersonalImage;
+            newFollow.FollowingName = applicationUser.FirstName + " " + applicationUser.LastName;
 
 
             return Ok();

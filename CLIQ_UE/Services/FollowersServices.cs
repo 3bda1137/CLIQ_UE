@@ -65,7 +65,7 @@ namespace CLIQ_UE.Services
             {
                 UserConntactViewModel viewModel = new UserConntactViewModel();
 
-                if (follower.FollowingId == followingId)//FollowingId ==me
+                if (follower.FollowerId == followingId)//FollowingId ==me
                 {
                     //ApplicationUser user = userServices.GetByID(follower.FollowerId);
                     viewModel.UserId = follower.FollowerId;

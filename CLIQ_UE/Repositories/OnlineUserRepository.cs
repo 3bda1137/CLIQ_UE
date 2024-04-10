@@ -27,14 +27,15 @@ namespace CLIQ_UE.Repositories
             return context.OnlineUsers.FirstOrDefault(x => x.ConnectionId == connectionId);
         }
 
-        public OnlineUser GetOnlineUserByID(int onlineUserId)
+        public OnlineUser GetOnlineUserByID(string onlineUserId)
         {
-            throw new NotImplementedException();
+            return context.OnlineUsers.FirstOrDefault(x => x.UserId == onlineUserId);
         }
 
         public void UpdateUser(OnlineUser onlineUser)
         {
-            throw new NotImplementedException();
+            context.OnlineUsers.Update(onlineUser);
+            context.SaveChanges();
         }
     }
 }

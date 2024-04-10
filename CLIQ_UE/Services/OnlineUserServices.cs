@@ -26,14 +26,15 @@ namespace CLIQ_UE.Services
             return onlineUserRepository.GetByConnectionId(connectionId);
         }
 
-        public OnlineUser GetByID(int onlineUserId)
+        public OnlineUser GetByID(string onlineUserId)
         {
-            throw new NotImplementedException();
+            OnlineUser onlineUser= onlineUserRepository.GetOnlineUserByID(onlineUserId);
+            return onlineUser;
         }
 
         public void UpdateUser(OnlineUser onlineUser)
         {
-            throw new NotImplementedException();
+            onlineUserRepository.UpdateUser(onlineUser);
         }
     }
 }

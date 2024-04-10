@@ -23,13 +23,21 @@ namespace CLIQ_UE.Hubs
             if (userName != null)
             {
                 string userId = userServices.GetUserByUserName(userName).Id;
-
-                OnlineUser onlineUser = new OnlineUser()
+                OnlineUser existingOnlineUser= onlineUserServices.GetByID(userId);
+                if (existingOnlineUser != null)
                 {
-                    UserId = userId,
-                    ConnectionId = connectionId,
-                };
-                onlineUserServices.AddUser(onlineUser);
+                    existingOnlineUser.ConnectionId = connectionId;
+                    onlineUserServices.UpdateUser(existingOnlineUser);
+                }
+                else
+                {
+                    OnlineUser onlineUser = new OnlineUser()
+                    {
+                        UserId = userId,
+                        ConnectionId = connectionId,
+                    };
+                    onlineUserServices.AddUser(onlineUser);
+                }
             }
         }
         public void DeleteOnlineUser(string connectionId)

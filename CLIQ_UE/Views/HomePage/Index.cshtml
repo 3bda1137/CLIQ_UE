@@ -461,6 +461,52 @@
 
 <script>
     
+
+    //----------Make it boolean----------
+    function lovePost(postId, likeOption) {
+        console.log("Love post");
+        likePost = $("#likePost" + postId);
+        dislikePost = $("#dislikePost" + postId);
+        
+        likesCount = $("#likePostCount" + postId);
+        dislikesCount = $("#dislikePostCount" + postId);
+        console.log(likePost)
+        console.log(dislikePost)
+     
+
+        $.ajax({
+            url: `/posts/InteractPost?PostId=${postId}&LikeOption=${likeOption}`,
+            type: 'POST',
+            //data: {commentId:commentId  }, // Include the postId and commentText parameters
+            success: function (response) {
+                if (likeOption == true) {
+                    if (likePost.css('color') == "rgb(128, 128, 128)") {
+                        likePost.css('color', "red");
+                        dislikePost.css('color', "grey");
+                    }
+                    else {
+                        likePost.css('color', "grey");
+                    }
+                }
+                else {
+                    console.log("Not if")
+                    if (dislikePost.css('color') == "rgb(128, 128, 128)") {
+                        dislikePost.css('color', "black");
+                        likePost.css('color', "grey");
+                    }
+                    else {
+                        dislikePost.css('color', "grey");
+                    }
+                }
+                console.log(response);
+                likesCount.text(response['likes'])
+                dislikesCount.text(response['dislikes'])
+            },
+            error: function (xhr, status, error) {
+            }
+        });
+    }
+
     function getPostComments(postId) {
         console.log(postId);
         console.log("Post id" + postId);
@@ -510,7 +556,7 @@
             }
         });
     }
-
+    
 
     function calculatePostTime(postDateAttr) {
         const postDate = new Date(postDateAttr);
@@ -623,5 +669,7 @@
             }
         });
     }
+
+
 
 </script>

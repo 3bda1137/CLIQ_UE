@@ -420,12 +420,12 @@ function displayPosts(Model) {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i class="fa-solid fa-heart like-icon"></i>
-                                <span>${post.likeCount}</span>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                                <span>${post.dislikeCount}</span>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon"></i>
@@ -582,12 +582,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i class="fa-solid fa-heart like-icon"></i>
-                                <span>${post.likeCount}</span>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                                <span>${post.dislikeCount}</span>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon"></i>
@@ -642,6 +642,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+function lovePost(postId, likeOption) {
+    console.log("Love post");
+    let likePost = $("#likePost" + postId);
+    let dislikePost = $("#dislikePost" + postId);
+
+    let likesCount = $("#likePostCount" + postId);
+    let dislikesCount = $("#dislikePostCount" + postId);
+    console.log(likePost)
+    console.log(dislikePost)
+
+
+    $.ajax({
+        url: `/posts/InteractPost?PostId=${postId}&LikeOption=${likeOption}`,
+        type: 'POST',
+        //data: {commentId:commentId  }, // Include the postId and commentText parameters
+        success: function (response) {
+            if (likeOption == true) {
+                if (likePost.css('color') == "rgb(128, 128, 128)") {
+                    likePost.css('color', "red");
+                    dislikePost.css('color', "grey");
+                }
+                else {
+                    likePost.css('color', "grey");
+                }
+            }
+            else {
+                console.log("Not if")
+                if (dislikePost.css('color') == "rgb(128, 128, 128)") {
+                    dislikePost.css('color', "black");
+                    likePost.css('color', "grey");
+                }
+                else {
+                    dislikePost.css('color', "grey");
+                }
+            }
+            console.log(response);
+            likesCount.text(response['likes'])
+            dislikesCount.text(response['dislikes'])
+        },
+        error: function (xhr, status, error) {
+        }
+    });
+}
 function getPostComments(postId) {
     console.log(postId);
     console.log("Post id" + postId);
