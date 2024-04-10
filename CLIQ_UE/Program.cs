@@ -53,11 +53,14 @@ namespace CLIQ_UE
             builder.Services.AddScoped<ISuggestesUsersRepository, SuggestesUsersRepository>();
             builder.Services.AddScoped<ISuggestesUsersService, SuggestesUsersService>();
 
+            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+            builder.Services.AddScoped<INotificationService, NotificationService>();
+
 
             builder.Services.AddScoped<IViewRepository, ViewRepository>();
             builder.Services.AddScoped<IViewService, ViewService>();
             builder.Services.AddScoped<IEditUserServices, EditUserServices>();
-            
+
 
 
             builder.Services.AddScoped<IFollowersServices, FollowersServices>();
@@ -78,6 +81,7 @@ namespace CLIQ_UE
 
             builder.Services.AddScoped<IUserLikePostService, UserLikePostService>();
             builder.Services.AddScoped<IUserLikePostRepository, UserLikePostRepository>();
+
 
             builder.Services.AddScoped<ILastSeenRepository, LastSeenRepository>();
             builder.Services.AddScoped<ILastSeenServices, LastSeenServices>();
@@ -106,7 +110,7 @@ namespace CLIQ_UE
             app.MapHub<ChatIndividualHub>("/ChatIndividual");
             app.MapHub<OnlineUsersHub>("/OnlineUsers");
             app.MapHub<PostsHub>("/PostHub");
-
+            app.MapHub<NotificationHub>("/NotificationHub");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=HomePage}/{action=Index}/{id?}");

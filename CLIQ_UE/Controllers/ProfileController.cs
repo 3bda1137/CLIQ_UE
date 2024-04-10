@@ -10,11 +10,13 @@ namespace CLIQ_UE.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IPostService postService;
+        private readonly INotificationService notificationService;
 
-        public ProfileController(UserManager<ApplicationUser> userManager, IPostService postService)
+        public ProfileController(UserManager<ApplicationUser> userManager, IPostService postService, INotificationService notificationService)
         {
             this.userManager = userManager;
             this.postService = postService;
+            this.notificationService = notificationService;
         }
         public async Task<IActionResult> Index(ProfileViewModel model)
         {
@@ -28,6 +30,7 @@ namespace CLIQ_UE.Controllers
                 model.FirstName = user.FirstName;
                 model.LastName = user.LastName;
                 model.CoverImage = user.ProfileImage;
+                model.newNotificationCount = notificationService.GetNewNotifications(user.Id).Count();
                 return View(model);
             }
             return RedirectToAction("Login", "Account");

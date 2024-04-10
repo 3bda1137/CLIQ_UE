@@ -25,44 +25,27 @@
                         <div class="notification-container" id="notification-container">
                             <div class="notification">
                                 <i class="fa-solid fa-bell" id="notification-icon"></i>
-                                <span class="notification-count">9+</span>
+                                @if (Model.newNotificationCount > 0)
+                                {
+                                    <span style="display:block" class="notification-count">@Model.newNotificationCount</span>
+
+                                }
+                                <span style="display:none" class="notification-count">0</span>
+
                             </div>
+
+                            <!-------------------------------------------  Notifications ------------------------------------------------------------>
                             <div class="notification-list">
 
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 1" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 1</strong></span>
-                                        <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
-                                    </div>
-                                </div>
+                                 @*              <div class="notification-item">
+                                 <img src="@Model.UserImage" alt="User 1" class="user-avatar">
+                                 <div class="notification-details">
+                                 <span class="user-name"><strong>User 1</strong></span>
+                                 <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
+                                 </div>
+                                 </div> *@
 
 
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 1" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 2</strong></span>
-                                        <span class="notification-text">commented on your post  <strong>5h ago</strong></span>
-                                    </div>
-                                </div>
-
-
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 1" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 1</strong></span>
-                                        <span class="notification-text">commented on your post . <strong>a Week ago</strong></span>
-                                    </div>
-                                </div>
-
-
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 2" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 2</strong></span>
-                                        <span class="notification-text">commented on your post  <strong>5 ago</strong></span>
-                                    </div>
-                                </div>
 
 
                             </div>
@@ -364,3 +347,4 @@
             </div>
         </div>
     </div>
+

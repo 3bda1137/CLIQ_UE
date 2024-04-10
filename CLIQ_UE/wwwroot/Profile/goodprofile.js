@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 
 const profile_pic = document.querySelector('.profile-pic');
@@ -112,17 +112,6 @@ btn_select_img.addEventListener('click', function () {
 });
 
 
-// Notification menu
-document.getElementById('notification-icon').addEventListener('click', function (event) {
-    event.stopPropagation();
-    document.getElementById('notification-container').classList.toggle('active');
-});
-
-document.body.addEventListener('click', function (event) {
-    if (!event.target.closest('#notification-container')) {
-        document.getElementById('notification-container').classList.remove('active');
-    }
-});
 
 
 //! Toggle profile menu 
@@ -431,12 +420,12 @@ function displayPosts(Model) {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i class="fa-solid fa-heart like-icon"></i>
-                                <span>${post.likeCount}</span>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                                <span>${post.dislikeCount}</span>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon"></i>
@@ -593,12 +582,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i class="fa-solid fa-heart like-icon"></i>
-                                <span>${post.likeCount}</span>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                                <span>${post.dislikeCount}</span>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon"></i>
@@ -653,6 +642,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+function lovePost(postId, likeOption) {
+    console.log("Love post");
+    let likePost = $("#likePost" + postId);
+    let dislikePost = $("#dislikePost" + postId);
+
+    let likesCount = $("#likePostCount" + postId);
+    let dislikesCount = $("#dislikePostCount" + postId);
+    console.log(likePost)
+    console.log(dislikePost)
+
+
+    $.ajax({
+        url: `/posts/InteractPost?PostId=${postId}&LikeOption=${likeOption}`,
+        type: 'POST',
+        //data: {commentId:commentId  }, // Include the postId and commentText parameters
+        success: function (response) {
+            if (likeOption == true) {
+                if (likePost.css('color') == "rgb(128, 128, 128)") {
+                    likePost.css('color', "red");
+                    dislikePost.css('color', "grey");
+                }
+                else {
+                    likePost.css('color', "grey");
+                }
+            }
+            else {
+                console.log("Not if")
+                if (dislikePost.css('color') == "rgb(128, 128, 128)") {
+                    dislikePost.css('color', "black");
+                    likePost.css('color', "grey");
+                }
+                else {
+                    dislikePost.css('color', "grey");
+                }
+            }
+            console.log(response);
+            likesCount.text(response['likes'])
+            dislikesCount.text(response['dislikes'])
+        },
+        error: function (xhr, status, error) {
+        }
+    });
+}
 function getPostComments(postId) {
     console.log(postId);
     console.log("Post id" + postId);
@@ -778,3 +810,122 @@ function likeComment(commentId) {
 }
 
 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////    Get Notifications  //////////////////////////////////////////////////////////
+
+const notificationCountElement = document.querySelector('.notification-count');
+
+/////////////////////// Notification SignalR /////////////////////////////////////
+const notificationConnection = new signalR.HubConnectionBuilder()
+    .withUrl("/NotificationHub")
+    .build();
+
+notificationConnection.start()
+    .then(() => console.log("Connected to the notification Hub"))
+    .catch(err => console.log("Error =>", err.toString()))
+
+notificationConnection.on("ReceiveFollowNotification", () => {
+    //alert("GOOOOOOOOOOOOOOOOOOOT Follow 🔥🔥🔥")
+    NewNotificationAriived();
+});
+
+notificationConnection.on("ReceiveUnfollowNotification", () => {
+    NewNotificationAriived();
+
+});
+
+
+function NewNotificationAriived() {
+
+    if (parseInt(notificationCountElement.textContent) === 9) {
+
+        notificationCountElement.textContent = '+9 ';
+    } else {
+        const newCount = Number(notificationCountElement.textContent) + 1;
+        notificationCountElement.textContent = newCount;
+    }
+    notificationCountElement.style.display = 'block';
+
+
+
+}
+
+////////////////////////////////////// Notification Toggle Menu //////////////////////////////////////
+// Notification menu
+document.getElementById('notification-icon').addEventListener('click', function (event) {
+    event.stopPropagation();
+    document.getElementById('notification-container').classList.toggle('active');
+
+    /// Get Notifications =>
+
+    fetch('/HomePage/GetNotifications')
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                console.log("Error in response");
+            }
+        })
+        .then(notificationList => {
+            //console.log("-------------->" + notificationList);
+            ShowNotifications(notificationList);
+        })
+        .catch(err => console.log(err.toString()))
+
+});
+
+
+
+const notificationList = document.querySelector(".notification-list")
+/////////////////// Get and show notifications when click on the notification icon /////////////////////////////
+
+function ShowNotifications(notifications) {
+    console.log(notifications);
+    //// Remove the new notification number -->
+    notificationCountElement.textContent = 0;
+    notificationCountElement.style.display = 'none'
+
+
+    notificationList.innerHTML = " ";
+    notifications.forEach(notification => {
+        const HTML = `
+<div class="notification-item ${notification.isSeen ? 'seen' : 'unseen'}">
+        <input type="hidden" name="notificationUserId" value="${notification.createdByUserId}">
+        ${notification.content === 'followed you' ? '<i class="fa-solid fa-user-plus text-primary"></i>' : ''}
+        ${notification.content === 'unfollowed your profile' ? '<i class="fa-solid fa-user-xmark text-danger"></i>' : ''}
+        ${notification.content === 'loved your post' ? '<i class="fa-solid fa-heart text-danger"></i>' : ''}
+        ${notification.content === 'commented on your post' ? '<i class="fa-solid fa-comment-alt text-primary"></i>' : ''}
+        ${notification.content === 'disliked your post' ? '<i class="fa-solid fa-thumbs-down text-warning"></i>' : ''}
+        ${notification.content === 'sent you a message' ? '<i class="fa-solid fa-envelope text-info"></i>' : ''}
+        <img src="${notification.userImage}" alt="User" class="user-avatar">
+        <div class="notification-details">
+            <span class="user-name"><span>${notification.userName}</span></span>
+            <span class="notification-text">${notification.content} <br><strong>${notification.notificationShowDate}</strong></span>
+        </div>
+    </div>
+`;
+
+        notificationList.insertAdjacentHTML('afterbegin', HTML);
+    });
+
+
+    const notificationItems = document.querySelectorAll('.notification-item');
+
+    notificationItems.forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            console.log("Click on notification ===>")
+            event.preventDefault();
+
+            const userId = item.querySelector('input[name="notificationUserId"]').value;
+
+            const userProfileUrl = `ViewUserProfile?userId=${userId}`;
+
+            // Navigate to the user profile page
+            window.location.href = userProfileUrl;
+        });
+    });
+}
+
+/////////////////// Close the notification list when user click outside  /////////////////////////////

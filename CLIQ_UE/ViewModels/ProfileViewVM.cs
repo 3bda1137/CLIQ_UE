@@ -13,6 +13,9 @@
         public int FollowersCount { get; set; }
         public bool IsFollowing { get; set; }
 
+
+        public int newNotificationCount { get; set; }
+
         public string currentUserId { get; set; }
         public string CurrentUserImage { get; set; }
         public string CurrentUserName { get; set; }

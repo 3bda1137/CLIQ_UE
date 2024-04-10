@@ -13,14 +13,16 @@ namespace CLIQ_UE.Controllers
         private readonly IUserServices userServices;
         private readonly IFollowersServices followersServices;
         private readonly IPostService postService1;
+        private readonly INotificationService notificationService;
 
-        public ViewUserProfileController(UserManager<ApplicationUser> userManager, IPostService postService, IUserServices userServices, IFollowersServices followersServices, IPostService postService1)
+        public ViewUserProfileController(UserManager<ApplicationUser> userManager, IPostService postService, IUserServices userServices, IFollowersServices followersServices, IPostService postService1, INotificationService notificationService)
         {
             this.userManager = userManager;
             this.postService = postService;
             this.userServices = userServices;
             this.followersServices = followersServices;
             this.postService1 = postService1;
+            this.notificationService = notificationService;
         }
 
         public async Task<IActionResult> Index(ProfileViewVM model, string userId)
@@ -43,6 +45,8 @@ namespace CLIQ_UE.Controllers
                 model.PostCount = postService.GetUserPostCount(userVisited.Id);
                 model.FollowersCount = followersServices.GetFollowerCount(userVisited.Id);
                 model.FollowingCount = followersServices.GetFollowingCount(userVisited.Id);
+                model.newNotificationCount = notificationService.GetNewNotifications(currentUser.Id).Count();
+
 
                 model.IsFollowing = followersServices.IsUserFollowing(currentUser.Id, userVisited.Id);
                 model.IsMutualFollowing = model.IsFollowing && followersServices.IsUserFollowing(userVisited.Id, currentUser.Id);

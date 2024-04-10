@@ -4,6 +4,7 @@ using CLIQ_UE.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CLIQ_UE.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240409140457_init_4")]
+    partial class init_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -289,28 +292,6 @@ namespace CLIQ_UE.Migrations
                     b.ToTable("LastMessages");
                 });
 
-
-            modelBuilder.Entity("CLIQ_UE.Models.LastSeen", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("LastSeenTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LastSeens");
-                });
-
-
             modelBuilder.Entity("CLIQ_UE.Models.Notification", b =>
                 {
                     b.Property<int>("Id")
@@ -320,10 +301,6 @@ namespace CLIQ_UE.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedByUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -474,24 +451,6 @@ namespace CLIQ_UE.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("UserLikeComments");
-                });
-
-            modelBuilder.Entity("CLIQ_UE.Models.UserLikePost", b =>
-                {
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("isLiked")
-                        .HasColumnType("bit");
-
-                    b.HasKey("PostId", "ApplicationUserId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("UserLikePosts");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.View", b =>
@@ -712,25 +671,6 @@ namespace CLIQ_UE.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Comment");
-                });
-
-            modelBuilder.Entity("CLIQ_UE.Models.UserLikePost", b =>
-                {
-                    b.HasOne("CLIQ_UE.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CLIQ_UE.Models.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.View", b =>

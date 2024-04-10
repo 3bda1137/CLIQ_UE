@@ -25,44 +25,27 @@
                         <div class="notification-container" id="notification-container">
                             <div class="notification">
                                 <i class="fa-solid fa-bell" id="notification-icon"></i>
-                                <span class="notification-count">9+</span>
+                                @if (Model.newNotificationCount > 0)
+                                {
+                                    <span style="display:block" class="notification-count">@Model.newNotificationCount</span>
+
+                                }
+                                <span style="display:none" class="notification-count">0</span>
+
                             </div>
+
+                            <!-------------------------------------------  Notifications ------------------------------------------------------------>
                             <div class="notification-list">
 
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 1" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 1</strong></span>
-                                        <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
-                                    </div>
+                                @*              <div class="notification-item">
+                                <img src="@Model.UserImage" alt="User 1" class="user-avatar">
+                                <div class="notification-details">
+                                <span class="user-name"><strong>User 1</strong></span>
+                                <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
                                 </div>
+                                </div> *@
 
 
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 1" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 2</strong></span>
-                                        <span class="notification-text">commented on your post  <strong>5h ago</strong></span>
-                                    </div>
-                                </div>
-
-
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 1" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 1</strong></span>
-                                        <span class="notification-text">commented on your post . <strong>a Week ago</strong></span>
-                                    </div>
-                                </div>
-
-
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 2" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 2</strong></span>
-                                        <span class="notification-text">commented on your post  <strong>5 ago</strong></span>
-                                    </div>
-                                </div>
 
 
                             </div>
@@ -78,23 +61,18 @@
                         </div>
 
                         <div class="profile-box" id="profile-box">
-                            <div class="profile-pic"><img src="@Model.CurrentUserImage" alt="Profile image"></div>
+                            <div class="profile-pic"><img src="@Model.UserImage" alt="Profile image"></div>
                             <div class="profile-name">
-                                @Model.CurrentUserName
+                                @Model.UserName
                                 <i class="fa-solid fa-caret-down"></i>
                             </div>
                             <div class="dropdown-menu" id="dropdown-menu">
-
-
-                                <a asp-action="Index" asp-controller="Profile" class="dropdown-item" data-action="profile"><i class="fa-solid fa-user"></i> Profile</a>
-                                <div class="dropdown-item" data-action="chat"><a asp-action="index" asp-controller="chat"><i class="fa-solid fa-comments"></i> Chat</a></div>
-
-
+                                <div class="dropdown-item" data-action="profile"><i class="fa-solid fa-user"></i> Profile</div>
+                                <div class="dropdown-item" data-action="chat"><i class="fa-solid fa-comments"></i> Chat</div>
                                 <div class="dropdown-item" data-action="settings"><i class="fa-solid fa-cog"></i> Settings</div>
                                 <div class="dropdown-item" data-action="group"><i class="fa-solid fa-users"></i> Group</div>
                                 <div class="dropdown-item logout" data-action="logout"><a asp-action="Logout" asp-controller="Account"><i class="fa-solid fa-sign-out"></i> Logout</a></div>
                             </div>
-                        </div>
                         </div>
 
 
@@ -106,6 +84,7 @@
         </nav>
     </div>
 </div>
+
 
 <div class="container-fluid">
 
@@ -198,3 +177,14 @@
 
      <!--------------------- TEmp to store the user id-------------------------------------->
 <div id="userId" data-user-id="@Model.UserId"></div>
+
+@section Scripts{
+
+        @* <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.12/signalr.min.js" ></script> *@
+<script>
+  
+    /////////////////// Close the notification list when user click outside  /////////////////////////////
+
+</script>
+
+}
