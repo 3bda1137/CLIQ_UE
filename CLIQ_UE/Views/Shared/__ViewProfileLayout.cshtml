@@ -19,10 +19,13 @@
 <body>
     @RenderBody();
     <script src="https://cdn.jsdelivr.net/npm/@@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.12/signalr.min.js"></script>
     <script src="~/ViewUserProfile//script.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
     @* <script src="~/js/plugins.js"></script> *@
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace CLIQ_UE.Models
 {
@@ -19,7 +18,7 @@ namespace CLIQ_UE.Models
         public DbSet<View> Views { get; set; }
         public DbSet<ChatIndividual> ChatIndividual { get; set; }
         public DbSet<OnlineUser> OnlineUsers { get; set; }
-
+        public DbSet<Notification> Notifications { get; set; }
         public DbSet<Followers> Followers { get; set; }
         public virtual DbSet<LastMessage> LastMessages { get; set; }
 

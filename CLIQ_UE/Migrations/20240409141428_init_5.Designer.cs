@@ -4,6 +4,7 @@ using CLIQ_UE.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CLIQ_UE.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240409141428_init_5")]
+    partial class init_5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -454,24 +457,6 @@ namespace CLIQ_UE.Migrations
                     b.ToTable("UserLikeComments");
                 });
 
-            modelBuilder.Entity("CLIQ_UE.Models.UserLikePost", b =>
-                {
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("isLiked")
-                        .HasColumnType("bit");
-
-                    b.HasKey("PostId", "ApplicationUserId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("UserLikePosts");
-                });
-
             modelBuilder.Entity("CLIQ_UE.Models.View", b =>
                 {
                     b.Property<int>("ViewId")
@@ -690,25 +675,6 @@ namespace CLIQ_UE.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Comment");
-                });
-
-            modelBuilder.Entity("CLIQ_UE.Models.UserLikePost", b =>
-                {
-                    b.HasOne("CLIQ_UE.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CLIQ_UE.Models.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.View", b =>
