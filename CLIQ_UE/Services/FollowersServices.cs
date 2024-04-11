@@ -38,18 +38,10 @@ namespace CLIQ_UE.Services
 
                 if (follower.FollowerId == followerId)//FollowerId ==me
                 {
-
-                    //ApplicationUser user = userServices.GetByID(follower.FollowerId);
-                    //viewModel.UserId = user.Id;
-                    //viewModel.UserName = user.FirstName + " " + user.LastName;
-                    //viewModel.ImageUrl = user.PersonalImage;
-                    //viewModel.LastMessage = lastMessageServices.Get(followerId, user.Id);
-
                     viewModel.UserId = follower.FollowingId;
                     viewModel.UserName = follower.FollowingName;
                     viewModel.ImageUrl = follower.ImageUrl;
                     viewModel.LastMessage = lastMessageServices.Get(followerId, follower.FollowingId);
-
                 }
 
                 userConntactViewModel.Add(viewModel);

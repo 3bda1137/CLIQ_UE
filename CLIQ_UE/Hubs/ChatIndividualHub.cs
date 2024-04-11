@@ -31,6 +31,7 @@ namespace CLIQ_UE.Hubs
                         SendId = currentId,
                         ReseverID = currentId,
                         Time = DateTime.Now,
+                        Message = message,
                     };
                     lastMessageServices.Add(last);
 
