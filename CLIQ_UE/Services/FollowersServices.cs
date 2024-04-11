@@ -57,7 +57,7 @@ namespace CLIQ_UE.Services
             return userConntactViewModel;
         }
 
-        public List<UserConntactViewModel> GetAllBySeachWords(string searchword,string followingId)
+        public List<UserConntactViewModel> GetAllBySeachWords(string searchword, string followingId)
         {
             List<Followers> followers = followersRepository.GetAllBySeachWords(searchword, followingId);
             List<UserConntactViewModel> userConntactViewModel = new List<UserConntactViewModel>();
@@ -103,6 +103,16 @@ namespace CLIQ_UE.Services
         public int GetFollowerCount(string followingId)
         {
             return followersRepository.GetFollowerCount(followingId);
+        }
+
+        public List<string> GetFollowersIds(string userid)
+        {
+            return followersRepository.GetFollowersIds(userid);
+        }
+
+        public List<string> GetFollowingIds(string userid)
+        {
+            return followersRepository.GetFollowingIds(userid);
         }
     }
 }

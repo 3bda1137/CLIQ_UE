@@ -28,7 +28,12 @@ namespace CLIQ_UE.Repositories
 
         public List<string> allPostsImagesById(string id)
         {
-            List<string> images = context.Posts.Where(p => p.UserId == id).OrderByDescending(p => p.PostDate).Select(p => p.PostImage).ToList();
+            List<string> images = context.Posts
+             .Where(p => p.UserId == id && p.PostImage != null)
+             .OrderByDescending(p => p.PostDate)
+             .Select(p => p.PostImage)
+             .ToList();
+
             return images;
         }
 
@@ -177,8 +182,8 @@ namespace CLIQ_UE.Repositories
 
         public int GetUserPostCount(string userId)
         {
-            return  context.Posts.Count(p=>p.UserId == userId);
-            
+            return context.Posts.Count(p => p.UserId == userId);
+
         }
 
         public void Save()

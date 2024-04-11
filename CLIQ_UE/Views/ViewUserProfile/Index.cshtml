@@ -61,13 +61,13 @@
                         </div>
 
                         <div class="profile-box" id="profile-box">
-                            <div class="profile-pic"><img src="@Model.UserImage" alt="Profile image"></div>
+                            <div class="profile-pic"><img src="@Model.CurrentUserImage" alt="Profile image"></div>
                             <div class="profile-name">
-                                @Model.UserName
+                                @Model.CurrentUserName
                                 <i class="fa-solid fa-caret-down"></i>
                             </div>
                             <div class="dropdown-menu" id="dropdown-menu">
-                                <div class="dropdown-item" data-action="profile"><i class="fa-solid fa-user"></i> Profile</div>
+                                <a asp-action="Index" asp-controller="Profile" class="dropdown-item" data-action="profile"><i class="fa-solid fa-user"></i> Profile</a>
                                 <div class="dropdown-item" data-action="chat"><i class="fa-solid fa-comments"></i> Chat</div>
                                 <div class="dropdown-item" data-action="settings"><i class="fa-solid fa-cog"></i> Settings</div>
                                 <div class="dropdown-item" data-action="group"><i class="fa-solid fa-users"></i> Group</div>
@@ -116,24 +116,35 @@
 
     <!---------------------------------------  Follow btn   ---------------------------->
     <div class="col-lg-9 col-md-7 col-12 main-content-container  justify-content-center my-4">
-    @if (Model.IsMutualFollowing)
-    {
-        <div class="FollowingStatus">
-            <i class="fa-solid fa-user-friends status-icon"></i> Following each other
-        </div>
-    }
-    else if (Model.IsFollowing)
-    {
+        @if (Model.IsMutualFollowing)
+        {
+            <div class="FollowingStatus" style=" font-color: var(--font-color);  opacity: .7;margin-bottom: .5rem;">
+                <i class="fa-solid fa-user-friends status-icon"></i> Following each other
+            </div>
             <button class="btn btn-follow-following following" onclick="clickOnUnFollow('@Model.UserId')">
-            <i class="fa-solid fa-check btn-icon"></i> Following
-        </button>
-    }
-    else
-    {
-            <button class="btn   btn-follow-following follow  " onclick="clickOnFollow('@Model.UserId')">
-            <i class="fa-solid fa-user-plus btn-icon"></i> Follow
-        </button>
-    }
+                <i class="fa-solid fa-check btn-icon"></i> Following
+            </button>
+        }
+        else if (Model.IsFollowing)
+        {
+            <button class="btn btn-follow-following following" onclick="clickOnUnFollow('@Model.UserId')">
+                <i class="fa-solid fa-check btn-icon"></i> Following
+            </button>
+        }
+        else if (Model.isFollowingMe)
+        {
+            <button class="btn btn-follow-following follow-back" onclick="clickOnFollow('@Model.UserId')">
+                <i class="fa-solid fa-user-plus btn-icon"></i> Follow Back
+            </button>
+        }
+        else
+        {
+            <button class="btn btn-follow-following follow" onclick="clickOnFollow('@Model.UserId')">
+                <i class="fa-solid fa-user-plus btn-icon"></i> Follow
+            </button>
+        }
+
+
 
     </div>
 
@@ -145,11 +156,10 @@
 
                 </div>
                 <div class="bio-info">
-                    <p class="location"><i class="bi bi-geo-alt-fill"></i> My location </p>
+                    <p class="location"><i class="bi bi-geo-alt-fill"></i> @Model.Location </p>
                     <p class="location"><i class="bi bi-file-post"></i><span>@Model.PostCount</span> Posts </p>
-                    <p class="location"><i class="bi bi-person-plus-fill"></i> <span>@Model.FollowersCount</span>  Followers</p>
-                    <p class="location"><i class="bi bi-person-plus"></i> <span>@Model.FollowingCount</span>  Following</p>
-
+                <p class="Following"><i class="bi bi-person-plus"></i> <span>@Model.FollowingCount</span>  Followers</p>
+                <p class="Followers"><i class="bi bi-person-plus-fill"></i> <span>@Model.FollowersCount</span>  Following</p>
                 </div>
             </div>
         </div>
@@ -164,27 +174,51 @@
                 <ul>
                     <li class="list "   data-filter="ALL">Timeline</li>
                 <li class="list" data-filter="Photos">Photos</li>
-
                 </ul>
             </div>
-
             <div class="posts-container" style="width: 90%;">
             </div>
-    
-
         </div>
     </div>
 
-     <!--------------------- TEmp to store the user id-------------------------------------->
+
+<!-- ====================  Model Of Followers and Following list ===================================-->
+<div class="modal fade" id="show_followes_list" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+    <input type="hidden" value="@Model.UserId"  id="CurrentUserID">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="show_commentsLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="FollowersModal" class="modal-body">
+                <!-- Iterate over the list of users -->
+
+                <div class="user">
+                    <h1>THER IS NO FOLLOWERS</h1>
+                </div>
+
+            </div>
+@*             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div> *@
+        </div>
+    </div>
+</div>
+
+
+
+<!--------------------- TEmp to store the user id-------------------------------------->
 <div id="userId" data-user-id="@Model.UserId"></div>
 
-@section Scripts{
+@section Scripts {
 
-        @* <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.12/signalr.min.js" ></script> *@
-<script>
-  
-    /////////////////// Close the notification list when user click outside  /////////////////////////////
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.12/signalr.min.js" ></script> *@
+    <script>
 
-</script>
+        /////////////////// Close the notification list when user click outside  /////////////////////////////
+
+    </script>
 
 }
+
