@@ -1,6 +1,7 @@
 ﻿using CLIQ_UE.Models;
 using CLIQ_UE.Repositories;
 using CLIQ_UE.ViewModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 
 namespace CLIQ_UE.Services
@@ -63,5 +64,30 @@ namespace CLIQ_UE.Services
         {
             return userRepository.GetById(userId);
         }
+        public async Task<BookMark> BookMark(String UserID)
+        {
+
+            ApplicationUser user =  userRepository.GetById(UserID);
+
+            if (user != null)
+            {
+                user.BookMark += 1;
+                 userRepository.Update(user);
+
+                BookMark bookMark = new BookMark
+                {
+
+                    UserID = user.Id
+                };
+
+                return bookMark;
+            }
+            else
+            {
+                throw new Exception("User not found");
+            }
+        }
+
     }
+
 }

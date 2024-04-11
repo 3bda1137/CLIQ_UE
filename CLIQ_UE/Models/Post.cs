@@ -13,7 +13,7 @@ namespace CLIQ_UE.Models
         [MaxLength(500, ErrorMessage = "Post text cannot exceed 500 characters")]
         public string? TextContent { get; set; }
 
-
+        public bool BookMark { get; set; } = false;
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
         public DateTime PostDate { get; set; }

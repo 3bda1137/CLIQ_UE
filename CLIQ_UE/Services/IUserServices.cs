@@ -10,5 +10,8 @@ namespace CLIQ_UE.Services
 
         public ApplicationUser GetUserByUserName(string userName);
         public ApplicationUser GetByID(string userId);
+        Task<BookMark> BookMark(string userId);
+
     }
+
 }

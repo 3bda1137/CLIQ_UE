@@ -67,7 +67,8 @@ namespace CLIQ_UE
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserLikeCommentService, UserLikeCommentService>();
             builder.Services.AddScoped<IUserLikeCommentRepository, UserLikeCommentRepository>();
-
+            builder.Services.AddScoped<IBookMarkService, BookMarkService>();
+            builder.Services.AddScoped<IBookMrakRepository , BookMarkRepository>();
             builder.Services.AddSignalR();
             //AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
