@@ -1,0 +1,20 @@
+﻿@model List<BookMark>;
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Post ID</th>
+       
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (BookMark bookMark in Model)
+        {
+            <tr>
+                <td>@bookMark.Id</td>
+                <td>@bookMark.PostID</td>
+            </tr>
+        }
+    </tbody>
+</table>

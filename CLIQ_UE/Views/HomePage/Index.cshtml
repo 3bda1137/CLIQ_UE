@@ -120,9 +120,9 @@
 
 
                 <div class="links-container">
-                    <div class="link">
-                        <i class="bi bi-bookmark-fill"></i>
-                        <a href="#">Bookmarks </a>
+                    <div class="box">
+                        <i class="bi bi-bookmark-fill bookmark-icon" onclick="addBookmark('${post.id}')"></i>
+                        <a href="#">BookMark</a>
                     </div>
                     <div class="link">
                         <i class="bi bi-patch-check-fill"></i>
@@ -130,7 +130,7 @@
                     </div>
                     <div class="link">
                         <img class="profile-pic" src="@Model.UserImage" alt="" />
-                        <a href="#">@@@Model.UserName</a>
+                        <a href="#">@Model.UserName</a>
                     </div>
                 </div>
 
@@ -462,6 +462,25 @@
 <script>
     
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //----------Make it boolean----------
     function lovePost(postId, likeOption) {
         console.log("Love post");
@@ -506,6 +525,7 @@
             }
         });
     }
+
 
     function getPostComments(postId) {
         console.log(postId);
@@ -671,5 +691,36 @@
     }
 
 
+    function addBookmark(postId) {
+        fetch('/BookMark/AddBookMark', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ postId: postId }), 
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Post bookmarked successfully');
+                } else {
+                    console.error('Failed to add bookmark');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding bookmark:', error);
+            });
+    }
+
+    
+
+
 
 </script>
+
+
+  
+
+
+
+</script>
+
