@@ -34,7 +34,7 @@ namespace CLIQ_UE.Services
             ApplicationUser applicationUser = new ApplicationUser();
             applicationUser.Email = viewModel.Email;
             applicationUser.PasswordHash = viewModel.Password;
-            applicationUser.PersonalImage = "./images/defualtImage.jpg";
+            applicationUser.PersonalImage = "./images/Man-Avatar.png";
             //??????
             applicationUser.UserName = GenerateUsernameFromEmail(viewModel.Email);
             return applicationUser;

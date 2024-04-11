@@ -1,0 +1,224 @@
+﻿﻿@using CLIQ_UE.ViewModels
+  @model ProfileViewVM
+
+
+@{
+
+    Layout = "__ViewProfileLayout";
+}
+
+
+<!-- ! Navbar -->
+<div class="row">
+    <div class="col-12">
+        <nav>
+            <div class="nav-content">
+                <a class="logo" asp-action="Index" asp-controller="HomePage">Clique <i class="fa-solid fa-people-group"></i></a>
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search" />
+                </div>
+
+                <div class="right-items">
+                    <div class="items">
+
+                        <div class="notification-container" id="notification-container">
+                            <div class="notification">
+                                <i class="fa-solid fa-bell" id="notification-icon"></i>
+                                @if (Model.newNotificationCount > 0)
+                                {
+                                    <span style="display:block" class="notification-count">@Model.newNotificationCount</span>
+
+                                }
+                                <span style="display:none" class="notification-count">0</span>
+
+                            </div>
+
+                            <!-------------------------------------------  Notifications ------------------------------------------------------------>
+                            <div class="notification-list">
+
+                                @*              <div class="notification-item">
+                                <img src="@Model.UserImage" alt="User 1" class="user-avatar">
+                                <div class="notification-details">
+                                <span class="user-name"><strong>User 1</strong></span>
+                                <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
+                                </div>
+                                </div> *@
+
+
+
+
+                            </div>
+                        </div>
+
+
+                        <div class="home ">
+                            <a href="#"><i class="fa-solid fa-house active-link"></i></a>
+                        </div>
+
+                        <div class="messages">
+                            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+
+                        <div class="profile-box" id="profile-box">
+                            <div class="profile-pic"><img src="@Model.CurrentUserImage" alt="Profile image"></div>
+                            <div class="profile-name">
+                                @Model.CurrentUserName
+                                <i class="fa-solid fa-caret-down"></i>
+                            </div>
+                            <div class="dropdown-menu" id="dropdown-menu">
+                                <a asp-action="Index" asp-controller="Profile" class="dropdown-item" data-action="profile"><i class="fa-solid fa-user"></i> Profile</a>
+                                <div class="dropdown-item" data-action="chat"><i class="fa-solid fa-comments"></i> Chat</div>
+                                <div class="dropdown-item" data-action="settings"><i class="fa-solid fa-cog"></i> Settings</div>
+                                <div class="dropdown-item" data-action="group"><i class="fa-solid fa-users"></i> Group</div>
+                                <div class="dropdown-item logout" data-action="logout"><a asp-action="Logout" asp-controller="Account"><i class="fa-solid fa-sign-out"></i> Logout</a></div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+
+    <!-- * ---------------------------------------------------------------- -->
+    <!-- ! Content -->
+
+
+        <!--* Main Context  *******************************************-->
+
+
+        <div class="col-lg-9 col-md-7 col-12 main-content-container  justify-content-center">
+            <div class="px-4 pt-0 pb-4 position-relative col-12 cover" style="height: 30vh;">
+                <img src="/images/@Model.CoverImage" alt="Cover Image" class="img-fluid">
+
+                <div class="media align-items-end profile-head px-4 d-flex position-absolute w-100 bottom-0">
+                    <div class="profile mr-3">
+                        <img src="@Model.UserImage" alt="Profile Image" class="mb-2 profile-image">
+                        <div class="media-body text-white">
+                            <h4>@Model.FirstName @Model.LastName <i class="bi bi-patch-check-fill text-primary"></i></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    <!---------------------------------------  Follow btn   ---------------------------->
+    <div class="col-lg-9 col-md-7 col-12 main-content-container  justify-content-center my-4">
+        @if (Model.IsMutualFollowing)
+        {
+            <div class="FollowingStatus" style=" font-color: var(--font-color);  opacity: .7;margin-bottom: .5rem;">
+                <i class="fa-solid fa-user-friends status-icon"></i> Following each other
+            </div>
+            <button class="btn btn-follow-following following" onclick="clickOnUnFollow('@Model.UserId')">
+                <i class="fa-solid fa-check btn-icon"></i> Following
+            </button>
+        }
+        else if (Model.IsFollowing)
+        {
+            <button class="btn btn-follow-following following" onclick="clickOnUnFollow('@Model.UserId')">
+                <i class="fa-solid fa-check btn-icon"></i> Following
+            </button>
+        }
+        else if (Model.isFollowingMe)
+        {
+            <button class="btn btn-follow-following follow-back" onclick="clickOnFollow('@Model.UserId')">
+                <i class="fa-solid fa-user-plus btn-icon"></i> Follow Back
+            </button>
+        }
+        else
+        {
+            <button class="btn btn-follow-following follow" onclick="clickOnFollow('@Model.UserId')">
+                <i class="fa-solid fa-user-plus btn-icon"></i> Follow
+            </button>
+        }
+
+
+
+    </div>
+
+  
+        <div class="col-lg-5 col-md-7 col-12 main-content-container justify-content-center bio-section">
+            <div class="bio-content">
+                <div class="bio-text">
+                    <p>TEST BIO..........</p>
+
+                </div>
+                <div class="bio-info">
+                    <p class="location"><i class="bi bi-geo-alt-fill"></i> @Model.Location </p>
+                    <p class="location"><i class="bi bi-file-post"></i><span>@Model.PostCount</span> Posts </p>
+                <p class="Following"><i class="bi bi-person-plus"></i> <span>@Model.FollowingCount</span>  Followers</p>
+                <p class="Followers"><i class="bi bi-person-plus-fill"></i> <span>@Model.FollowersCount</span>  Following</p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-lg-6 col-md-6 col-12 main-content-container d-flex justify-content-center">
+
+  
+
+            <div class="timeline">
+                <ul>
+                    <li class="list "   data-filter="ALL">Timeline</li>
+                <li class="list" data-filter="Photos">Photos</li>
+                </ul>
+            </div>
+            <div class="posts-container" style="width: 90%;">
+            </div>
+        </div>
+    </div>
+
+
+<!-- ====================  Model Of Followers and Following list ===================================-->
+<div class="modal fade" id="show_followes_list" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+    <input type="hidden" value="@Model.UserId"  id="CurrentUserID">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="show_commentsLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="FollowersModal" class="modal-body">
+                <!-- Iterate over the list of users -->
+
+                <div class="user">
+                    <h1>THER IS NO FOLLOWERS</h1>
+                </div>
+
+            </div>
+@*             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div> *@
+        </div>
+    </div>
+</div>
+
+
+
+<!--------------------- TEmp to store the user id-------------------------------------->
+<div id="userId" data-user-id="@Model.UserId"></div>
+
+@section Scripts {
+
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.12/signalr.min.js" ></script> *@
+    <script>
+
+        /////////////////// Close the notification list when user click outside  /////////////////////////////
+
+    </script>
+
+}
+

@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 
 const profile_pic = document.querySelector('.profile-pic');
@@ -112,17 +112,6 @@ btn_select_img.addEventListener('click', function () {
 });
 
 
-// Notification menu
-document.getElementById('notification-icon').addEventListener('click', function (event) {
-    event.stopPropagation();
-    document.getElementById('notification-container').classList.toggle('active');
-});
-
-document.body.addEventListener('click', function (event) {
-    if (!event.target.closest('#notification-container')) {
-        document.getElementById('notification-container').classList.remove('active');
-    }
-});
 
 
 //! Toggle profile menu 
@@ -279,9 +268,281 @@ function setTextDirection(textContainer, text) {
 }
 
 
+///////////////////////////////// Show Followers and Following List ///////////////////////////////////////////////////
+// Get Followers List
+const followersBtn = document.querySelector(".Followers");
+followersBtn.addEventListener('click', function () {
+    fetchFollowers();
+});
+
+// Get Following List
+const followingBtn = document.querySelector(".Following");
+followingBtn.addEventListener('click', function () {
+    fetchFollowing();
+});
+
+// Get All Followers 
+function fetchFollowers() {
+    var CurrentUserID = document.getElementById('CurrentUserID').value;
+
+    fetch(`/Follow/getAllFollowers?id=${CurrentUserID}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch Followers');
+            }
+            return response.json();
+        })
+        .then(List => {
+            displayFollowersList(List);
+
+            var modal = document.getElementById('show_followes_list');
+            var modalTitle = modal.querySelector('.modal-title');
+            modalTitle.textContent = 'Following List';
+
+
+            var myModal = new bootstrap.Modal(document.getElementById('show_followes_list'));
+            myModal.show();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+// Get All Following 
+function fetchFollowing() {
+    var CurrentUserID = document.getElementById('CurrentUserID').value;
+
+    fetch(`/Follow/getAllFollowing?id=${CurrentUserID}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch Following');
+            }
+            return response.json();
+        })
+        .then(List => {
+
+            displayFollowingList(List);
+
+            var modal = document.getElementById('show_followes_list');
+            var modalTitle = modal.querySelector('.modal-title');
+            modalTitle.textContent = 'Follower List';
+
+            var myModal = new bootstrap.Modal(document.getElementById('show_followes_list'));
+            myModal.show();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function displayFollowersList(model) {
+    var modalBody = document.getElementById('FollowersModal');
+    console.log("FOLLOWERS==>", model);
+    modalBody.innerHTML = '';
+
+    model.forEach(function (user) {
+        var userTemplate = `
+    <div class="user">
+            <div class="profile">
+            <input type="hidden" value="${user.userId}" id="FolloweID">
+                <img class="profile-pic" src="${user.userImage}" alt="Profile image">
+                <div class="name">
+                    <p class="username">${user.userName}</p>
+                </div>
+            </div>
+            <div class="follow-button">
+                ${user.isFollowing ?
+                `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList('${user.userId}')">
+                        <i class="fa-solid fa-check btn-icon"></i> Following
+                    </button>` :
+                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList('${user.userId}')">
+                        <i class="fa-solid fa-user-plus btn-icon"></i> Follow
+                    </button>`
+            }
+            </div>
+        </div>
+    `;
+
+        // Append the user template to the modal body
+        modalBody.insertAdjacentHTML('beforeend', userTemplate);
+    });
+
+
+    //// Going to Follower's Profile 
+    const profile = document.querySelectorAll('.modal-dialog .profile');
+    profile.forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            console.log("Click on notification ===>")
+            event.preventDefault();
+
+            const userId = item.querySelector("#FolloweID").value;
+
+            const userProfileUrl = `ViewUserProfile?userId=${userId}`;
+
+
+            window.location.href = userProfileUrl;
+        });
+    });
+}
+
+function displayFollowingList(model) {
+    var modalBody = document.getElementById('FollowersModal');
+    console.log("FOLLOWING==>", model);
+    modalBody.innerHTML = '';
+
+    model.forEach(function (user) {
+        var userTemplate = `
+    <div class="user">
+            <div class="profile">
+            <input type="hidden" value="${user.userId}" id="FolloweID">
+                <img class="profile-pic" src="${user.userImage}" alt="Profile image">
+                <div class="name">
+                    <p class="username">${user.userName}</p>
+                </div>
+            </div>
+            <div class="follow-button">
+                ${user.isFollowing ?
+            `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList('${user.userId}')">
+                        <i class="fa-solid fa-check btn-icon"></i> Following
+                    </button>` :
+                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList('${user.userId}')">
+                        <i class="fa-solid fa-user-plus btn-icon"></i> Follow
+                    </button>`
+            }
+            </div>
+        </div>
+    `;
+
+        // Append the user template to the modal body
+        modalBody.insertAdjacentHTML('beforeend', userTemplate);
+    });
+
+
+    //// Going to Follower's Profile 
+    const profile = document.querySelectorAll('.modal-dialog .profile');
+    profile.forEach(function (item) {
+    item.addEventListener('click', function (event) {
+        console.log("Click on notification ===>")
+        event.preventDefault();
+
+        const userId = item.querySelector("#FolloweID").value;
+
+        const userProfileUrl = `ViewUserProfile?userId=${userId}`;
+
+
+        window.location.href = userProfileUrl;
+    });
+});
+}
 
 
 /////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// Following  /////////////////
+
+
+function clickOnFollow(followingId) {
+    const follow____btn = document.querySelector(".btn-follow-following");
+    fetch('/Follow/FollowUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(followingId)
+    })
+        .then(response => {
+            if (response.ok) {
+                follow____btn.innerHTML = " ";
+                follow____btn.innerHTML = `
+                <i class="fa-solid fa-check"></i> Following
+                `
+
+            } else {
+                console.log("Error")
+            }
+        })
+        .catch(error => {
+            console.log("Error")
+        });
+}
+function clickOnUnFollow(followingId) {
+    const follow____btn = document.querySelector(".btn-follow-following");
+    fetch('/Follow/UnFollowUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(followingId)
+    })
+        .then(response => {
+            if (response.ok) {
+                follow____btn.innerHTML = " ";
+                follow____btn.innerHTML = `
+                 <i class="fa-solid fa-user-plus"></i> Follow
+                `
+            } else {
+                console.log("Error")
+            }
+        })
+        .catch(error => {
+            console.log("Error")
+        });
+}
+
+///////////////////////////////////////////////////////////////////
+//// From the list 
+//////////////////////////////////// Following  /////////////////
+
+
+function clickOnFollowFromList(followingId) {
+    const follow____btn = document.querySelector(".btn-follow-following");
+    fetch('/Follow/FollowUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(followingId)
+    })
+        .then(response => {
+            if (response.ok) {
+                follow____btn.innerHTML = " ";
+                follow____btn.innerHTML = `
+                <i class="fa-solid fa-check"></i> Following
+                `
+
+            } else {
+                console.log("Error")
+            }
+        })
+        .catch(error => {
+            console.log("Error")
+        });
+}
+function clickOnUnFollowFromList(followingId) {
+    const follow____btn = document.querySelector(".btn-follow-following");
+    fetch('/Follow/UnFollowUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(followingId)
+    })
+        .then(response => {
+            if (response.ok) {
+                follow____btn.innerHTML = " ";
+                follow____btn.innerHTML = `
+                 <i class="fa-solid fa-user-plus"></i> Follow
+                `
+            } else {
+                console.log("Error")
+            }
+        })
+        .catch(error => {
+            console.log("Error")
+        });
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////Load ALL POSTES /////////////////////////////////////////////////////////////////
 const timelineCategories = document.querySelectorAll('.timeline .list');
@@ -398,6 +659,7 @@ function fetchContent(filter) {
 // Function to display posts
 function displayPosts(Model) {
     Model.posts.forEach(post => {
+        
         let postHtml = `
             <div class="post" data-post-date="Just now">
                 <div class="box">
@@ -422,7 +684,7 @@ function displayPosts(Model) {
                         </div>
                     </div>
                     <!-- Post Content -->
-                    <div class="post-content">
+                    <div id="post${post.id}" class="post-content">
                         ${post.textContent ? `<p>${post.textContent}</p>` : ''}
                         <div class="post-img">
                             ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
@@ -430,12 +692,12 @@ function displayPosts(Model) {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i class="fa-solid fa-heart like-icon"></i>
-                                <span>${post.likeCount}</span>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                                <span>${post.dislikeCount}</span>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon"></i>
@@ -443,7 +705,7 @@ function displayPosts(Model) {
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
-                                <span>${post.commentCount}</span>
+                                <span id="postCommentCount${post.id}">${post.commentCount}</span>
                             </div>
                         </div>
 
@@ -592,12 +854,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i class="fa-solid fa-heart like-icon"></i>
-                                <span>${post.likeCount}</span>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                                <span>${post.dislikeCount}</span>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon"></i>
@@ -605,7 +867,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             </div>
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
-                                <span>${post.commentCount}</span>
+                                <span id="postCommentCount${post.id}">${post.commentCount}</span>
                             </div>
                         </div>
 
@@ -616,9 +878,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             <!-- Add Comment -->
                             <div class="add-comment">
                                 <img class="profile-pic" src="${post.user.personalImage}" alt="">
-                                <input type="text" placeholder="Add a comment">
-                                <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
+                                <input id="postId${post.id}" type="text" placeholder="Add a comment">
+                                <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})""></i>
                             </div>
+                            
                         </div>
                     </div>
 
@@ -651,4 +914,290 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+function lovePost(postId, likeOption) {
+    console.log("Love post");
+    let likePost = $("#likePost" + postId);
+    let dislikePost = $("#dislikePost" + postId);
 
+    let likesCount = $("#likePostCount" + postId);
+    let dislikesCount = $("#dislikePostCount" + postId);
+    console.log(likePost)
+    console.log(dislikePost)
+
+
+    $.ajax({
+        url: `/posts/InteractPost?PostId=${postId}&LikeOption=${likeOption}`,
+        type: 'POST',
+        //data: {commentId:commentId  }, // Include the postId and commentText parameters
+        success: function (response) {
+            if (likeOption == true) {
+                if (likePost.css('color') == "rgb(128, 128, 128)") {
+                    likePost.css('color', "red");
+                    dislikePost.css('color', "grey");
+                }
+                else {
+                    likePost.css('color', "grey");
+                }
+            }
+            else {
+                console.log("Not if")
+                if (dislikePost.css('color') == "rgb(128, 128, 128)") {
+                    dislikePost.css('color', "black");
+                    likePost.css('color', "grey");
+                }
+                else {
+                    dislikePost.css('color', "grey");
+                }
+            }
+            console.log(response);
+            likesCount.text(response['likes'])
+            dislikesCount.text(response['dislikes'])
+        },
+        error: function (xhr, status, error) {
+        }
+    });
+}
+function getPostComments(postId) {
+    console.log(postId);
+    console.log("Post id" + postId);
+    console.log("Get Post Comments");
+    $('#commentsModal').html("");
+    $.ajax({
+        url: `/comments/getComments?postId=` + postId, // Endpoint URL
+        type: 'GET',
+        //data: { postId: postId, commentText: commentText }, // Include the postId and commentText parameters
+        success: function (response) {
+            // Handle the success response from the server
+            console.log('AJAX request successful');
+            console.log(response);
+            let a = ``;
+            $('#commentsModal').append(a);
+            for (let comment of response) {
+
+                let profileImage = '/images/';
+                profileImage += comment.userProfileImage;
+                console.log(comment);
+                console.log(profileImage);
+                a = `<div id="${comment.commentId}" class="comment">
+                                        <div class="profile">
+                                                        <img class="profile-pic" src=${profileImage} alt="Profile image">
+                                            <div class="name">
+                                                        <p class="username">${comment.userFirstName} ${comment.userLastName}</p>
+                                                <p class="comment-time">${comment.commentDate}o</p>
+                                            </div>
+                                        </div>
+                                        <div class="comment-content">
+                                            <p class="comment-text">${comment.commentText}</p>
+                                        </div>
+                                        <div class="love-icon">
+                                                <i id="likeIcon${comment.commentId}" class="fa-solid fa-heart like-icon" style="color: ${comment.isLikedByMe == true ? 'red' : 'grey'}" onclick="likeComment(${comment.commentId})"></i>
+                                                <span id="likeCommentIcon${comment.commentId}">${comment.likeCount}</span>
+                                        </div>
+                                    </div>`
+                $('#commentsModal').append(a);
+            }
+            $(`#postCommentCount` + postId).text(response.length);
+            $('#show_comments').modal('show');
+        },
+        error: function (xhr, status, error) {
+            // Handle errors
+            console.error('AJAX request failed');
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
+
+
+
+
+function addNewComment(PostId) {
+    console.log("Works");
+    let commentText = $(`#postId` + PostId).val(); // Get the commentText value from the input field
+    $(`#postId` + PostId).val("");
+
+    if (commentText == "")
+        return;
+
+    let commentsViewsCount = $(`#postCommentCount` + PostId).text();
+    console.log(commentsViewsCount);
+    $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) + 1)
+
+
+    $.ajax({
+        url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}`, // Endpoint URL
+        type: 'POST',
+        //data: { postId: PostId, commenttext: commentText }, // Include the postId and commentText parameters
+
+        success: function (response) {
+            // Handle the success response from the server
+            console.log('AJAX request successful');
+            console.log(response);
+        },
+        error: function (xhr, status, error) {
+            // Handle errors
+            console.error('AJAX request failed');
+            console.error(xhr.responseText);
+            $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) - 1)
+            //(`#postCommentCount` + PostId).val() = numOfComments - 1;
+        }
+    });
+}
+
+
+//asd
+function likeComment(commentId) {
+    console.log(commentId);
+    var color = $(`#likeIcon${commentId}`).css('color');
+    console.log(color)
+    if (color == 'rgb(128, 128, 128)') {
+        console.log("From grey to red");
+        $(`#likeIcon${commentId}`).css('color', 'red');
+        $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) + 1)
+    }
+    else {
+        console.log("From red to grey");
+        $(`#likeIcon${commentId}`).css('color', 'grey');
+        $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) - 1)
+    }
+
+    $.ajax({
+        url: `/comments/LikeComment?commentId=${commentId}`,
+        type: 'POST',
+        //data: {commentId:commentId  }, // Include the postId and commentText parameters
+        success: function (response) {
+        },
+        error: function (xhr, status, error) {
+            if (color == 'red') {
+                $(`#likeIcon${commentId}`).css('color', 'grey');
+                $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) - 1)
+            }
+            else {
+                $(`#likeIcon${commentId}`).css('color', 'red');
+                $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) + 1)
+            }
+        }
+    });
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////    Get Notifications  //////////////////////////////////////////////////////////
+
+const notificationCountElement = document.querySelector('.notification-count');
+
+/////////////////////// Notification SignalR /////////////////////////////////////
+const notificationConnection = new signalR.HubConnectionBuilder()
+    .withUrl("/NotificationHub")
+    .build();
+
+notificationConnection.start()
+    .then(() => console.log("Connected to the notification Hub"))
+    .catch(err => console.log("Error =>", err.toString()))
+
+notificationConnection.on("ReceiveFollowNotification", () => {
+    //alert("GOOOOOOOOOOOOOOOOOOOT Follow 🔥🔥🔥")
+    NewNotificationAriived();
+});
+
+notificationConnection.on("ReceiveUnfollowNotification", () => {
+    NewNotificationAriived();
+
+});
+
+
+function NewNotificationAriived() {
+
+    if (parseInt(notificationCountElement.textContent) === 9) {
+
+        notificationCountElement.textContent = '+9 ';
+    } else {
+        const newCount = Number(notificationCountElement.textContent) + 1;
+        notificationCountElement.textContent = newCount;
+    }
+    notificationCountElement.style.display = 'block';
+
+
+
+}
+
+////////////////////////////////////// Notification Toggle Menu //////////////////////////////////////
+// Notification menu
+document.getElementById('notification-icon').addEventListener('click', function (event) {
+    event.stopPropagation();
+    document.getElementById('notification-container').classList.toggle('active');
+
+    /// Get Notifications =>
+
+    fetch('/HomePage/GetNotifications')
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                console.log("Error in response");
+            }
+        })
+        .then(notificationList => {
+            //console.log("-------------->" + notificationList);
+            ShowNotifications(notificationList);
+        })
+        .catch(err => console.log(err.toString()))
+
+});
+
+
+
+const notificationList = document.querySelector(".notification-list")
+/////////////////// Get and show notifications when click on the notification icon /////////////////////////////
+
+function ShowNotifications(notifications) {
+    console.log(notifications);
+    //// Remove the new notification number -->
+    notificationCountElement.textContent = 0;
+    notificationCountElement.style.display = 'none'
+
+
+    notificationList.innerHTML = " ";
+    notifications.forEach(notification => {
+        const HTML = `
+<div class="notification-item ${notification.isSeen ? 'seen' : 'unseen'}">
+        <input type="hidden" name="notificationUserId" value="${notification.createdByUserId}">
+        ${notification.content === 'followed you' ? '<i class="fa-solid fa-user-plus text-primary"></i>' : ''}
+        ${notification.content === 'unfollowed your profile' ? '<i class="fa-solid fa-user-xmark text-danger"></i>' : ''}
+        ${notification.content === 'loved your post' ? '<i class="fa-solid fa-heart text-danger"></i>' : ''}
+        ${notification.content === 'commented on your post' ? '<i class="fa-solid fa-comment-alt text-primary"></i>' : ''}
+        ${notification.content === 'disliked your post' ? '<i class="fa-solid fa-thumbs-down text-warning"></i>' : ''}
+        ${notification.content === 'sent you a message' ? '<i class="fa-solid fa-envelope text-info"></i>' : ''}
+        <img src="${notification.userImage}" alt="User" class="user-avatar">
+        <div class="notification-details">
+            <span class="user-name"><span>${notification.userName}</span></span>
+            <span class="notification-text">${notification.content} <br><strong>${notification.notificationShowDate}</strong></span>
+        </div>
+    </div>
+`;
+
+        notificationList.insertAdjacentHTML('afterbegin', HTML);
+    });
+
+
+    const notificationItems = document.querySelectorAll('.notification-item');
+
+    notificationItems.forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            console.log("Click on notification ===>")
+            event.preventDefault();
+
+            const userId = item.querySelector('input[name="notificationUserId"]').value;
+
+            const userProfileUrl = `ViewUserProfile?userId=${userId}`;
+
+            // Navigate to the user profile page
+            window.location.href = userProfileUrl;
+        });
+    });
+}
+
+/////////////////// Close the notification list when user click outside  /////////////////////////////

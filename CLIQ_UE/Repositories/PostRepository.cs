@@ -28,7 +28,12 @@ namespace CLIQ_UE.Repositories
 
         public List<string> allPostsImagesById(string id)
         {
-            List<string> images = context.Posts.Where(p => p.UserId == id).OrderByDescending(p => p.PostDate).Select(p => p.PostImage).ToList();
+            List<string> images = context.Posts
+             .Where(p => p.UserId == id && p.PostImage != null)
+             .OrderByDescending(p => p.PostDate)
+             .Select(p => p.PostImage)
+             .ToList();
+
             return images;
         }
 
@@ -162,16 +167,23 @@ namespace CLIQ_UE.Repositories
         public Post? GetPostById(int id)
 
         {
-            return context.Posts.Include(p => p.User)
-                  .Include(p => p.Reactions)
-                  //.Include(p => p.Comments)
-                  .Include(p => p.Views)
-                  .FirstOrDefault(p => p.Id == id);
+            return context.Posts
+                .Include(p => p.User)
+                .Include(p => p.Reactions)
+                //.Include(p => p.Comments)
+                .Include(p => p.Views)
+                .FirstOrDefault(p => p.Id == id);
         }
 
         public List<Reaction> GetReactionsByPostID(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public int GetUserPostCount(string userId)
+        {
+            return context.Posts.Count(p => p.UserId == userId);
+
         }
 
         public void Save()

@@ -25,44 +25,27 @@
                         <div class="notification-container" id="notification-container">
                             <div class="notification">
                                 <i class="fa-solid fa-bell" id="notification-icon"></i>
-                                <span class="notification-count">9+</span>
+                                @if (Model.newNotificationCount > 0)
+                                {
+                                    <span style="display:block" class="notification-count">@Model.newNotificationCount</span>
+
+                                }
+                                <span style="display:none" class="notification-count">0</span>
+
                             </div>
+
+                            <!-------------------------------------------  Notifications ------------------------------------------------------------>
                             <div class="notification-list">
 
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 1" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 1</strong></span>
-                                        <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
-                                    </div>
-                                </div>
+                                 @*              <div class="notification-item">
+                                 <img src="@Model.UserImage" alt="User 1" class="user-avatar">
+                                 <div class="notification-details">
+                                 <span class="user-name"><strong>User 1</strong></span>
+                                 <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
+                                 </div>
+                                 </div> *@
 
 
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 1" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 2</strong></span>
-                                        <span class="notification-text">commented on your post  <strong>5h ago</strong></span>
-                                    </div>
-                                </div>
-
-
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 1" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 1</strong></span>
-                                        <span class="notification-text">commented on your post . <strong>a Week ago</strong></span>
-                                    </div>
-                                </div>
-
-
-                                <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 2" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 2</strong></span>
-                                        <span class="notification-text">commented on your post  <strong>5 ago</strong></span>
-                                    </div>
-                                </div>
 
 
                             </div>
@@ -176,7 +159,7 @@
 
         <div class="col-lg-9 col-md-7 col-12 main-content-container  justify-content-center">
             <div class="px-4 pt-0 pb-4 position-relative col-12 cover" style="height: 30vh;">
-                <img src="https://iwritingsolutions.com/wp-content/uploads/2022/05/ad9fc80c376ce3a9a2365aba0c356a70-scaled.jpg" alt="Cover Image" class="img-fluid">
+                <img src="/images/@Model.CoverImage" alt="Cover Image" class="img-fluid">
 
                 <div class="media align-items-end profile-head px-4 d-flex position-absolute w-100 bottom-0">
                     <div class="profile mr-3">
@@ -199,11 +182,10 @@
         
                 </div>
                 <div class="bio-info">
-                    <p class="location"><i class="bi bi-geo-alt-fill"></i> My location </p>
-                    <p class="location"><i class="bi bi-file-post"></i><span>25</span> Posts </p>
-                    <p class="location"><i class="bi bi-person-plus-fill"></i> <span>30</span>  Followers</p>
-                    <p class="location"><i class="bi bi-person-plus"></i> <span>30</span>  Following</p>
-
+                    <p class="location"><i class="bi bi-geo-alt-fill"></i> @Model.Location </p>
+                    <p class="location"><i class="bi bi-file-post"></i><span>@Model.PostCount</span> Posts </p>
+                    <p class="Following"><i class="bi bi-person-plus"></i> <span>@Model.FollowingCount</span>  Followers</p>
+                    <p class="Followers"><i class="bi bi-person-plus-fill"></i> <span>@Model.FollowersCount</span>  Following</p>
                 </div>
             </div>
         </div>
@@ -242,8 +224,8 @@
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="privacyDropdown">
                                             <li data-value="public"><i class="fa-solid fa-earth-americas"></i> Public</li>
-                                            <li data-value="friends"><i class="fa-solid fa-users"></i> Friends</li>
-                                            <li data-value="private"><i class="fa-solid fa-lock"></i> Private</li>
+                                            <li data-value="friends"><i class="fa-solid fa-users"></i> Followers</li>
+                                            <li data-value="private"><i class="fa-solid fa-lock"></i> Only me</li>
                                         </ul>
                                         <input type="hidden" name="privacyValue" id="selected-privacy" value="Public">
                                     </div>
@@ -311,4 +293,83 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="show_comments" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="show_commentsLabel">Comments</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="commentsModal" class="modal-body">
+
+
+                    <div class="comment">
+                        <div class="profile">
+                            <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                            <div class="name">
+                                <p class="username">moudy rasmy</p>
+                                <p class="comment-time">1 hour ago</p>
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            <p class="comment-text">This is a comment.</p>
+                        </div>
+                        <div class="love-icon">
+                            <i class="fa-solid fa-heart like-icon"></i>
+                            <span>12</span>
+                        </div>
+                    </div>
+
+                    @*
+                    <div class="comment">
+                    <div class="profile">
+                    <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                    <div class="name">
+                    <p class="username">moudy rasmy</p>
+                    <p class="comment-time">1 hour ago</p>
+                    </div>
+                    </div>
+                    <div class="comment-content">
+                    <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, voluptates vero voluptatibus placeat, necessitatibus mollitia similique impedit quasi minima culpa magni, nulla sapiente ex non. Illo sequi tempora laboriosam impedit..</p>
+                    </div>
+                    <div class="love-icon">
+                    <i class="fa-solid fa-heart like-icon"></i>
+                    <span>12</span>
+                    </div>
+                    </div>
+                    *@
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ====================  Model Of Followers and Following list ===================================-->
+    <div class="modal fade" id="show_followes_list" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+        <input type="hidden" value="@Model.userId" id="CurrentUserID">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 text-primary" id="show_commentsLabel"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="FollowersModal" class="modal-body">
+                    <!-- Iterate over the list of users -->
+
+                    <div class="user">
+                        <h1>THER IS NO FOLLOWERS</h1>
+                    </div>
+
+                </div>
+       @*          <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div> *@
+            </div>
+        </div>
+    </div>
 

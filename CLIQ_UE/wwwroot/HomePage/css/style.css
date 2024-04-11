@@ -152,6 +152,9 @@ i {
 .links-container a {
     text-decoration: none;
     color: var(--font-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .links-container {
@@ -306,11 +309,13 @@ i {
         padding: 5px 15px;
         opacity: .5;
         transition: var(--transition);
+        cursor:pointer;
     }
 
-        .right-boxes .links-container.box-with-two-cols .box-row .follow:hover {
-            opacity: 1;
-        }
+
+    .right-boxes .links-container.box-with-two-cols .box-row .follow:hover {
+        opacity: 1;
+    }
 
         .right-boxes .links-container.box-with-two-cols .box-row .follow a {
             display: flex;
@@ -361,6 +366,7 @@ i {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    cursor:pointer;
 }
 
     .right-boxes .links-container.box-with-two-cols .box-row .profile img {
@@ -473,17 +479,6 @@ nav .nav-content {
     position: relative;
 }
 
-.notification-count {
-    position: absolute;
-    top: -7px;
-    right: -9px;
-    background-color: red;
-    color: white;
-    font-size: 10px;
-    padding: 2px 4px;
-    border-radius: 10px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-}
 
 .notification-container {
     position: relative;
@@ -511,6 +506,19 @@ nav .nav-content {
     opacity: 1;
 }
 
+.notification-count {
+    position: absolute;
+    top: -7px;
+    right: -9px;
+    background-color: red;
+    color: white;
+    font-size: 5px;
+    padding: 0px 7px;
+    border-radius: 29px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+}
+
 .notification-item {
     padding: 10px;
     border-bottom: 1px solid #ccc;
@@ -519,7 +527,30 @@ nav .nav-content {
     margin-bottom: 10px;
     cursor: pointer;
     text-align: start;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
 }
+
+    }
+.notification-item.seen {
+    background-color: #f9f9f9;
+}
+
+        .notification-item.seen:hover {
+            background-color: #f0f0f0;
+        }
+
+.notification-item.unseen {
+    background-color: #9bcae7
+}
+
+    .notification-item.unseen:hover {
+        background-color: #ace0ff
+    }
+
 
     .notification-item:last-child {
         border-bottom: none;
@@ -572,17 +603,6 @@ nav .nav-content {
     animation: flash 0.5s linear;
 }
 
-.notification-item {
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    transition: background-color 0.3s ease;
-}
-
-    .notification-item:hover {
-        background-color: #f0f0f0;
-    }
 
     .notification-item:last-child {
         margin-bottom: 0;
@@ -676,6 +696,7 @@ nav .nav-content {
     box-shadow: var(--box-shadow);
     width: 90%;
     border-radius: var(--border-radius);
+    border: 1px solid #9b9baf;
 }
 
     .add-post .box {
@@ -883,6 +904,7 @@ nav .nav-content {
         width: 90%;
         border-radius: var(--border-radius);
         transition: var(--transition);
+        border: 1px solid #9b9baf;
     }
 
         .posts-container .post.hidden {

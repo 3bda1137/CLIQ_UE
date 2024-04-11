@@ -12,27 +12,41 @@ namespace CLIQ_UE.Repositories
         }
         public void Add(Followers follower)
         {
-            context.Followers.Add(follower);
-            context.SaveChanges();
+            var followerId = follower.FollowerId;
+            var followingId = follower.FollowingId;
+
+            bool isFollowingEachOther = context.Followers.Any(f => f.FollowerId == followerId && f.FollowingId == followingId);
+            if (!isFollowingEachOther)
+            {
+                context.Followers.Add(follower);
+                context.SaveChanges();
+            }
+
         }
 
-        public void Delete(string id)
+        public void UnFollow(Followers follower)
         {
-
+            var existingFollower = context.Followers.FirstOrDefault(f => f.FollowerId == follower.FollowerId && f.FollowingId == follower.FollowingId);
+            if (existingFollower != null)
+            {
+                context.Followers.Remove(existingFollower);
+                context.SaveChanges();
+            }
         }
+
 
         public List<Followers> GetAllByFollowingId(string followingId)
         {
             List<Followers> followers = context.Followers
-                .Where(f => f.FollowingId == followingId)
+                .Where(f => f.FollowerId == followingId)
                 .ToList();
             return followers;
         }
 
-        public List<Followers> GetAllBySeachWords(string search,string followingId)
+        public List<Followers> GetAllBySeachWords(string search, string followingId)
         {
             List<Followers> followers = context.Followers
-                .Where(f => f.FollowerName.Contains(search) && f.FollowingId==followingId)
+                .Where(f => f.FollowingName.Contains(search) && f.FollowerId == followingId)
                 .ToList();
             return followers;
         }
@@ -50,5 +64,42 @@ namespace CLIQ_UE.Repositories
             context.Followers.Update(follower);
             context.SaveChanges();
         }
+
+        public bool IsUserFollowing(string followerId, string followingId)
+        {
+            var followRelationship = context.Followers
+                                            .FirstOrDefault(f => f.FollowerId == followerId && f.FollowingId == followingId);
+
+            return followRelationship != null;
+        }
+
+        public int GetFollowingCount(string followingIdId)
+        {
+            return context.Followers.Count(f => f.FollowingId == followingIdId);
+        }
+
+        public int GetFollowerCount(string followerId)
+        {
+            return context.Followers.Count(f => f.FollowerId == followerId);
+        }
+
+        public List<string> GetFollowersIds(string userid)
+        {
+            List<string> ids = context.Followers
+                .Where(f => f.FollowerId == userid)
+                .Select(f => f.FollowingId)
+                .ToList();
+            return ids;
+        }
+
+        public List<string> GetFollowingIds(string userid)
+        {
+            List<string> ids = context.Followers
+                .Where(f => f.FollowingId == userid)
+                .Select(f => f.FollowerId)
+                .ToList();
+            return ids;
+        }
+
     }
 }

@@ -10,7 +10,7 @@ namespace CLIQ_UE.Services
         Post CreatePost(CreatePostViewModel post, ApplicationUser user);
         List<Post> GetLatestPostsByUserId(string id, int pageIndex, int pageSize);
 
-        void UpdatePost(Post post);
+        Task<int> UpdatePost(Post post);
         void DeletePost(int id);
         void Save();
 
@@ -19,6 +19,11 @@ namespace CLIQ_UE.Services
         List<Reaction> GetReactionsByPostID(int id);
 
         public List<string> allPostsImagesById(string id);
+
+        int GetUserPostCount(string userId);
+
+
+
         Task<int> IncreasePostComments(int postId);
 
     }
