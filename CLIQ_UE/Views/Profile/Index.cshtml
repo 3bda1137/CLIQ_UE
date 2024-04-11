@@ -182,11 +182,10 @@
         
                 </div>
                 <div class="bio-info">
-                    <p class="location"><i class="bi bi-geo-alt-fill"></i> My location </p>
-                    <p class="location"><i class="bi bi-file-post"></i><span>25</span> Posts </p>
-                    <p class="location"><i class="bi bi-person-plus-fill"></i> <span>30</span>  Followers</p>
-                    <p class="location"><i class="bi bi-person-plus"></i> <span>30</span>  Following</p>
-
+                    <p class="location"><i class="bi bi-geo-alt-fill"></i> @Model.Location </p>
+                    <p class="location"><i class="bi bi-file-post"></i><span>@Model.PostCount</span> Posts </p>
+                    <p class="Following"><i class="bi bi-person-plus"></i> <span>@Model.FollowingCount</span>  Followers</p>
+                    <p class="Followers"><i class="bi bi-person-plus-fill"></i> <span>@Model.FollowersCount</span>  Following</p>
                 </div>
             </div>
         </div>
@@ -296,6 +295,7 @@
 
 
     <div class="modal fade" id="show_comments" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -344,6 +344,31 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ====================  Model Of Followers and Following list ===================================-->
+    <div class="modal fade" id="show_followes_list" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+        <input type="hidden" value="@Model.userId" id="CurrentUserID">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 text-primary" id="show_commentsLabel"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="FollowersModal" class="modal-body">
+                    <!-- Iterate over the list of users -->
+
+                    <div class="user">
+                        <h1>THER IS NO FOLLOWERS</h1>
+                    </div>
+
+                </div>
+       @*          <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div> *@
             </div>
         </div>
     </div>
