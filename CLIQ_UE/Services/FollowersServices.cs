@@ -1,7 +1,6 @@
 ﻿using CLIQ_UE.Models;
 using CLIQ_UE.Repositories;
 using CLIQ_UE.ViewModels;
-using System.Collections.Generic;
 
 namespace CLIQ_UE.Services
 {
@@ -11,8 +10,8 @@ namespace CLIQ_UE.Services
         private readonly ILastMessageServices lastMessageServices;
         private readonly IUserServices userServices;
 
-        public FollowersServices(IFollowersRepository followersRepository 
-                                    ,ILastMessageServices lastMessageServices
+        public FollowersServices(IFollowersRepository followersRepository
+                                    , ILastMessageServices lastMessageServices
                                     , IUserServices userServices)
         {
             this.followersRepository = followersRepository;
@@ -24,26 +23,25 @@ namespace CLIQ_UE.Services
             followersRepository.Add(follower);
         }
 
-        public void Delete(string id)
+        public void UnFollow(Followers follower)
         {
-            throw new NotImplementedException();
+            followersRepository.UnFollow(follower);
         }
 
-        public List<UserConntactViewModel> GetAllByFollowingId(string followingId)
+        public List<UserConntactViewModel> GetAllByFollowingId(string followerId)
         {
-            List<Followers> followers=followersRepository.GetAllByFollowingId(followingId);
+            List<Followers> followers = followersRepository.GetAllByFollowingId(followerId);
             List<UserConntactViewModel> userConntactViewModel = new List<UserConntactViewModel>();
             foreach (Followers follower in followers)
             {
                 UserConntactViewModel viewModel = new UserConntactViewModel();
-             
-                if (follower.FollowingId == followingId)//FollowingId ==me
+
+                if (follower.FollowerId == followerId)//FollowerId ==me
                 {
-                    //ApplicationUser user = userServices.GetByID(follower.FollowerId);
-                    viewModel.UserId = follower.FollowerId;
-                    viewModel.UserName= follower.FollowerName;
+                    viewModel.UserId = follower.FollowingId;
+                    viewModel.UserName = follower.FollowingName;
                     viewModel.ImageUrl = follower.ImageUrl;
-                    viewModel.LastMessage = lastMessageServices.Get(followingId, follower.FollowerId);
+                    viewModel.LastMessage = lastMessageServices.Get(followerId, follower.FollowingId);
                 }
 
                 userConntactViewModel.Add(viewModel);
@@ -51,7 +49,7 @@ namespace CLIQ_UE.Services
             return userConntactViewModel;
         }
 
-        public List<UserConntactViewModel> GetAllBySeachWords(string searchword,string followingId)
+        public List<UserConntactViewModel> GetAllBySeachWords(string searchword, string followingId)
         {
             List<Followers> followers = followersRepository.GetAllBySeachWords(searchword, followingId);
             List<UserConntactViewModel> userConntactViewModel = new List<UserConntactViewModel>();
@@ -59,13 +57,14 @@ namespace CLIQ_UE.Services
             {
                 UserConntactViewModel viewModel = new UserConntactViewModel();
 
-                if (follower.FollowingId == followingId)//FollowingId ==me
+                if (follower.FollowerId == followingId)//FollowingId ==me
                 {
                     //ApplicationUser user = userServices.GetByID(follower.FollowerId);
                     viewModel.UserId = follower.FollowerId;
-                    viewModel.UserName = follower.FollowerName;
+                    viewModel.UserName = follower.FollowingName;
                     viewModel.ImageUrl = follower.ImageUrl;
                     viewModel.LastMessage = lastMessageServices.Get(followingId, follower.FollowerId);
+
                 }
 
                 userConntactViewModel.Add(viewModel);
@@ -82,6 +81,30 @@ namespace CLIQ_UE.Services
         public void Update(Followers follower)
         {
             followersRepository.Update(follower);
+        }
+
+        public bool IsUserFollowing(string followerId, string followingId)
+        {
+            return followersRepository.IsUserFollowing(followerId, followingId);
+        }
+
+        public int GetFollowingCount(string followerId)
+        {
+            return followersRepository.GetFollowingCount(followerId);
+        }
+        public int GetFollowerCount(string followingId)
+        {
+            return followersRepository.GetFollowerCount(followingId);
+        }
+
+        public List<string> GetFollowersIds(string userid)
+        {
+            return followersRepository.GetFollowersIds(userid);
+        }
+
+        public List<string> GetFollowingIds(string userid)
+        {
+            return followersRepository.GetFollowingIds(userid);
         }
     }
 }

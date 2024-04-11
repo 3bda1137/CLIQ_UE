@@ -12,6 +12,7 @@ namespace CLIQ_UE.ViewModels
        
         ApplicationUser user { get; set; }
 
-
+        public int newNotificationCount { get; set; }
+        public List<ApplicationUser> SuggestesUsers { get; set; }
     }
 }

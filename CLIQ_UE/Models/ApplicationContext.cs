@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace CLIQ_UE.Models
 {
@@ -19,12 +18,18 @@ namespace CLIQ_UE.Models
         public DbSet<View> Views { get; set; }
         public DbSet<ChatIndividual> ChatIndividual { get; set; }
         public DbSet<OnlineUser> OnlineUsers { get; set; }
-
+        public DbSet<Notification> Notifications { get; set; }
         public DbSet<Followers> Followers { get; set; }
         public virtual DbSet<LastMessage> LastMessages { get; set; }
 
         public DbSet<UserLikeComment> UserLikeComments { get; set; }
+
         public DbSet<BookMark> bookMarks { get; set; }
+
+        public DbSet<UserLikePost> UserLikePosts { get; set; }
+
+        public DbSet<LastSeen> LastSeens { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,6 +37,9 @@ namespace CLIQ_UE.Models
 
             builder.Entity<UserLikeComment>()
                 .HasKey(x => new { x.CommentId, x.ApplicationUserId });
+
+            builder.Entity<UserLikePost>()
+                .HasKey(x => new { x.PostId, x.ApplicationUserId });
 
 
             //For comment's likes
