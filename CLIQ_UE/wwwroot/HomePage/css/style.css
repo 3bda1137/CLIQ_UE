@@ -134,9 +134,12 @@ i {
     color: var(--secondary-color);
 }
 
+.modal-body{
+    height:400px;
+    overflow-y:scroll;
+}
 /* //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////// */
-
 /* Main Structure */
 [class*="col-"] {
     /* border: 1px solid gray; */
@@ -1193,6 +1196,7 @@ nav .nav-content {
     margin-bottom: 5px;
     margin-left: 15px;
     text-align: left;
+    overflow-wrap: anywhere;
 }
 
 .modal-dialog .comment-time {
