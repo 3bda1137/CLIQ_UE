@@ -104,7 +104,10 @@ i {
 .comment-icon {
     color: var(--secondary-color);
 }
-
+.modal-body {
+    height: 400px;
+    overflow-y: scroll;
+}
 /* //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////// */
     /* Main Structure */
@@ -1094,6 +1097,7 @@ button.btn-follow-following {
     margin-bottom: 5px;
     margin-left: 15px;
     text-align: left;
+    overflow-wrap: anywhere;
 }
 
 .modal-dialog .comment-time {
@@ -1227,7 +1231,7 @@ button.btn-follow-following {
 /* Start TimeLine  */
 .timeline {
     box-shadow: var(--box-shadow);
-    width: 90%;
+    width: 80%;
     border-radius: var(--border-radius);
     box-shadow: -8px 7px 2px 0px #48484830, 4px -2px 10px 0px #48484830;
     top: 619px;
