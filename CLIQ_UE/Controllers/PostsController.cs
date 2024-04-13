@@ -61,17 +61,17 @@ namespace CLIQ_UE.Controllers
 
             Post Post = postService.GetPostById(PostId);
 
-            if(Post != null)
+            if (Post != null)
             {
                 //The first time to interact
-                if(userLikePost == null)
+                if (userLikePost == null)
                 {
                     if (LikeOption)
                     {
                         Post.LikeCount++;
                         await postService.UpdatePost(Post);
                     }
-                    else 
+                    else
                     {
                         Post.DislikeCount++;
                         await postService.UpdatePost(Post);
@@ -122,12 +122,20 @@ namespace CLIQ_UE.Controllers
                         }
                     }
                 }
-                return Json(new {likes = Post.LikeCount, dislikes = Post.DislikeCount});
+                return Json(new { likes = Post.LikeCount, dislikes = Post.DislikeCount });
             }
             else
             {
                 return BadRequest();
             }
         }
+
+
+        public IActionResult Delete(int id)
+        {
+            postService.DeletePost(id);
+            return Ok();
+        }
+
     }
 }

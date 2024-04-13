@@ -439,6 +439,7 @@ function fetchContent(filter) {
 // Function to display posts
 function displayPosts(Model) {
     Model.posts.forEach(post => {
+
         let postHtml = `
             <div class="post" data-post-date="Just now">
                 <div class="box">
@@ -452,15 +453,7 @@ function displayPosts(Model) {
                                 <p class="post-time">${post.postAddedTime}</p>
                             </div>
                         </div>
-                        <div class="views">
-                            <div class="views-number">
-                                <i class="fa-solid fa-eye"></i>
-                                <p>${post.viewsCount}</p>
-                            </div>
-                            <div class="more-options">
-                                <i class="fa-solid fa-ellipsis more-options-icon"></i>
-                            </div>
-                        </div>
+      
                     </div>
                     <!-- Post Content -->
                     <div class="post-content">
@@ -478,10 +471,12 @@ function displayPosts(Model) {
                                 <i class="fa-solid fa-thumbs-down dislike-icon"></i>
                                 <span>${post.dislikeCount}</span>
                             </div>
+                            <!--
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon"></i>
                                 <span>${post.repostCount}</span>
                             </div>
+                            -->
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
                                 <span>${post.commentCount}</span>

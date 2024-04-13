@@ -22,7 +22,7 @@ namespace CLIQ_UE.Models
 
         public byte[]? ImageData { get; set; }
 
-
+        public bool isDeleted { get; set; }
         public List<string>? Videos { get; set; }
         public int LikeCount { get; set; }
         public int DislikeCount { get; set; }

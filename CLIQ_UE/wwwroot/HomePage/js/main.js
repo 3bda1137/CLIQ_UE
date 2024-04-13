@@ -305,9 +305,12 @@ function fetchPosts(pageIndex) {
 function displayPosts(Model) {
     //console.log("Model posts")
     Model.posts.forEach(post => {
+        const isCurrentUserPost = post.user.id === Model.currentUserId;
+        console.log(isCurrentUserPost);
         let postHtml = `
             <div class="post" data-post-date="Just now">
                 <div class="box">
+                           <input type="hidden" class="post-id" value="${post.id}">
                     <div class="top">
                         <!-- Profile -- views -->
                         <div class="profile post-profile">
@@ -319,15 +322,11 @@ function displayPosts(Model) {
                                 <p class="post-time">${post.postAddedTime}</p>
                             </div>
                         </div>
-                        <div class="views">
-                            <div class="views-number">
-                                <i class="fa-solid fa-eye"></i>
-                                <p>${post.viewsCount}</p>
-                            </div>
-                            <div class="more-options">
-                                <i class="fa-solid fa-ellipsis more-options-icon"></i>
-                            </div>
-                        </div>
+                          ${isCurrentUserPost ? `
+                    <div class="delete-post" onclick="deletePost(${post.id})">
+                        <i class="fa-solid fa-trash delete-icon text-danger"></i>
+                    </div>
+                ` : ''}
                     </div>
                     <!-- Post Content -->
                     <div id="post${post.id}" class="post-content">
@@ -345,10 +344,12 @@ function displayPosts(Model) {
                                 <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
+                            <!--
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon" onclick="rePost('${post.id}')"></i>
                                 <span>${post.repostCount}</span>
                             </div>
+                            -->
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
                                 <span id="postCommentCount${post.id}">${post.commentCount}</span>
@@ -503,12 +504,10 @@ window.addEventListener('scroll', loadMore);
         ////// Consume the data 
 
         connection.on("NewPostCreated", function (post) {
-            console.log("Data from send when the event fire")
-            console.log(post)
-
             let PostHtml = `
                     <div class="post" data-post-date="Just now">
                         <div class="box">
+                           <input type="hidden" class="post-id" value="${post.id}">
                             <div class="top">
                                 <!-- Profile -- views -->
                                 <div class="profile">
@@ -519,16 +518,12 @@ window.addEventListener('scroll', loadMore);
                                         <p class="post-time">Just now</p>
                                     </div>
                                 </div>
-                                <div class="views">
-                                    <div class="views-number">
-                                        <i class="fa-solid fa-eye"></i>
-                                        <p>${post.viewsCount}</p>
-                                    </div>
-                                    <div class="more-options">
-                                        <i class="fa-solid fa-ellipsis more-options-icon"></i>
-                                    </div>
-                                </div>
-                            </div>
+
+                    <div class="delete-post" onclick="deletePost(${post.id})">
+                        <i class="fa-solid fa-trash delete-icon text-danger"></i>
+                    </div>
+     
+                    </div>
                             <!-- Post Content -->
                             <div class="post-content">
                                 ${post.textContent ? `<p>${post.textContent}</p>` : ''}
@@ -545,10 +540,12 @@ window.addEventListener('scroll', loadMore);
                                 <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
+                                 <!--
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon"></i>
                                 <span>${post.repostCount}</span>
                             </div>
+                            -->
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
                                 <span id="postCommentCount${post.id}">${post.commentCount}</span>
@@ -853,10 +850,69 @@ function clickOnFollowFromList(button, followingId) {
 
 
 
-//////////// Repost functionality ==> ////////////////////////////////////////////
-function rePost(postID) {
-    console.log(postID)
+//////////// Delete functionality ==> ////////////////////////////////////////////
+// Function to delete a post
+function deletePost(postId) {
+    const model = `
+        <div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="deletePostModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deletePostModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body fw-bold text-danger" style="    height: fit-content;overFlow:hidden;">
+                Are you sure you want to delete this post?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="confirmDeleteBtn" type="button" class="btn btn-danger">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', model);
+
+
+
+    const deleteModal = new bootstrap.Modal(document.getElementById('deletePostModal'));
+    deleteModal.show();
+
+
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    confirmBtn.addEventListener('click', function () {
+        fetch(`/Posts/Delete?id=${postId}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (response.ok) {
+                    const postIdInput = document.querySelector(`input.post-id[value="${postId}"]`);
+
+
+                    if (postIdInput) {
+                        const postId = postIdInput.value;
+
+                        const postElement = postIdInput.closest('.post');
+                        if (postElement) {
+                            console.log(postElement)
+                            postElement.remove(); 
+                        }
+                    }
+
+                } else {
+                    console.error(`Failed to delete post with ID ${postId}.`);
+                }
+            })
+            .catch(error => {
+                console.error(`Error deleting post with ID ${postId}:`, error);
+            });
+
+        deleteModal.hide();
+    });
 }
+
 
 ///// function to go to the top 
 function goToTop() {

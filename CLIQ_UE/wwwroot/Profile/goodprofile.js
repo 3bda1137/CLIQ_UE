@@ -660,13 +660,15 @@ function fetchContent(filter) {
 // Function to display posts
 function displayPosts(Model) {
     Model.posts.forEach(post => {
-        
+        const isCurrentUserPost = post.user.id === Model.currentUserId;
         let postHtml = `
             <div class="post" data-post-date="Just now">
                 <div class="box">
+                           <input type="hidden" class="post-id" value="${post.id}">
                     <div class="top">
                         <!-- Profile -- views -->
-                        <div class="profile">
+                        <div class="profile post-profile">
+                                 <input type="hidden" value="${post.user.id}" id="PostID">
                             <img class="profile-pic" src="${post.user.personalImage}"  alt="Profile image">
                             <div class="name">
                                 <p class="username">${post.user.userName} <i class="bi bi-patch-check-fill text-primary"></i> </p>
@@ -674,15 +676,11 @@ function displayPosts(Model) {
                                 <p class="post-time">${post.postAddedTime}</p>
                             </div>
                         </div>
-                        <div class="views">
-                            <div class="views-number">
-                                <i class="fa-solid fa-eye"></i>
-                                <p>${post.viewsCount}</p>
-                            </div>
-                            <div class="more-options">
-                                <i class="fa-solid fa-ellipsis more-options-icon"></i>
-                            </div>
-                        </div>
+                          ${isCurrentUserPost ? `
+                    <div class="delete-post" onclick="deletePost(${post.id})">
+                        <i class="fa-solid fa-trash delete-icon text-danger"></i>
+                    </div>
+                ` : ''}
                     </div>
                     <!-- Post Content -->
                     <div id="post${post.id}" class="post-content">
@@ -700,17 +698,22 @@ function displayPosts(Model) {
                                 <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
+                            <!--
                             <div class="box">
-                                <i class="fa-solid fa-retweet repost-icon"></i>
+                                <i class="fa-solid fa-retweet repost-icon" onclick="rePost('${post.id}')"></i>
                                 <span>${post.repostCount}</span>
                             </div>
+                            -->
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
                                 <span id="postCommentCount${post.id}">${post.commentCount}</span>
                             </div>
                         </div>
 
-                                <i class="bi bi-bookmark-fill"></i>
+                              <div class="box">
+    <i class="bi bi-bookmark-fill bookmark-icon" onclick="addBookmark('${post.id}')"></i>
+</div>
+
                         </div>
                         ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
                     </div>
@@ -817,15 +820,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+
     ////// Consume the data 
 
     connection.on("NewPostCreated", function (post) {
-        console.log("Data from send when the event fire")
-        console.log(post)
-
         let PostHtml = `
                     <div class="post" data-post-date="Just now">
                         <div class="box">
+                           <input type="hidden" class="post-id" value="${post.id}">
                             <div class="top">
                                 <!-- Profile -- views -->
                                 <div class="profile">
@@ -836,22 +838,18 @@ document.addEventListener("DOMContentLoaded", function () {
                                         <p class="post-time">Just now</p>
                                     </div>
                                 </div>
-                                <div class="views">
-                                    <div class="views-number">
-                                        <i class="fa-solid fa-eye"></i>
-                                        <p>${post.viewsCount}</p>
-                                    </div>
-                                    <div class="more-options">
-                                        <i class="fa-solid fa-ellipsis more-options-icon"></i>
-                                    </div>
-                                </div>
-                            </div>
+
+                    <div class="delete-post" onclick="deletePost(${post.id})">
+                        <i class="fa-solid fa-trash delete-icon text-danger"></i>
+                    </div>
+     
+                    </div>
                             <!-- Post Content -->
                             <div class="post-content">
                                 ${post.textContent ? `<p>${post.textContent}</p>` : ''}
                                 <div class="post-img">
                                     ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
-                                 </div>
+                                </div>
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
@@ -862,10 +860,12 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
+                                       <!--
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon"></i>
                                 <span>${post.repostCount}</span>
                             </div>
+                            -->
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
                                 <span id="postCommentCount${post.id}">${post.commentCount}</span>
@@ -880,9 +880,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             <div class="add-comment">
                                 <img class="profile-pic" src="${post.user.personalImage}" alt="">
                                 <input id="postId${post.id}" type="text" placeholder="Add a comment">
-                                <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})""></i>
+                                <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})"></i>
                             </div>
-                            
                         </div>
                     </div>
 
@@ -1201,4 +1200,66 @@ function ShowNotifications(notifications) {
     });
 }
 
-/////////////////// Close the notification list when user click outside  /////////////////////////////
+//////////// Delete functionality ==> ////////////////////////////////////////////
+// Function to delete a post
+function deletePost(postId) {
+    const model = `
+        <div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="deletePostModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deletePostModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body fw-bold text-danger" style="    height: fit-content;overFlow:hidden;">
+                Are you sure you want to delete this post?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="confirmDeleteBtn" type="button" class="btn btn-danger">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', model);
+
+
+
+    const deleteModal = new bootstrap.Modal(document.getElementById('deletePostModal'));
+    deleteModal.show();
+
+
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    confirmBtn.addEventListener('click', function () {
+        fetch(`/Posts/Delete?id=${postId}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (response.ok) {
+                    const postIdInput = document.querySelector(`input.post-id[value="${postId}"]`);
+
+
+                    if (postIdInput) {
+                        const postId = postIdInput.value;
+
+                        const postElement = postIdInput.closest('.post');
+                        if (postElement) {
+                            console.log(postElement)
+                            postElement.remove();
+                        }
+                    }
+
+                } else {
+                    console.error(`Failed to delete post with ID ${postId}.`);
+                }
+            })
+            .catch(error => {
+                console.error(`Error deleting post with ID ${postId}:`, error);
+            });
+
+        deleteModal.hide();
+    });
+}
+
