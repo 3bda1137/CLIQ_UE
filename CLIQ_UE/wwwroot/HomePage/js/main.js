@@ -36,7 +36,7 @@
     const like_number = document.querySelector('.like-numbers');
     const btn_dislike_icon = document.querySelector('.dislike-icon i');
     const dislike_number = document.querySelector('.dislike-numbers');
-    const btn_repost_icon = document.querySelector('.repost-icon i');
+    const btn_repost_icon = document.querySelectorAll('.repost-icon i');
     const repost_number = document.querySelector('.repost-numbers')
     const btn_comment_icon = document.querySelector('.comment-icon i');
     const comment_number = document.querySelector('.comment-numbers');
@@ -59,6 +59,8 @@ const notification__icon = document.getElementById('notification-container')
 
     // Drop Down menu
     const logout = document.querySelector(".logout")
+
+
 
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.querySelector('.search-input');
@@ -308,7 +310,8 @@ function displayPosts(Model) {
                 <div class="box">
                     <div class="top">
                         <!-- Profile -- views -->
-                        <div class="profile">
+                        <div class="profile post-profile">
+                                 <input type="hidden" value="${post.user.id}" id="PostID">
                             <img class="profile-pic" src="${post.user.personalImage}"  alt="Profile image">
                             <div class="name">
                                 <p class="username">${post.user.userName} <i class="bi bi-patch-check-fill text-primary"></i> </p>
@@ -343,7 +346,7 @@ function displayPosts(Model) {
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                             <div class="box">
-                                <i class="fa-solid fa-retweet repost-icon"></i>
+                                <i class="fa-solid fa-retweet repost-icon" onclick="rePost('${post.id}')"></i>
                                 <span>${post.repostCount}</span>
                             </div>
                             <div class="box">
@@ -370,7 +373,27 @@ function displayPosts(Model) {
 
        post_container.insertAdjacentHTML('beforeend', postHtml);
     });
+
+
+
+    //// Going to Post User Profile 
+    const profile = document.querySelectorAll('.post-profile');
+    profile.forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const userId = item.querySelector("#PostID").value;
+
+            const userProfileUrl = `ViewUserProfile?userId=${userId}`;
+
+
+            window.location.href = userProfileUrl;
+        });
+    });
+
+
 }
+
 
 
 function addBookmark(postId) {
@@ -464,24 +487,6 @@ window.addEventListener('scroll', loadMore);
             console.log(this)
 
 
-            //fetch('/Posts/CreatePost', {
-            //    method: 'POST',
-            //    body: formData
-            //})
-            //    .then(function (response) {
-            //        console.log(response)
-            //        if (!response.ok) {
-            //            throw new Error('Network erroe');
-            //        }
-            //        return response.json();
-            //    })
-            //    .then(function (data) {
-            //        console.log(" created successfully:", data);
-
-            //    })
-            //    .catch(function (error) {
-            //        console.error("Error:", error);
-            //    });
             fetch('/Posts/CreatePost', {
                 method: 'POST',
                 body: formData
@@ -739,4 +744,139 @@ function ShowNotifications(notifications) {
         });
     });
 }
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// Get All users  To follow List==>
 
+// Get  List
+    const seeMore = document.querySelector(".see-more-btn");
+    seeMore.addEventListener('click', function () {
+        fetchAllUsersToFollow();
+    });
+
+
+
+
+// Get All users
+function fetchAllUsersToFollow() {
+    var CurrentUserID = document.getElementById('CurrentUserID').value;
+
+    fetch(`/Follow/getAllUsersToFollow?id=${CurrentUserID}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch Followers');
+            }
+            return response.json();
+        })
+        .then(List => {
+            displayUsersList(List);
+
+
+
+
+            var myModal = new bootstrap.Modal(document.getElementById('show_followes_list'));
+            myModal.show();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+
+function displayUsersList(model) {
+    var modalBody = document.getElementById('FollowersModal');
+    modalBody.innerHTML = '';
+    model.forEach(function (user) {
+        var userTemplate = `
+    <div class="user">
+            <div class="profile">
+            <input type="hidden" value="${user.userId}" id="FolloweID">
+                <img class="profile-pic" src="${user.userImage}" alt="Profile image">
+                <div class="name">
+                    <p class="username">${user.userName}</p>
+                </div>
+            </div>
+            <div class="follow-button">
+
+<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, '${user.userId}')">
+    <i class="fa-solid fa-user-plus btn-icon"></i> Follow
+</button>
+
+
+
+            
+            </div>
+        </div>
+    `;
+
+        modalBody.insertAdjacentHTML('beforeend', userTemplate);
+    });
+
+
+    const profile = document.querySelectorAll('.modal-dialog .profile');
+    profile.forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            console.log("Click on notification ===>")
+            event.preventDefault();
+
+            const userId = item.querySelector("#FolloweID").value;
+
+            const userProfileUrl = `ViewUserProfile?userId=${userId}`;
+
+
+            window.location.href = userProfileUrl;
+        });
+    });
+}
+
+function clickOnFollowFromList(button, followingId) {
+    fetch('/Follow/FollowUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(followingId)
+    })
+        .then(response => {
+            if (response.ok) {
+                button.innerHTML = `
+                <i class="fa-solid fa-check"></i> Following
+                `;
+            } else {
+                console.log("Error")
+            }
+        })
+        .catch(error => {
+            console.log("Error")
+        });
+}
+
+
+
+
+//////////// Repost functionality ==> ////////////////////////////////////////////
+function rePost(postID) {
+    console.log(postID)
+}
+
+///// function to go to the top 
+function goToTop() {
+    const duration = 500;
+
+    const currentScroll = window.scrollY || document.documentElement.scrollTop;
+
+    const scrollStep = -currentScroll / (duration / 15);
+
+    const smoothScroll = () => {
+        const newScroll = (window.scrollY || document.documentElement.scrollTop) + scrollStep;
+
+        window.scrollTo(0, newScroll);
+
+        if (newScroll > 0) {
+            window.requestAnimationFrame(smoothScroll);
+        } else {
+            window.scrollTo(0, 0);
+        }
+    };
+
+    smoothScroll();
+}

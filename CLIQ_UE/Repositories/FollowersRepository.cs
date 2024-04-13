@@ -101,5 +101,16 @@ namespace CLIQ_UE.Repositories
             return ids;
         }
 
+        public List<string> GetAllUsersToFollow(string userid)
+        {
+            List<string> followingIds = GetFollowingIds(userid);
+            followingIds.Add(userid);
+
+            List<string> allUserIds = context.Users.Select(u => u.Id).ToList();
+
+            List<string> usersToFollowIds = allUserIds.Except(followingIds).ToList();
+
+            return usersToFollowIds;
+        }
     }
 }

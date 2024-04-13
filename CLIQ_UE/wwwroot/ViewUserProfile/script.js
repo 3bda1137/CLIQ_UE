@@ -287,10 +287,10 @@ function displayFollowersList(model) {
             </div>
             <div class="follow-button">
                 ${user.isFollowing ?
-                `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList('${user.userId}')">
+                `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList(this, '${user.userId}')">
                         <i class="fa-solid fa-check btn-icon"></i> Following
                     </button>` :
-                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList('${user.userId}')">
+                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, '${user.userId}')">
                         <i class="fa-solid fa-user-plus btn-icon"></i> Follow
                     </button>`
             }
@@ -337,10 +337,10 @@ function displayFollowingList(model) {
             </div>
             <div class="follow-button">
                 ${user.isFollowing ?
-                `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList('${user.userId}')">
+                `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList(this, '${user.userId}')">
                         <i class="fa-solid fa-check btn-icon"></i> Following
                     </button>` :
-                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList('${user.userId}')">
+                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, '${user.userId}')">
                         <i class="fa-solid fa-user-plus btn-icon"></i> Follow
                     </button>`
             }
@@ -578,7 +578,7 @@ function clickOnUnFollow(followingId) {
 //////////////////////////////////// Following  /////////////////
 
 
-function clickOnFollowFromList(followingId) {
+function clickOnFollowFromList(btn,followingId) {
     const follow____btn = document.querySelector(".btn-follow-following");
     fetch('/Follow/FollowUser', {
         method: 'POST',
@@ -589,8 +589,8 @@ function clickOnFollowFromList(followingId) {
     })
         .then(response => {
             if (response.ok) {
-                follow____btn.innerHTML = " ";
-                follow____btn.innerHTML = `
+                btn.innerHTML = " ";
+                btn.innerHTML = `
                 <i class="fa-solid fa-check"></i> Following
                 `
 
@@ -602,7 +602,7 @@ function clickOnFollowFromList(followingId) {
             console.log("Error")
         });
 }
-function clickOnUnFollowFromList(followingId) {
+function clickOnUnFollowFromList(btn,followingId) {
     const follow____btn = document.querySelector(".btn-follow-following");
     fetch('/Follow/UnFollowUser', {
         method: 'POST',
@@ -613,8 +613,8 @@ function clickOnUnFollowFromList(followingId) {
     })
         .then(response => {
             if (response.ok) {
-                follow____btn.innerHTML = " ";
-                follow____btn.innerHTML = `
+                btn.innerHTML = " ";
+                btn.innerHTML = `
                  <i class="fa-solid fa-user-plus"></i> Follow
                 `
             } else {
