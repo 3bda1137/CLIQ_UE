@@ -45,10 +45,16 @@ namespace CLIQ_UE.Hubs
         }
         public void DeleteOnlineUser(string connectionId)
         {
-            OnlineUser onlineUser = onlineUserServices.GetByConnectionId(connectionId);
-            if (onlineUser != null)
+            var userName = Context.User.Identity.Name;
+            //var connectionId = Context.ConnectionId;
+            if (userName != null)
             {
-                onlineUserServices.DeleteUser(onlineUser);
+                string userId = userServices.GetUserByUserName(userName).Id;
+                OnlineUser onlineUser = onlineUserServices.GetByID(userId);
+                if (onlineUser != null)
+                {
+                    onlineUserServices.DeleteUser(onlineUser);
+                }
             }
         }
 
