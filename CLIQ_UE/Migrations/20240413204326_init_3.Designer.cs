@@ -4,6 +4,7 @@ using CLIQ_UE.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CLIQ_UE.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240413204326_init_3")]
+    partial class init_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -429,6 +432,12 @@ namespace CLIQ_UE.Migrations
                     b.Property<int>("RepostCount")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Reposted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("RepostedFromId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TextContent")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -443,9 +452,6 @@ namespace CLIQ_UE.Migrations
 
                     b.Property<int>("ViewsCount")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("postAddedTime")
                         .IsRequired()

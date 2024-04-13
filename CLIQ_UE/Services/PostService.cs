@@ -31,7 +31,7 @@ namespace CLIQ_UE.Services
 
         public void DeletePost(int id)
         {
-            throw new NotImplementedException();
+            postRepository.DeletePost(id);
         }
 
         public List<Post> GetLatestPosts(int pageIndex, int pageSize)
