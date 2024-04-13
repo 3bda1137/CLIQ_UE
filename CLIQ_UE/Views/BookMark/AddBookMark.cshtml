@@ -1,0 +1,15 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+    @using (Html.BeginForm("AddBookMark", "BookMark", FormMethod.Post, new { id = "bookmarkForm" }))
+    {
+        <div class="bookmark-container">
+            <button type="submit" id="bookmarkButton" class="btn btn-link">
+                <i class="bi bi-bookmark-fill"></i>
+            </button>
+        </div>
+    }

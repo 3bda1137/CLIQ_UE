@@ -15,6 +15,9 @@ namespace CLIQ_UE.Helpers
             CreateMap<LikeCommentVM, UserLikeComment>();
             CreateMap<UserLikeComment, LikeCommentVM>();
 
+            CreateMap<BookMark,BookMarkViewModel>();
+            CreateMap<BookMarkViewModel, BookMark>();
+
             /*CreateMap<Comment, RespCommentVM>()
 				.ForMember(dest => dest.UserFirstName, opt => opt.MapFrom(src => src.User!.FirstName))
 				.ForMember(dest => dest.UserLastName, opt => opt.MapFrom(src => src.User!.LastName))

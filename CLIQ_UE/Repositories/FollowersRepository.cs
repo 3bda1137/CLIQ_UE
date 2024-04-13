@@ -43,10 +43,10 @@ namespace CLIQ_UE.Repositories
             return followers;
         }
 
-        public List<Followers> GetAllBySeachWords(string search,string followingId)
+        public List<Followers> GetAllBySeachWords(string search, string followingId)
         {
             List<Followers> followers = context.Followers
-                .Where(f => f.FollowingName.Contains(search) && f.FollowerId==followingId)
+                .Where(f => f.FollowingName.Contains(search) && f.FollowerId == followingId)
                 .ToList();
             return followers;
         }
@@ -82,5 +82,24 @@ namespace CLIQ_UE.Repositories
         {
             return context.Followers.Count(f => f.FollowerId == followerId);
         }
+
+        public List<string> GetFollowersIds(string userid)
+        {
+            List<string> ids = context.Followers
+                .Where(f => f.FollowerId == userid)
+                .Select(f => f.FollowingId)
+                .ToList();
+            return ids;
+        }
+
+        public List<string> GetFollowingIds(string userid)
+        {
+            List<string> ids = context.Followers
+                .Where(f => f.FollowingId == userid)
+                .Select(f => f.FollowerId)
+                .ToList();
+            return ids;
+        }
+
     }
 }
