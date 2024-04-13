@@ -9,7 +9,7 @@ namespace CLIQ_UE.ViewModels
         public string UserName { get; set; }
         public string UserImage { get; set; }
         public List<Post>? LatestPosts { get; set; }
-       
+        public string userId { get; set; }
         ApplicationUser user { get; set; }
 
         public int newNotificationCount { get; set; }

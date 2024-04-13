@@ -7,7 +7,7 @@ namespace CLIQ_UE.Repositories
         public void Add(Followers follower);
         public Followers GetByFollowerId(string followingId, string followerId);
         public List<Followers> GetAllByFollowingId(string followingId);
-        public List<Followers> GetAllBySeachWords(string search,string followingId);
+        public List<Followers> GetAllBySeachWords(string search, string followingId);
         public void Update(Followers follower);
         public void UnFollow(Followers follower);
         public bool IsUserFollowing(string followerId, string followingId);
@@ -16,6 +16,7 @@ namespace CLIQ_UE.Repositories
 
         List<string> GetFollowersIds(string userid);
         List<string> GetFollowingIds(string userid);
+        List<string> GetAllUsersToFollow(string userid);
 
     }
 }

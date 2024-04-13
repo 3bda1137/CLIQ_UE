@@ -122,5 +122,27 @@ namespace CLIQ_UE.Controllers
             return Json(model);
 
         }
+
+        public async Task<IActionResult> getAllUsersToFollow(string id)
+        {
+            List<string> userToFollow = followersServices.GetAllUsersToFollow(id);
+            ApplicationUser applicationUser = await userManager.GetUserAsync(User);
+            List<Followers_FollowingListVM> model = new List<Followers_FollowingListVM>();
+            foreach (var userId in userToFollow)
+            {
+                ApplicationUser user = userServices.GetByID(userId);
+                model.Add(new Followers_FollowingListVM
+                {
+                    UserId = userId,
+                    UserImage = user.PersonalImage,
+                    UserName = user.FirstName + " " + user.LastName,
+                    IsFollowing = followersServices.IsUserFollowing(applicationUser.Id, userId)
+                });
+            }
+
+
+            return Json(model);
+
+        }
     }
 }

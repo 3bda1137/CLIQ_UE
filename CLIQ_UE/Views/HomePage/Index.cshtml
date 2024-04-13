@@ -13,7 +13,8 @@
     <div class="col-12">
         <nav>
             <div class="nav-content">
-                <a class="logo" href="#">Clique <i class="fa-solid fa-people-group"></i></a>
+                <div class="logo" onclick="goToTop()" style="cursor:pointer">Clique <i class="fa-solid fa-people-group"></i></div>
+
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
                     <input type="text" class="search-input" placeholder="Search" />
@@ -271,9 +272,9 @@
                     <div class="header">
                         <div class="left">
                             <i class="fa-solid fa-user-group Friends-icon"></i>
-                            <p>Friends Suggesttion</p>
+                            <p>Friends Suggestion</p>
                         </div>
-                        <a href="#">See more</a>
+                        <a class="see-more-btn">See more</a>
                     </div>
 
  @*                    <div class="box-row">
@@ -457,6 +458,33 @@
     </div>
 </div>
 <!--  -->
+<!--====================================================================================================================-->
+<!-- ====================  Model Of Show More user to Follow list ===================================-->
+<div class="modal fade" id="show_followes_list" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+    <input type="hidden" value="@Model.userId" id="CurrentUserID">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="show_commentsLabel">Suggestion List </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="FollowersModal" class="modal-body">
+                <!-- Iterate over the list of users -->
+
+                <div class="user">
+                    <h1>THER IS NO FOLLOWERS</h1>
+                </div>
+
+            </div>
+            @*          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div> *@
+        </div>
+    </div>
+</div>
+<!--====================================================================================================================-->
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -96,23 +95,6 @@ namespace CLIQ_UE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Followers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FollowerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FollowingId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FollowerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FollowingDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Followers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LastMessages",
                 columns: table => new
                 {
@@ -126,6 +108,40 @@ namespace CLIQ_UE.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LastMessages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LastSeens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastSeenTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LastSeens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsSeen = table.Column<bool>(type: "bit", nullable: false),
+                    notificationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    notificationShowDate = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -249,12 +265,42 @@ namespace CLIQ_UE.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Followers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FollowerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FollowingId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FollowingName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FollowingDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Followers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Followers_AspNetUsers_FollowerId",
+                        column: x => x.FollowerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Followers_AspNetUsers_FollowingId",
+                        column: x => x.FollowingId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TextContent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    BookMark = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PostDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PostImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -336,6 +382,31 @@ namespace CLIQ_UE.Migrations
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Reactions_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserLikePosts",
+                columns: table => new
+                {
+                    PostId = table.Column<int>(type: "int", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    isLiked = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLikePosts", x => new { x.PostId, x.ApplicationUserId });
+                    table.ForeignKey(
+                        name: "FK_UserLikePosts_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_UserLikePosts_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
@@ -443,6 +514,16 @@ namespace CLIQ_UE.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Followers_FollowerId",
+                table: "Followers",
+                column: "FollowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Followers_FollowingId",
+                table: "Followers",
+                column: "FollowingId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Posts_BookMarkId",
                 table: "Posts",
                 column: "BookMarkId");
@@ -465,6 +546,11 @@ namespace CLIQ_UE.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_UserLikeComments_ApplicationUserId",
                 table: "UserLikeComments",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLikePosts_ApplicationUserId",
+                table: "UserLikePosts",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
@@ -506,6 +592,12 @@ namespace CLIQ_UE.Migrations
                 name: "LastMessages");
 
             migrationBuilder.DropTable(
+                name: "LastSeens");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
+
+            migrationBuilder.DropTable(
                 name: "OnlineUsers");
 
             migrationBuilder.DropTable(
@@ -513,6 +605,9 @@ namespace CLIQ_UE.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserLikeComments");
+
+            migrationBuilder.DropTable(
+                name: "UserLikePosts");
 
             migrationBuilder.DropTable(
                 name: "Views");

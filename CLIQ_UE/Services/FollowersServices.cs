@@ -120,5 +120,10 @@ namespace CLIQ_UE.Services
         {
             return followersRepository.GetFollowingIds(userid);
         }
+
+        public List<string> GetAllUsersToFollow(string userid)
+        {
+            return followersRepository.GetAllUsersToFollow(userid);
+        }
     }
 }
