@@ -30,7 +30,7 @@ function displaySearchResults(results) {
         console.log("###################");
         var user =
             `
-    <li>
+    <li id="${results[index].userId}">
         <div onclick="showChat('${results[index].userId}','${results[index].userName}','${results[index].imageUrl}')" data-conversation="#Conversation1">
             <img class="Content_Message_image" src="${results[index].imageUrl}">
             <span class="Content_Message_info">
@@ -38,8 +38,8 @@ function displaySearchResults(results) {
                 ${results[index].lastMessage ? `<span class="Content_Message_Text">${results[index].lastMessage.message}</span>` : ''}
             </span>
             <span class="Content_Message_More">
-                <span class="Content_Message_unread">5</span>
-                <span class="Content_Message_Time">12:41</span>
+                
+                <span class="Content_Message_Time">${results[index].formatedTime}</span>
             </span>
         </div>                     
     </li>

@@ -18,11 +18,11 @@
 
     <title>Chat</title>
     <script src="https://cdn.jsdelivr.net/npm/@@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
-<style>
-    p{
-            overflow-wrap:break-word;
+    <style>
+        p {
+            overflow-wrap: break-word;
         }
-</style>
+    </style>
 </head>
 
 <body>
@@ -67,11 +67,11 @@
                     </div>
                     <div class="Content_Message">
                         <ul id="myFollowingUsers" class="Content_Message_list">
-                            <li class="Content_Message_Title"><span>Recently</span></li>
+                            @* <li class="Content_Message_Title"><span>Recently</span></li> *@
 
-                            <li>
-                                @foreach (var user in Model)
-                                {
+                            @foreach (var user in Model)
+                            {
+                                <li id="@user.UserId">
                                     <div onclick="showChat('@user.UserId','@user.UserName','@user.ImageUrl')"
                                          data-conversation="#Conversation1">
                                         <img class="Content_Message_image" src="@user.ImageUrl">
@@ -81,22 +81,18 @@
                                             {
                                                 <span class="Content_Message_Text">@user.LastMessage.Message</span>
                                             }
-                                            else
-                                            {
-                                                <span class="Content_Message_Text">
-                                                    Lorem, ipsum dolor sit amet
-                                                    consectetur
-                                                </span>
-                                            }
                                         </span>
                                         <span class="Content_Message_More">
-                                            <span class="Content_Message_unread">5</span>
-                                            <span class="Content_Message_Time">12:41</span>
 
+                                            @if (@user.LastMessage != null)
+                                            {
+                                                <span class="Content_Message_Time" id="lastSeenTime">@user.FormatedTime</span>
+                                            }
                                         </span>
                                     </div>
-                                }
-                            </li>
+                                </li>
+                            }
+
                         </ul>
 
                     </div>
@@ -106,113 +102,113 @@
                 <div class="Conversation Conversation_default active">
                     <i class="ri-chat-3-line"></i>
                     <p>Select Chat and View Conversation !</p>
-                    
+
                 </div>
                 <div class="Conversation" id="Conversation1">
 
                     @* <div class="Conversation_Top">
-                        <button type="button" class="Conversation_Back"> <i class="ri-arrow-left-line"></i></button>
-                        <div class="Conversation_User">
-                            <img src="Images/user.avif" class="Conversation_User_Image">
-                            <div class="">
-                                <div class="Conversation_User_Name">Manar</div>
-                                <div class="Conversation_User_Status online">Online</div>
-                            </div>
-                        </div>
-                        <div class="Conversation_buttons">
-                            <button type="button"><i class="ri-phone-fill"></i></button>
-                            <button type="button"><i class="ri-vidicon-line"></i></button>
-                            <button type="button"><i class="ri-information-line"></i></button>
-                        </div>
+                    <button type="button" class="Conversation_Back"> <i class="ri-arrow-left-line"></i></button>
+                    <div class="Conversation_User">
+                    <img src="Images/user.avif" class="Conversation_User_Image">
+                    <div class="">
+                    <div class="Conversation_User_Name">Manar</div>
+                    <div class="Conversation_User_Status online">Online</div>
+                    </div>
+                    </div>
+                    <div class="Conversation_buttons">
+                    <button type="button"><i class="ri-phone-fill"></i></button>
+                    <button type="button"><i class="ri-vidicon-line"></i></button>
+                    <button type="button"><i class="ri-information-line"></i></button>
+                    </div>
                     </div>
                     <div class="Conversation_Main">
-                        <ul class="Conversation_Wrapper">
-                            <div class="Conversation_Divider">
-                                <span>
-                                    Today
-                                </span>
+                    <ul class="Conversation_Wrapper">
+                    <div class="Conversation_Divider">
+                    <span>
+                    Today
+                    </span>
 
-                            </div>
-                            <li class="Conversation_Item me">
-                                <div class="Conversation_Item_Side">
-                                    <img src="Images/user.avif" class="Conversation_Item_Image">
-                                </div>
-                                <div class="Conversation_Item_Content">
-                                    <div class="Conversation_Item_Wrapper">
-                                        <div class="Conversation_Item_Box">
-                                            <div class="Conversation_Item_text">
-                                                <p>
-                                                    Hi there! How's your day going?
-                                                </p>
-                                                <span class="Conversation_Item_Time"> 11:05 </span>
-                                            </div>
-                                            <div class="Conversation_Item_dropdown">
-                                                <button type="button" class="Conversation_Item_dropdown_toggle">
-                                                    <i class="ri-more-2-line"></i>
-                                                </button>
-                                                <ul class="Conversation_Item_dropdown_List">
-                                                    <li>
-                                                        <a href="#"><i class="ri-share-forward-line"></i>Forward</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#"><i class="ri-delete-bin-line"></i>Delete</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+                    </div>
+                    <li class="Conversation_Item me">
+                    <div class="Conversation_Item_Side">
+                    <img src="Images/user.avif" class="Conversation_Item_Image">
+                    </div>
+                    <div class="Conversation_Item_Content">
+                    <div class="Conversation_Item_Wrapper">
+                    <div class="Conversation_Item_Box">
+                    <div class="Conversation_Item_text">
+                    <p>
+                    Hi there! How's your day going?
+                    </p>
+                    <span class="Conversation_Item_Time"> 11:05 </span>
+                    </div>
+                    <div class="Conversation_Item_dropdown">
+                    <button type="button" class="Conversation_Item_dropdown_toggle">
+                    <i class="ri-more-2-line"></i>
+                    </button>
+                    <ul class="Conversation_Item_dropdown_List">
+                    <li>
+                    <a href="#"><i class="ri-share-forward-line"></i>Forward</a>
+                    </li>
+                    <li>
+                    <a href="#"><i class="ri-delete-bin-line"></i>Delete</a>
+                    </li>
+                    </ul>
+                    </div>
+                    </div>
+                    </div>
 
-                                </div>
-                            </li>
-                            <li class="Conversation_Item">
-                                <div class="Conversation_Item_Side">
-                                    <img src="Images/user.avif" class="Conversation_Item_Image">
-                                </div>
-                                <div class="Conversation_Item_Content">
-                                    <div class="Conversation_Item_Wrapper">
-                                        <div class="Conversation_Item_Box">
-                                            <div class="Conversation_Item_text">
-                                                <p>
-                                                    Hey! It's going pretty well, thanks for asking. How about you?
-                                                </p>
-                                                <span class="Conversation_Item_Time"> 11:05 </span>
-                                            </div>
-                                            <div class="Conversation_Item_dropdown">
-                                                <button type="button" class="Conversation_Item_dropdown_toggle">
-                                                    <i class="ri-more-2-line"></i>
-                                                </button>
-                                                <ul class="Conversation_Item_dropdown_List">
-                                                    <li>
-                                                        <a href="#"><i class="ri-share-forward-line"></i>Forward</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#"><i class="ri-delete-bin-line"></i>Delete</a>
-                                                    </li>
+                    </div>
+                    </li>
+                    <li class="Conversation_Item">
+                    <div class="Conversation_Item_Side">
+                    <img src="Images/user.avif" class="Conversation_Item_Image">
+                    </div>
+                    <div class="Conversation_Item_Content">
+                    <div class="Conversation_Item_Wrapper">
+                    <div class="Conversation_Item_Box">
+                    <div class="Conversation_Item_text">
+                    <p>
+                    Hey! It's going pretty well, thanks for asking. How about you?
+                    </p>
+                    <span class="Conversation_Item_Time"> 11:05 </span>
+                    </div>
+                    <div class="Conversation_Item_dropdown">
+                    <button type="button" class="Conversation_Item_dropdown_toggle">
+                    <i class="ri-more-2-line"></i>
+                    </button>
+                    <ul class="Conversation_Item_dropdown_List">
+                    <li>
+                    <a href="#"><i class="ri-share-forward-line"></i>Forward</a>
+                    </li>
+                    <li>
+                    <a href="#"><i class="ri-delete-bin-line"></i>Delete</a>
+                    </li>
 
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+                    </ul>
+                    </div>
+                    </div>
+                    </div>
 
-                                </div>
-                            </li>
-                        </ul>
+                    </div>
+                    </li>
+                    </ul>
                     </div>
                     <div class="Conversation_form">
-                        <button type="button" class="Conversation_form_button" id="emoji-button">
-                            <i class="ri-emotion-line"></i>
-                        </button>
-                        <div class="Conversation_form_group">
-                            <textarea class="Conversation_form_input" rows="1" placeholder="Message"> </textarea>
-                            <button type="button" class="Conversation_form_Record">
-                                <i class="ri-mic-line"></i>
-                            </button>
-                        </div>
-                        <button type="button" class="Conversation_form_button Conversation_form_submit">
-                            <i class="ri-send-plane-2-line"></i>
-                        </button>
+                    <button type="button" class="Conversation_form_button" id="emoji-button">
+                    <i class="ri-emotion-line"></i>
+                    </button>
+                    <div class="Conversation_form_group">
+                    <textarea class="Conversation_form_input" rows="1" placeholder="Message"> </textarea>
+                    <button type="button" class="Conversation_form_Record">
+                    <i class="ri-mic-line"></i>
+                    </button>
                     </div>
- *@
+                    <button type="button" class="Conversation_form_button Conversation_form_submit">
+                    <i class="ri-send-plane-2-line"></i>
+                    </button>
+                    </div>
+                    *@
                 </div>
 
                 <!-- End Conversation -->
@@ -225,106 +221,52 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/@@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+
     <script src="~/chat/js/searchinchat.js"></script>
     <script src="~/chat/js/messageinchat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
-    <script src="~/chat/js/chat.js"></script>
     <script src="/lib/microsoft-signalr/signalr.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/chat/js/hubjs.js"></script>
+    <script src="~/chat/js/chat.js"></script>
     <script>
-        
-        var chatHub = new signalR.HubConnectionBuilder().withUrl("/ChatIndividual").build();
-        chatHub.start().then(function () {
-            console.log("/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/");
-            console.log("start Connection with ChatIndividual");
-            console.log("/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/");
-        });
 
-        function sendMessage(otherUser) {
-            console.log("*********************");
-            var inputMessage = document.getElementById("messageContant");
-            let message = inputMessage.value;
-            inputMessage.value = "";
-            console.log(message);
-            console.log("*********************");   
-            const currentId = document.querySelector('#currentId').textContent;
-            console.log(currentId);
-            chatHub.invoke("SaveMessage", message, currentId, otherUser);
-            console.log("invoke complete");
-        }
-        chatHub.on("displayMessage", function (messageresevd) {
-            let msg = "";
+        function calculateLastSeen(personTime) {
+            // Parse the person's time string into a Date object
+            var personDateTime = new Date(personTime);
 
-            if (messageresevd.senderId == otherUser) {
+            // Get today's date without the time component
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
 
-                msg += `
-                    <li class="Conversation_Item">
-                        <div class="Conversation_Item_Side">
-                            <img src="/chat/images/test.jpg" class="Conversation_Item_Image">
-                        </div>
-                        <div class="Conversation_Item_Content">
-                            <div class="Conversation_Item_Wrapper">
-                                <div class="Conversation_Item_Box">
-                                    <div class="Conversation_Item_text">
-                                        <p>
-                                            ${messageresevd.messageContant}
-                                        </p>
-                                        <span class="Conversation_Item_Time"> ${messageresevd.time}</span>
-                                    </div>
-                                    <div class="Conversation_Item_dropdown">
-                                        <button type="button" class="Conversation_Item_dropdown_toggle">
-                                            <i class="ri-more-2-line"></i>
-                                        </button>
-                                        <ul class="Conversation_Item_dropdown_List">
-                                            <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
-                                            <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+            // Get the time difference in milliseconds
+            var timeDifference = today.getTime() - personDateTime.getTime();
 
-                        </div>
-                    </li>
-                    `
+            // Convert the time difference to minutes
+            var minutesDifference = Math.floor(timeDifference / (1000 * 60));
+
+            // Check if the date difference is zero
+            if (personDateTime.toDateString() === today.toDateString()) {
+                // If the time difference is zero, return "online"
+                if (minutesDifference <= 0) {
+                    return "Online";
+                }
+                // If the time difference is greater than zero, return the specified time without a date
+                else {
+                    return "Today " + personDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                }
             }
+            // Check if the date difference is one (yesterday)
+            else if (personDateTime.toDateString() === new Date(today.getTime() - 24 * 60 * 60 * 1000).toDateString()) {
+                // Return "yesterday" with the time without the date
+                return "Yesterday " + personDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+            // If the difference is greater than one, return the given date as it is
             else {
-                msg +=
-                    `
-                    <li class="Conversation_Item me">
-                            <div class="Conversation_Item_Side">
-                                <img src="/chat/images/test.jpg" class="Conversation_Item_Image">
-                            </div>
-                            <div class="Conversation_Item_Content">
-                                <div class="Conversation_Item_Wrapper">
-                                    <div class="Conversation_Item_Box">
-                                        <div class="Conversation_Item_text">
-                                            <p>
-                                                ${messageresevd.messageContant}
-                                            </p>
-                                            <span class="Conversation_Item_Time">  ${messageresevd.time}</span>
-                                        </div>
-                                        <div class="Conversation_Item_dropdown">
-                                            <button type="button" class="Conversation_Item_dropdown_toggle">
-                                                <i class="ri-more-2-line"></i>
-                                            </button>
-                                            <ul class="Conversation_Item_dropdown_List">
-                                                <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
-                                                <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                     </li>
-                    `
-            };
-            document.getElementById("massegeList").innerHTML += msg;
-            console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-            console.log(msg);
-            console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-
-        })
+                return personDateTime.toLocaleString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true });
+            }
+        }
 
     </script>
 </body>
