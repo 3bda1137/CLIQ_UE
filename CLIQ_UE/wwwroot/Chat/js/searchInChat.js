@@ -25,9 +25,9 @@ function displaySearchResults(results) {
     var searchResultsContainer = $('#myFollowingUsers');
     searchResultsContainer.empty();
     $.each(results, function (index, result) {
-        console.log("###################");
+        console.log("---------Start displaySearchResults-----------");
         console.log(result);
-        console.log("###################");
+      
         var user =
             `
     <li id="${results[index].userId}">
@@ -48,6 +48,8 @@ function displaySearchResults(results) {
         console.log(user);
         searchResultsContainer.append(user); 
     });
+    console.log("---------end displaySearchResults-----------");
+
 }
 
 
