@@ -134,9 +134,12 @@ i {
     color: var(--secondary-color);
 }
 
+.modal-body{
+    height:400px;
+    overflow-y:scroll;
+}
 /* //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////// */
-
 /* Main Structure */
 [class*="col-"] {
     /* border: 1px solid gray; */
@@ -696,6 +699,7 @@ nav .nav-content {
     box-shadow: var(--box-shadow);
     width: 90%;
     border-radius: var(--border-radius);
+    border: 1px solid #9b9baf;
 }
 
     .add-post .box {
@@ -903,6 +907,7 @@ nav .nav-content {
         width: 90%;
         border-radius: var(--border-radius);
         transition: var(--transition);
+        border: 1px solid #9b9baf;
     }
 
         .posts-container .post.hidden {
@@ -1191,6 +1196,7 @@ nav .nav-content {
     margin-bottom: 5px;
     margin-left: 15px;
     text-align: left;
+    overflow-wrap: anywhere;
 }
 
 .modal-dialog .comment-time {

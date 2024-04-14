@@ -8,11 +8,14 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string CoverImage { get; set; }
+
         public int PostCount { get; set; }
         public int FollowingCount { get; set; }
         public int FollowersCount { get; set; }
-        public bool IsFollowing { get; set; }
+        public string Location { get; set; }
 
+        public bool IsFollowing { get; set; }
+        public bool isFollowingMe { get; set; }
 
         public int newNotificationCount { get; set; }
 

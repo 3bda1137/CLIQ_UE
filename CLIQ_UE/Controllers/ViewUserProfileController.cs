@@ -31,6 +31,10 @@ namespace CLIQ_UE.Controllers
             var currentUser = await userManager.GetUserAsync(User);
             var userVisited = userServices.GetByID(userId);
 
+            if (userId == currentUser.Id)
+            {
+                return RedirectToAction("Index", "Profile");
+            }
             if (currentUser != null && userVisited != null)
             {
                 model.UserName = userVisited.UserName;
@@ -41,14 +45,18 @@ namespace CLIQ_UE.Controllers
                 model.currentUserId = currentUser.Id;
                 model.CurrentUserImage = currentUser.PersonalImage;
                 model.CurrentUserName = currentUser.UserName;
-
+                model.UserId = userId;
                 model.PostCount = postService.GetUserPostCount(userVisited.Id);
                 model.FollowersCount = followersServices.GetFollowerCount(userVisited.Id);
                 model.FollowingCount = followersServices.GetFollowingCount(userVisited.Id);
+                model.Location = currentUser.Location;
+
+
                 model.newNotificationCount = notificationService.GetNewNotifications(currentUser.Id).Count();
 
 
                 model.IsFollowing = followersServices.IsUserFollowing(currentUser.Id, userVisited.Id);
+                model.isFollowingMe = followersServices.IsUserFollowing(userVisited.Id, currentUser.Id);
                 model.IsMutualFollowing = model.IsFollowing && followersServices.IsUserFollowing(userVisited.Id, currentUser.Id);
 
                 return View(model);

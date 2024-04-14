@@ -76,6 +76,10 @@ namespace CLIQ_UE
             builder.Services.AddScoped<IUserLikeCommentService, UserLikeCommentService>();
             builder.Services.AddScoped<IUserLikeCommentRepository, UserLikeCommentRepository>();
 
+            builder.Services.AddScoped<IBookMarkService, BookMarkService>();
+            builder.Services.AddScoped<IBookMrakRepository , BookMarkRepository>();
+
+
             builder.Services.AddScoped<IChatIndividualServices, ChatIndividualServices>();
             builder.Services.AddScoped<IChatIndividualRepository, ChatIndividualRepository>();
 
@@ -85,6 +89,7 @@ namespace CLIQ_UE
 
             builder.Services.AddScoped<ILastSeenRepository, LastSeenRepository>();
             builder.Services.AddScoped<ILastSeenServices, LastSeenServices>();
+
 
             builder.Services.AddSignalR();
             //AutoMapper

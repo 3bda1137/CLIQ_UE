@@ -352,7 +352,10 @@ function displayPosts(Model) {
                             </div>
                         </div>
 
-                                <i class="bi bi-bookmark-fill"></i>
+                              <div class="box">
+    <i class="bi bi-bookmark-fill bookmark-icon" onclick="addBookmark('${post.id}')"></i>
+</div>
+
                         </div>
                         ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
                     </div>
@@ -368,6 +371,27 @@ function displayPosts(Model) {
        post_container.insertAdjacentHTML('beforeend', postHtml);
     });
 }
+
+
+function addBookmark(postId) {
+    // Make an AJAX request to add the post to bookmarks
+    fetch('/BookMark/AddBookMark?postId=' + postId, {
+        method: 'POST',
+    })
+        .then(response => {
+            if (response.ok) {
+                // Update UI or provide feedback as needed
+                console.log('Post bookmarked successfully');
+            } else {
+                console.error('Failed to add bookmark');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding bookmark:', error);
+        });
+}
+
+
 
 function loadMore() {
     const lastPost = document.querySelector('.post:last-of-type');

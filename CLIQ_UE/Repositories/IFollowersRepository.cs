@@ -13,5 +13,9 @@ namespace CLIQ_UE.Repositories
         public bool IsUserFollowing(string followerId, string followingId);
         int GetFollowingCount(string followerId);
         int GetFollowerCount(string followingId);
+
+        List<string> GetFollowersIds(string userid);
+        List<string> GetFollowingIds(string userid);
+
     }
 }

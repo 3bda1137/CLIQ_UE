@@ -52,6 +52,7 @@ namespace CLIQ_UE.Controllers
             return View();
         }
 
+
         public async Task<IActionResult> InteractPost(int PostId, bool LikeOption)
         {
 

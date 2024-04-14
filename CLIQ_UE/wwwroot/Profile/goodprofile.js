@@ -268,9 +268,281 @@ function setTextDirection(textContainer, text) {
 }
 
 
+///////////////////////////////// Show Followers and Following List ///////////////////////////////////////////////////
+// Get Followers List
+const followersBtn = document.querySelector(".Followers");
+followersBtn.addEventListener('click', function () {
+    fetchFollowers();
+});
+
+// Get Following List
+const followingBtn = document.querySelector(".Following");
+followingBtn.addEventListener('click', function () {
+    fetchFollowing();
+});
+
+// Get All Followers 
+function fetchFollowers() {
+    var CurrentUserID = document.getElementById('CurrentUserID').value;
+
+    fetch(`/Follow/getAllFollowers?id=${CurrentUserID}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch Followers');
+            }
+            return response.json();
+        })
+        .then(List => {
+            displayFollowersList(List);
+
+            var modal = document.getElementById('show_followes_list');
+            var modalTitle = modal.querySelector('.modal-title');
+            modalTitle.textContent = 'Following List';
+
+
+            var myModal = new bootstrap.Modal(document.getElementById('show_followes_list'));
+            myModal.show();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+// Get All Following 
+function fetchFollowing() {
+    var CurrentUserID = document.getElementById('CurrentUserID').value;
+
+    fetch(`/Follow/getAllFollowing?id=${CurrentUserID}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch Following');
+            }
+            return response.json();
+        })
+        .then(List => {
+
+            displayFollowingList(List);
+
+            var modal = document.getElementById('show_followes_list');
+            var modalTitle = modal.querySelector('.modal-title');
+            modalTitle.textContent = 'Follower List';
+
+            var myModal = new bootstrap.Modal(document.getElementById('show_followes_list'));
+            myModal.show();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function displayFollowersList(model) {
+    var modalBody = document.getElementById('FollowersModal');
+    console.log("FOLLOWERS==>", model);
+    modalBody.innerHTML = '';
+
+    model.forEach(function (user) {
+        var userTemplate = `
+    <div class="user">
+            <div class="profile">
+            <input type="hidden" value="${user.userId}" id="FolloweID">
+                <img class="profile-pic" src="${user.userImage}" alt="Profile image">
+                <div class="name">
+                    <p class="username">${user.userName}</p>
+                </div>
+            </div>
+            <div class="follow-button">
+                ${user.isFollowing ?
+                `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList('${user.userId}')">
+                        <i class="fa-solid fa-check btn-icon"></i> Following
+                    </button>` :
+                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList('${user.userId}')">
+                        <i class="fa-solid fa-user-plus btn-icon"></i> Follow
+                    </button>`
+            }
+            </div>
+        </div>
+    `;
+
+        // Append the user template to the modal body
+        modalBody.insertAdjacentHTML('beforeend', userTemplate);
+    });
+
+
+    //// Going to Follower's Profile 
+    const profile = document.querySelectorAll('.modal-dialog .profile');
+    profile.forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            console.log("Click on notification ===>")
+            event.preventDefault();
+
+            const userId = item.querySelector("#FolloweID").value;
+
+            const userProfileUrl = `ViewUserProfile?userId=${userId}`;
+
+
+            window.location.href = userProfileUrl;
+        });
+    });
+}
+
+function displayFollowingList(model) {
+    var modalBody = document.getElementById('FollowersModal');
+    console.log("FOLLOWING==>", model);
+    modalBody.innerHTML = '';
+
+    model.forEach(function (user) {
+        var userTemplate = `
+    <div class="user">
+            <div class="profile">
+            <input type="hidden" value="${user.userId}" id="FolloweID">
+                <img class="profile-pic" src="${user.userImage}" alt="Profile image">
+                <div class="name">
+                    <p class="username">${user.userName}</p>
+                </div>
+            </div>
+            <div class="follow-button">
+                ${user.isFollowing ?
+            `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList('${user.userId}')">
+                        <i class="fa-solid fa-check btn-icon"></i> Following
+                    </button>` :
+                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList('${user.userId}')">
+                        <i class="fa-solid fa-user-plus btn-icon"></i> Follow
+                    </button>`
+            }
+            </div>
+        </div>
+    `;
+
+        // Append the user template to the modal body
+        modalBody.insertAdjacentHTML('beforeend', userTemplate);
+    });
+
+
+    //// Going to Follower's Profile 
+    const profile = document.querySelectorAll('.modal-dialog .profile');
+    profile.forEach(function (item) {
+    item.addEventListener('click', function (event) {
+        console.log("Click on notification ===>")
+        event.preventDefault();
+
+        const userId = item.querySelector("#FolloweID").value;
+
+        const userProfileUrl = `ViewUserProfile?userId=${userId}`;
+
+
+        window.location.href = userProfileUrl;
+    });
+});
+}
 
 
 /////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////// Following  /////////////////
+
+
+function clickOnFollow(followingId) {
+    const follow____btn = document.querySelector(".btn-follow-following");
+    fetch('/Follow/FollowUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(followingId)
+    })
+        .then(response => {
+            if (response.ok) {
+                follow____btn.innerHTML = " ";
+                follow____btn.innerHTML = `
+                <i class="fa-solid fa-check"></i> Following
+                `
+
+            } else {
+                console.log("Error")
+            }
+        })
+        .catch(error => {
+            console.log("Error")
+        });
+}
+function clickOnUnFollow(followingId) {
+    const follow____btn = document.querySelector(".btn-follow-following");
+    fetch('/Follow/UnFollowUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(followingId)
+    })
+        .then(response => {
+            if (response.ok) {
+                follow____btn.innerHTML = " ";
+                follow____btn.innerHTML = `
+                 <i class="fa-solid fa-user-plus"></i> Follow
+                `
+            } else {
+                console.log("Error")
+            }
+        })
+        .catch(error => {
+            console.log("Error")
+        });
+}
+
+///////////////////////////////////////////////////////////////////
+//// From the list 
+//////////////////////////////////// Following  /////////////////
+
+
+function clickOnFollowFromList(followingId) {
+    const follow____btn = document.querySelector(".btn-follow-following");
+    fetch('/Follow/FollowUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(followingId)
+    })
+        .then(response => {
+            if (response.ok) {
+                follow____btn.innerHTML = " ";
+                follow____btn.innerHTML = `
+                <i class="fa-solid fa-check"></i> Following
+                `
+
+            } else {
+                console.log("Error")
+            }
+        })
+        .catch(error => {
+            console.log("Error")
+        });
+}
+function clickOnUnFollowFromList(followingId) {
+    const follow____btn = document.querySelector(".btn-follow-following");
+    fetch('/Follow/UnFollowUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(followingId)
+    })
+        .then(response => {
+            if (response.ok) {
+                follow____btn.innerHTML = " ";
+                follow____btn.innerHTML = `
+                 <i class="fa-solid fa-user-plus"></i> Follow
+                `
+            } else {
+                console.log("Error")
+            }
+        })
+        .catch(error => {
+            console.log("Error")
+        });
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////Load ALL POSTES /////////////////////////////////////////////////////////////////
 const timelineCategories = document.querySelectorAll('.timeline .list');
