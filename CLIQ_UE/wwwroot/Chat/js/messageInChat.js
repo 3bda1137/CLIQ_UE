@@ -8,23 +8,8 @@ function showChat(otherUserId,otherUserName,otherUserImageUrl) {
     otherUser = otherUserId;
     followingImageUrl = otherUserImageUrl;
     followingName = otherUserName;
-    //console.log("----------------------------")
-    //console.log(otherUserId)
-    //console.log("----------------------------")
-    //get messages 
-    $.ajax({
-        url: '/chat/GetMessages',
-        type: 'GET',
-        data: { otherUserId: otherUserId },
-        success: function (data) {
-
-            //console.log(data);
-            displayChat(data);
-        }, 
-        error: function () {
-            console.error('Error occurred while fetching search results.');
-        }
-    });
+    console.log("----------Start showChat--------------")
+    console.log("Other User ID :", otherUserId)
 
     //get last seen
     $.ajax({
@@ -40,6 +25,22 @@ function showChat(otherUserId,otherUserName,otherUserImageUrl) {
             console.error('Error occurred while fetching search results.');
         }
     });
+    //get messages 
+    $.ajax({
+        url: '/chat/GetMessages',
+        type: 'GET',
+        data: { otherUserId: otherUserId },
+        success: function (data) {
+
+            //console.log(data);
+            displayChat(data);
+        }, 
+        error: function () {
+            console.error('Error occurred while fetching search results.');
+        }
+    });
+
+    console.log("----------end showChat--------------")
 }
 [
     {
@@ -56,11 +57,13 @@ function showChat(otherUserId,otherUserName,otherUserImageUrl) {
 ]
 
 function displayChat(results) {
+
+    console.log("----------Start displayChat--------------")
+
     let msg = "";
     let chat = "";
     $.each(results, function (index, result) {
         //console.log("length -----= ", results.length)
-
         if (index + 1 < results.length) {
             var t1 = results[index].createdAt;
             var t2 = results[index + 1].createdAt;
@@ -70,12 +73,12 @@ function displayChat(results) {
         if (index == 0) {
             msg +=
                 `
-                    <div class="Conversation_Divider">
-                        <span>
-                            ${compareDate(t1)}
-                        </span>
-                    </div>
-                    `
+                <div class="Conversation_Divider">
+                    <span>
+                        ${compareDate(t1)}
+                    </span>
+                </div>
+                `
         }
 
         if (results[index].senderId == otherUser) {
@@ -96,7 +99,7 @@ function displayChat(results) {
                             </div>
                             <div class="Conversation_Item_dropdown">
                                 <button type="button" class="Conversation_Item_dropdown_toggle">
-                                    <i class="ri-more-2-line"></i>
+                                    <i class="ri-more-2-line"></i>  
                                 </button>
                                 <ul class="Conversation_Item_dropdown_List">
                                     <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
@@ -155,9 +158,9 @@ function displayChat(results) {
         
     });
     if (lastSeen == "Online") {
-        tagOfLastSeen = `<div class="Conversation_User_Status online">${lastSeen}</div>`;
+        tagOfLastSeen = `<div class="${otherUser} Conversation_User_Status  online">${lastSeen}</div>`;
     } else {
-        tagOfLastSeen = `<div class="Conversation_User_Status ">${lastSeen}</div>`;
+        tagOfLastSeen = `<div class="${otherUser} Conversation_User_Status ">${lastSeen}</div>`;
     };
     chat = `
                 <div class="Conversation_Top">
@@ -167,6 +170,7 @@ function displayChat(results) {
                         <div class="">
                             <div class="Conversation_User_Name">${followingName}</div>
                             ${tagOfLastSeen}
+                            <span hidden id="otherUserid">${otherUser}</span>
                         </div>
                     </div>
                     <div class="Conversation_buttons">
@@ -205,6 +209,9 @@ function displayChat(results) {
     //console.log(searchResultsContainer)
     searchResultsContainer.empty();
     searchResultsContainer.html(chat);
+
+    console.log("----------end displayChat--------------")
+
 }
 function closeChat() {
     document.querySelector('.Conversation_default').classList.add('active');

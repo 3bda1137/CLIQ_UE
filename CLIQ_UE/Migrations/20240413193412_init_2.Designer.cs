@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CLIQ_UE.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240408132106_init")]
-    partial class init
+    [Migration("20240413193412_init_2")]
+    partial class init_2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -259,16 +259,16 @@ namespace CLIQ_UE.Migrations
 
                     b.Property<string>("FollowerId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FollowerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("FollowingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FollowingId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FollowingName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -277,6 +277,10 @@ namespace CLIQ_UE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasIndex("FollowingId");
 
                     b.ToTable("Followers");
                 });
@@ -309,6 +313,69 @@ namespace CLIQ_UE.Migrations
                     b.ToTable("LastMessages");
                 });
 
+            modelBuilder.Entity("CLIQ_UE.Models.LastSeen", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("LastSeenTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LastSeens");
+                });
+
+            modelBuilder.Entity("CLIQ_UE.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedByUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSeen")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("notificationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("notificationShowDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("CLIQ_UE.Models.OnlineUser", b =>
                 {
                     b.Property<int>("Id")
@@ -338,6 +405,9 @@ namespace CLIQ_UE.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("BookMark")
+                        .HasColumnType("bit");
+
                     b.Property<string>("BookMarkId")
                         .HasColumnType("nvarchar(450)");
 
@@ -361,6 +431,9 @@ namespace CLIQ_UE.Migrations
 
                     b.Property<int>("RepostCount")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Reposted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("TextContent")
                         .IsRequired()
@@ -434,6 +507,24 @@ namespace CLIQ_UE.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("UserLikeComments");
+                });
+
+            modelBuilder.Entity("CLIQ_UE.Models.UserLikePost", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("isLiked")
+                        .HasColumnType("bit");
+
+                    b.HasKey("PostId", "ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("UserLikePosts");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.View", b =>
@@ -588,6 +679,25 @@ namespace CLIQ_UE.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CLIQ_UE.Models.Followers", b =>
+                {
+                    b.HasOne("CLIQ_UE.Models.ApplicationUser", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CLIQ_UE.Models.ApplicationUser", "Following")
+                        .WithMany()
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("Following");
+                });
+
             modelBuilder.Entity("CLIQ_UE.Models.Post", b =>
                 {
                     b.HasOne("CLIQ_UE.Models.BookMark", null)
@@ -639,6 +749,25 @@ namespace CLIQ_UE.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Comment");
+                });
+
+            modelBuilder.Entity("CLIQ_UE.Models.UserLikePost", b =>
+                {
+                    b.HasOne("CLIQ_UE.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CLIQ_UE.Models.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.View", b =>

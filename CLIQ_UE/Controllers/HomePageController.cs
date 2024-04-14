@@ -36,6 +36,7 @@ namespace CLIQ_UE.Controllers
                 model.UserName = user.UserName;
                 model.UserImage = user.PersonalImage;
                 model.SuggestesUsers = suggestesUsersService.GetSuggestesUsers(user.Id);
+                model.userId = user.Id;
                 model.newNotificationCount = notificationService.GetNewNotifications(user.Id).Count();
                 return View(model);
             }

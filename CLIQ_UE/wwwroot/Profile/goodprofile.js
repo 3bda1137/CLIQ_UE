@@ -823,7 +823,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ////// Consume the data 
 
-
     connection.on("NewPostCreated", function (post) {
         let PostHtml = `
                     <div class="post" data-post-date="Just now">
@@ -839,9 +838,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                         <p class="post-time">Just now</p>
                                     </div>
                                 </div>
+
                     <div class="delete-post" onclick="deletePost(${post.id})">
                         <i class="fa-solid fa-trash delete-icon text-danger"></i>
                     </div>
+     
                     </div>
                             <!-- Post Content -->
                             <div class="post-content">
@@ -859,7 +860,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
-                                 <!--
+                                       <!--
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon"></i>
                                 <span>${post.repostCount}</span>

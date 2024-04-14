@@ -25,14 +25,11 @@
     @await RenderSectionAsync("Scripts", required: false)
    
     <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
-    <script>
-        var onlineUserHub = new signalR.HubConnectionBuilder().withUrl("/OnlineUsers").build();
-        onlineUserHub.start().then(function () {
-            console.log("SignalR online User Hub connection established.");
-        });
-        // var userId = @User.Identity.Name;
-        // onlineUserHub.invoke("SaveOnlineUser", userId)
+    <script src="~/chat/js/online.js"></script>
 
+    <script>
+        
+        
     </script>
 </body>
 </html>

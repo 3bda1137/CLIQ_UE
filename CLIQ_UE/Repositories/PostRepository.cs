@@ -29,7 +29,7 @@ namespace CLIQ_UE.Repositories
         public List<string> allPostsImagesById(string id)
         {
             List<string> images = context.Posts
-             .Where(p => p.UserId == id && p.PostImage != null)
+             .Where(p => p.UserId == id && p.PostImage != null && !p.isDeleted)
              .OrderByDescending(p => p.PostDate)
              .Select(p => p.PostImage)
              .ToList();
@@ -77,17 +77,23 @@ namespace CLIQ_UE.Repositories
                 postAddedTime = FormatTime.FormatingTime(DateTime.Now),
                 TextContent = postModel.postContent,
                 PostImage = imageUrl,
-                User = user
+                User = user,
+                isDeleted = false,
+
             };
 
             context.Posts.Add(post);
             return post;
         }
 
-
         public void DeletePost(int id)
         {
-            throw new NotImplementedException();
+            var post = context.Posts.Find(id);
+            if (post != null)
+            {
+                post.isDeleted = true;
+                context.SaveChanges();
+            }
         }
 
         public List<Post> GetLatestPosts(int pageIndex, int pageSize)
@@ -96,6 +102,7 @@ namespace CLIQ_UE.Repositories
 
             List<Post> latestPosts = context.Posts
                 .Include(p => p.User)
+                  .Where(p => !p.isDeleted)
                 .OrderByDescending(p => p.PostDate)
                 .Skip(postsToSkip)
                 .Take(pageSize)
@@ -132,7 +139,7 @@ namespace CLIQ_UE.Repositories
 
             List<Post> latestPosts = context.Posts
                 .Include(p => p.User)
-                .Where(p => p.UserId == id)
+              .Where(p => p.UserId == id && !p.isDeleted)
                 .OrderByDescending(p => p.PostDate)
                 .Skip(postsToSkip)
                 .Take(pageSize)
@@ -172,7 +179,7 @@ namespace CLIQ_UE.Repositories
                 .Include(p => p.Reactions)
                 //.Include(p => p.Comments)
                 .Include(p => p.Views)
-                .FirstOrDefault(p => p.Id == id);
+            .FirstOrDefault(p => p.Id == id && !p.isDeleted);
         }
 
         public List<Reaction> GetReactionsByPostID(int id)
@@ -182,7 +189,7 @@ namespace CLIQ_UE.Repositories
 
         public int GetUserPostCount(string userId)
         {
-            return context.Posts.Count(p => p.UserId == userId);
+            return context.Posts.Count(p => p.UserId == userId && !p.isDeleted);
 
         }
 

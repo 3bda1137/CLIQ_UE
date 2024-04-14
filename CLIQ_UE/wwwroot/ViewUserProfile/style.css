@@ -45,7 +45,7 @@ h6 {
 
 nav {
     position: fixed;
-    background-color: var(--background-color);
+/*    background-color: var(--background-color);*/
     width: 100%;
     top: 0;
     margin: 0;
@@ -198,6 +198,7 @@ nav .nav-content {
     border-bottom-right-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 3px 5px -6px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     border-bottom-left-radius: 10px;
+    background-color: var(--background-color)
 }
 
 .nav-content .logo {
@@ -305,10 +306,10 @@ nav .nav-content {
     display: none;
     position: absolute;
     top: calc(100% + 10px);
-    padding: 5px;
+    padding: 10px 5px;
     right: 0;
     width: 500px;
-    max-height: 200px;
+    height: 445px;
     overflow-y: auto;
     background-color: #ffffff;
     border: 1px solid #ccc;

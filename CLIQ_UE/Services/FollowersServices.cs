@@ -1,6 +1,8 @@
-﻿using CLIQ_UE.Models;
+﻿using CLIQ_UE.Helpers;
+using CLIQ_UE.Models;
 using CLIQ_UE.Repositories;
 using CLIQ_UE.ViewModels;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CLIQ_UE.Services
 {
@@ -31,7 +33,8 @@ namespace CLIQ_UE.Services
         public List<UserConntactViewModel> GetAllByFollowingId(string followerId)
         {
             List<Followers> followers = followersRepository.GetAllByFollowingId(followerId);
-            List<UserConntactViewModel> userConntactViewModel = new List<UserConntactViewModel>();
+            List<UserConntactViewModel> userConntactVMWithLastMessage = new List<UserConntactViewModel>();
+            List<UserConntactViewModel> userConntactVMWithOutLastMessage = new List<UserConntactViewModel>();
             foreach (Followers follower in followers)
             {
                 UserConntactViewModel viewModel = new UserConntactViewModel();
@@ -42,14 +45,25 @@ namespace CLIQ_UE.Services
                     viewModel.UserName = follower.FollowingName;
                     viewModel.ImageUrl = follower.ImageUrl;
                     viewModel.LastMessage = lastMessageServices.Get(followerId, follower.FollowingId);
+                    if (viewModel.LastMessage == null)
+                        userConntactVMWithOutLastMessage.Add(viewModel);
+                    else
+                    {
+                        viewModel.FormatedTime = FormatTimeForChat.CalculateLastSeenForUserList(viewModel.LastMessage.Time.ToString("yyyy-MM-dd HH:mm"));
+                        userConntactVMWithLastMessage.Add(viewModel);
+                    }
                 }
-
-                userConntactViewModel.Add(viewModel);
             }
-            return userConntactViewModel;
+            userConntactVMWithLastMessage= userConntactVMWithLastMessage
+                        .Where(e => e.LastMessage != null)
+                        .OrderByDescending(e => e.LastMessage.Time)
+                        .ToList();
+            userConntactVMWithLastMessage.AddRange(userConntactVMWithOutLastMessage);
+            return userConntactVMWithLastMessage;
         }
 
         public List<UserConntactViewModel> GetAllBySeachWords(string searchword, string followingId)
+
         {
             List<Followers> followers = followersRepository.GetAllBySeachWords(searchword, followingId);
             List<UserConntactViewModel> userConntactViewModel = new List<UserConntactViewModel>();
@@ -60,10 +74,11 @@ namespace CLIQ_UE.Services
                 if (follower.FollowerId == followingId)//FollowingId ==me
                 {
                     //ApplicationUser user = userServices.GetByID(follower.FollowerId);
-                    viewModel.UserId = follower.FollowerId;
+                    viewModel.UserId = follower.FollowingId;
                     viewModel.UserName = follower.FollowingName;
                     viewModel.ImageUrl = follower.ImageUrl;
-                    viewModel.LastMessage = lastMessageServices.Get(followingId, follower.FollowerId);
+                    viewModel.LastMessage = lastMessageServices.Get(followingId, follower.FollowingId);
+                   viewModel.FormatedTime= FormatTimeForChat.CalculateLastSeenForUserList(viewModel.LastMessage.Time.ToString("yyyy-MM-dd HH:mm"));
 
                 }
 
@@ -105,6 +120,11 @@ namespace CLIQ_UE.Services
         public List<string> GetFollowingIds(string userid)
         {
             return followersRepository.GetFollowingIds(userid);
+        }
+
+        public List<string> GetAllUsersToFollow(string userid)
+        {
+            return followersRepository.GetAllUsersToFollow(userid);
         }
     }
 }

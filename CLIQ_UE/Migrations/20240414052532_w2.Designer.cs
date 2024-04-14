@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CLIQ_UE.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240410112415_ssw")]
-    partial class ssw
+    [Migration("20240414052532_w2")]
+    partial class w2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,6 +65,9 @@ namespace CLIQ_UE.Migrations
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("BookMark")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -148,6 +151,24 @@ namespace CLIQ_UE.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("CLIQ_UE.Models.BookMark", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PostID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("bookMarks");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.ChatIndividual", b =>
@@ -384,6 +405,12 @@ namespace CLIQ_UE.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("BookMark")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BookMarkId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("CommentCount")
                         .HasColumnType("int");
 
@@ -420,6 +447,9 @@ namespace CLIQ_UE.Migrations
                     b.Property<int>("ViewsCount")
                         .HasColumnType("int");
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("postAddedTime")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -429,6 +459,8 @@ namespace CLIQ_UE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookMarkId");
 
                     b.HasIndex("UserId");
 
@@ -668,6 +700,10 @@ namespace CLIQ_UE.Migrations
 
             modelBuilder.Entity("CLIQ_UE.Models.Post", b =>
                 {
+                    b.HasOne("CLIQ_UE.Models.BookMark", null)
+                        .WithMany("Posts")
+                        .HasForeignKey("BookMarkId");
+
                     b.HasOne("CLIQ_UE.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -807,6 +843,11 @@ namespace CLIQ_UE.Migrations
             modelBuilder.Entity("CLIQ_UE.Models.ApplicationUser", b =>
                 {
                     b.Navigation("UserLikeComments");
+                });
+
+            modelBuilder.Entity("CLIQ_UE.Models.BookMark", b =>
+                {
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Comment", b =>

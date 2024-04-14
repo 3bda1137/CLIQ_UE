@@ -287,10 +287,10 @@ function displayFollowersList(model) {
             </div>
             <div class="follow-button">
                 ${user.isFollowing ?
-                `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList('${user.userId}')">
+                `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList(this, '${user.userId}')">
                         <i class="fa-solid fa-check btn-icon"></i> Following
                     </button>` :
-                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList('${user.userId}')">
+                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, '${user.userId}')">
                         <i class="fa-solid fa-user-plus btn-icon"></i> Follow
                     </button>`
             }
@@ -337,10 +337,10 @@ function displayFollowingList(model) {
             </div>
             <div class="follow-button">
                 ${user.isFollowing ?
-                `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList('${user.userId}')">
+                `<button class="btn btn-follow-following following" onclick="clickOnUnFollowFromList(this, '${user.userId}')">
                         <i class="fa-solid fa-check btn-icon"></i> Following
                     </button>` :
-                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList('${user.userId}')">
+                `<button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, '${user.userId}')">
                         <i class="fa-solid fa-user-plus btn-icon"></i> Follow
                     </button>`
             }
@@ -439,6 +439,7 @@ function fetchContent(filter) {
 // Function to display posts
 function displayPosts(Model) {
     Model.posts.forEach(post => {
+
         let postHtml = `
             <div class="post" data-post-date="Just now">
                 <div class="box">
@@ -452,15 +453,7 @@ function displayPosts(Model) {
                                 <p class="post-time">${post.postAddedTime}</p>
                             </div>
                         </div>
-                        <div class="views">
-                            <div class="views-number">
-                                <i class="fa-solid fa-eye"></i>
-                                <p>${post.viewsCount}</p>
-                            </div>
-                            <div class="more-options">
-                                <i class="fa-solid fa-ellipsis more-options-icon"></i>
-                            </div>
-                        </div>
+      
                     </div>
                     <!-- Post Content -->
                     <div class="post-content">
@@ -478,10 +471,12 @@ function displayPosts(Model) {
                                 <i class="fa-solid fa-thumbs-down dislike-icon"></i>
                                 <span>${post.dislikeCount}</span>
                             </div>
+                            <!--
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon"></i>
                                 <span>${post.repostCount}</span>
                             </div>
+                            -->
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
                                 <span>${post.commentCount}</span>
@@ -578,7 +573,7 @@ function clickOnUnFollow(followingId) {
 //////////////////////////////////// Following  /////////////////
 
 
-function clickOnFollowFromList(followingId) {
+function clickOnFollowFromList(btn,followingId) {
     const follow____btn = document.querySelector(".btn-follow-following");
     fetch('/Follow/FollowUser', {
         method: 'POST',
@@ -589,8 +584,8 @@ function clickOnFollowFromList(followingId) {
     })
         .then(response => {
             if (response.ok) {
-                follow____btn.innerHTML = " ";
-                follow____btn.innerHTML = `
+                btn.innerHTML = " ";
+                btn.innerHTML = `
                 <i class="fa-solid fa-check"></i> Following
                 `
 
@@ -602,7 +597,7 @@ function clickOnFollowFromList(followingId) {
             console.log("Error")
         });
 }
-function clickOnUnFollowFromList(followingId) {
+function clickOnUnFollowFromList(btn,followingId) {
     const follow____btn = document.querySelector(".btn-follow-following");
     fetch('/Follow/UnFollowUser', {
         method: 'POST',
@@ -613,8 +608,8 @@ function clickOnUnFollowFromList(followingId) {
     })
         .then(response => {
             if (response.ok) {
-                follow____btn.innerHTML = " ";
-                follow____btn.innerHTML = `
+                btn.innerHTML = " ";
+                btn.innerHTML = `
                  <i class="fa-solid fa-user-plus"></i> Follow
                 `
             } else {

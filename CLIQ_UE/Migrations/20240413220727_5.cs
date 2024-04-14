@@ -5,13 +5,13 @@
 namespace CLIQ_UE.Migrations
 {
     /// <inheritdoc />
-    public partial class init2 : Migration
+    public partial class _5 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "BookMark",
+                name: "isDeleted",
                 table: "Posts",
                 type: "bit",
                 nullable: false,
@@ -22,7 +22,7 @@ namespace CLIQ_UE.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "BookMark",
+                name: "isDeleted",
                 table: "Posts");
         }
     }

@@ -1,4 +1,5 @@
-﻿using CLIQ_UE.Models;
+﻿using CLIQ_UE.Helpers;
+using CLIQ_UE.Models;
 using CLIQ_UE.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -41,15 +42,32 @@ namespace CLIQ_UE.Hubs
                     };
                     onlineUserServices.AddUser(onlineUser);
                 }
+
+                //send to my folloyer------>  i online
+
+                Clients.Others.SendAsync("Online", userId);
             }
         }
         public void DeleteOnlineUser(string connectionId)
         {
-            OnlineUser onlineUser = onlineUserServices.GetByConnectionId(connectionId);
-            if (onlineUser != null)
+            var userName = Context.User.Identity.Name;
+            //var connectionId = Context.ConnectionId;
+            if (userName != null)
             {
-                onlineUserServices.DeleteUser(onlineUser);
+                string userId = userServices.GetUserByUserName(userName).Id;
+                OnlineUser onlineUser = onlineUserServices.GetByID(userId);
+                if (onlineUser != null)
+                {
+                    onlineUserServices.DeleteUser(onlineUser);
+                }
+                LastSeen last = lastSeenServices.GetByUserId(userId);
+                string timeFormated = FormatTimeForChat.CalculateLastSeenForUserList(last.LastSeenTime.ToString("yyyy-MM-dd HH:mm"));
+
+                Clients.Others.SendAsync("OffLine", userId, timeFormated);
             }
+
+           
+
         }
 
         private void UpDateLastSeen()
@@ -82,8 +100,9 @@ namespace CLIQ_UE.Hubs
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            DeleteOnlineUser(Context.ConnectionId);
             UpDateLastSeen();
+            DeleteOnlineUser(Context.ConnectionId);
+            
             return base.OnDisconnectedAsync(exception);
         }
 

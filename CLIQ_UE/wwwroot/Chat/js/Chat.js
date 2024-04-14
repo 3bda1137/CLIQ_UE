@@ -28,7 +28,8 @@ document.querySelectorAll('.Conversation_Item_dropdown_toggle').forEach (functio
             document.querySelectorAll('.Conversation_Item_dropdown').forEach( function(i) {
                 i.classList.remove('active')
             })
-            this.parentElement.classList.add('active')    
+            this.parentElement.classList.add('active')
+            console.log("test::::",this);
         }
         
     })
