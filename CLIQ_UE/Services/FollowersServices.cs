@@ -77,7 +77,8 @@ namespace CLIQ_UE.Services
                     viewModel.UserId = follower.FollowingId;
                     viewModel.UserName = follower.FollowingName;
                     viewModel.ImageUrl = follower.ImageUrl;
-                    viewModel.LastMessage = lastMessageServices.Get(followingId, follower.FollowerId);
+                    viewModel.LastMessage = lastMessageServices.Get(followingId, follower.FollowingId);
+                   viewModel.FormatedTime= FormatTimeForChat.CalculateLastSeenForUserList(viewModel.LastMessage.Time.ToString("yyyy-MM-dd HH:mm"));
 
                 }
 

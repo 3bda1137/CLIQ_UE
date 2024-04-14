@@ -158,9 +158,9 @@ function displayChat(results) {
         
     });
     if (lastSeen == "Online") {
-        tagOfLastSeen = `<div class="Conversation_User_Status online">${lastSeen}</div>`;
+        tagOfLastSeen = `<div class="${otherUser} Conversation_User_Status  online">${lastSeen}</div>`;
     } else {
-        tagOfLastSeen = `<div class="Conversation_User_Status ">${lastSeen}</div>`;
+        tagOfLastSeen = `<div class="${otherUser} Conversation_User_Status ">${lastSeen}</div>`;
     };
     chat = `
                 <div class="Conversation_Top">
