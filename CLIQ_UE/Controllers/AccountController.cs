@@ -4,6 +4,7 @@ using CLIQ_UE.Services;
 using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CLIQ_UE.Controllers
 {
@@ -28,32 +29,83 @@ namespace CLIQ_UE.Controllers
 			return View();
 		}
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser ExistingUser = await userManager.FindByEmailAsync(registerViewModel.Email);
+                if (ExistingUser == null)
+                {
+                    string code = GenerateRandomCode.GetCode();
+                    TempData["code"] = code;
+					TempData["email"] = registerViewModel.Email;
+					TempData["password"] = registerViewModel.Password;
+					string body = FormatEmail.CreateDesignForConfirmEmail(code);
+					SendEmail sendEmail = new SendEmail(configuration);
+					await sendEmail.SendEmailAsync(registerViewModel.Email, body);
+					return RedirectToAction("ConfirmEmail", "Account");
+
+                    
+
+                }
+                else
+                {
+                    ModelState.AddModelError(registerViewModel.Email, "Email already exist");
+                }
+            }
+            return View(registerViewModel);
+        }
+
+        public IActionResult ConfirmEmail()
+        {
+            return View();
+        }
+
+        [HttpPost]
+		public async Task<IActionResult> ConfirmEmailAsync(ConfirmEmailViewModel confirmEmailViewModel)
 		{
-			if (ModelState.IsValid)
-			{
-				ApplicationUser applicationUser = userServices.MapRegisterViewModelToAppUser(registerViewModel);
-				IdentityResult result = await userManager.CreateAsync(applicationUser, registerViewModel.Password);
-				if (result.Succeeded)
-				{
-					await signInManager.SignInAsync(applicationUser, false);
-					return RedirectToAction("Index", "HomePage");
-				}
-				else
-				{
-					foreach (var error in result.Errors)
-					{
-						ModelState.AddModelError("", error.Description);
+            if (ModelState.IsValid)
+            {
+                if (TempData["code"] != null)
+                {
+                    if (TempData["code"].ToString() == confirmEmailViewModel.Code)
+                    {
+						RegisterViewModel registerViewModel = new RegisterViewModel();
+                        registerViewModel.Password = TempData["password"].ToString();
+                        registerViewModel.Email = TempData["email"].ToString();
+						ApplicationUser applicationUser = userServices.MapRegisterViewModelToAppUser(registerViewModel);
+						IdentityResult result = await userManager.CreateAsync(applicationUser, registerViewModel.Password);
+						if (result.Succeeded)
+						{
+							await signInManager.SignInAsync(applicationUser, false);
+							return RedirectToAction("CompleteProfile", "EditProfile");
+							//return RedirectToAction("ConfirmEmail", "Account");
+						}
+						else
+						{
+							foreach (var error in result.Errors)
+							{
+								ModelState.AddModelError("", error.Description);
+							}
+						}
 					}
-				}
-			}
-			return View(registerViewModel);
+                    else
+                    {
+                        TempData.Keep("password");
+                        TempData.Keep("email");
+                        TempData.Keep("code");
+						ModelState.AddModelError("code","code is not valid");
+					}
+                }
+            }
+
+			return View(confirmEmailViewModel);
 		}
 
 		public IActionResult Login()
-		{
+        {
 
 			return View();
 		}
@@ -88,22 +140,22 @@ namespace CLIQ_UE.Controllers
 		public async Task<IActionResult> ForgotPassword()
 		{
 
-			return View();
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
-		{
-			if (ModelState.IsValid)
-			{
-				ApplicationUser user = await userManager.FindByEmailAsync(forgotPasswordViewModel.Email);
-				if (user != null)
-				{
-					string token = await userManager.GeneratePasswordResetTokenAsync(user);
-					var urlForResetPassword = Url.Action("ResetPassword", "Account", null, protocol: Request.Scheme);
-					string body = FormatEmail.CreateDesignOfEmail(urlForResetPassword, forgotPasswordViewModel.Email, token);
-					SendEmail sendEmail = new SendEmail(configuration);
-					await sendEmail.SendEmailAsync(forgotPasswordViewModel.Email, body);
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = await userManager.FindByEmailAsync(forgotPasswordViewModel.Email);
+                if (user != null)
+                {
+                    string token = await userManager.GeneratePasswordResetTokenAsync(user);
+                    var urlForResetPassword = Url.Action("ResetPassword", "Account", null, protocol: Request.Scheme);
+                    string body = FormatEmail.CreateDesignForForgotPassword(urlForResetPassword, forgotPasswordViewModel.Email, token);
+                    SendEmail sendEmail = new SendEmail(configuration);
+                    await sendEmail.SendEmailAsync(forgotPasswordViewModel.Email, body);
 
 					return RedirectToAction("ResetMessage", "Account");
 				}
