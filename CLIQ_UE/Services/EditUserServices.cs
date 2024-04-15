@@ -7,9 +7,9 @@ namespace CLIQ_UE.Services
 {
     public class EditUserServices : IEditUserServices
     {
-        private readonly IEditUserRepository editUserRepository;
+        private readonly IUserRepository editUserRepository;
 
-        public EditUserServices(IEditUserRepository editUserRepository)
+        public EditUserServices(IUserRepository editUserRepository)
         {
             this.editUserRepository = editUserRepository;
         }
@@ -33,7 +33,7 @@ namespace CLIQ_UE.Services
             return editProfileViewModel;
         }
 
-        public void UpdateBio(EditBioAndUploadImageViewModel userViewModel, string userId)
+        public void UpdateBio(CompleteProfileViewModel userViewModel, string userId)
         {
             ApplicationUser user = GetById(userId);
             if (user != null)

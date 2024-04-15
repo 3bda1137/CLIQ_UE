@@ -13,7 +13,8 @@
     <div class="col-12">
         <nav>
             <div class="nav-content">
-                <a class="logo" href="#">Clique <i class="fa-solid fa-people-group"></i></a>
+                <div class="logo" onclick="goToTop()" style="cursor:pointer">Clique <i class="fa-solid fa-people-group"></i></div>
+
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
                     <input type="text" class="search-input" placeholder="Search" />
@@ -21,15 +22,43 @@
 
                 <div class="right-items">
                     <div class="items">
-                        <div class="notification">
-                            <i class="fa-solid fa-bell"></i>
+
+                        <div class="notification-container" id="notification-container">
+                            <div class="notification">
+                                <i class="fa-solid fa-bell" id="notification-icon"></i>
+                                @if (Model.newNotificationCount > 0)
+                                {
+                                    <span style="display:block" class="notification-count">@Model.newNotificationCount</span>
+                                 
+                                }
+                                <span style="display:none"  class="notification-count">0</span>
+
+                            </div>
+
+                            <!-------------------------------------------  Notifications ------------------------------------------------------------>
+                            <div class="notification-list">
+
+                   @*              <div class="notification-item">
+                                    <img src="@Model.UserImage" alt="User 1" class="user-avatar">
+                                    <div class="notification-details">
+                                        <span class="user-name"><strong>User 1</strong></span>
+                                        <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
+                                    </div>
+                                </div> *@
+
+
+
+
+                            </div>
                         </div>
+
+
                         <div class="home ">
-                            <a href="#"><i class="fa-solid fa-house active-link"></i></a>
+                            <a asp-action="Index" asp-controller="HomePage"><i class="fa-solid fa-house active-link"></i></a>
                         </div>
 
                         <div class="messages">
-                            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                            <a href="/chat"><i class="fa-solid fa-envelope"></i></a>
                         </div>
 
                         <div class="profile-box" id="profile-box">
@@ -39,8 +68,12 @@
                                 <i class="fa-solid fa-caret-down"></i>
                             </div>
                             <div class="dropdown-menu" id="dropdown-menu">
-                                <div class="dropdown-item" data-action="profile"><i class="fa-solid fa-user"></i> Profile</div>
-                                <div class="dropdown-item" data-action="chat"><i class="fa-solid fa-comments"></i> Chat</div>
+
+                               
+                                <a  asp-action="Index" asp-controller="Profile" class="dropdown-item" data-action="profile"><i class="fa-solid fa-user"></i> Profile</a>
+                                <div class="dropdown-item" data-action="chat"><a asp-action="index" asp-controller="chat"><i class="fa-solid fa-comments"></i> Chat</a></div>
+
+
                                 <div class="dropdown-item" data-action="settings"><i class="fa-solid fa-cog"></i> Settings</div>
                                 <div class="dropdown-item" data-action="group"><i class="fa-solid fa-users"></i> Group</div>
                                 <div class="dropdown-item logout" data-action="logout"><a asp-action="Logout" asp-controller="Account"><i class="fa-solid fa-sign-out"></i> Logout</a></div>
@@ -56,6 +89,9 @@
         </nav>
     </div>
 </div>
+
+
+
 <div class="container-fluid">
 
     <!-- * ---------------------------------------------------------------- -->
@@ -85,17 +121,17 @@
 
 
                 <div class="links-container">
-                    <div class="link">
-                        <i class="fa-solid fa-wallet"></i>
-                        <a href="#">Walt</a>
+                    <div class="box">
+                        <i class="bi bi-bookmark-fill bookmark-icon" onclick="addBookmark('${post.id}')"></i>
+                        <a asp-controller="BookMark" asp-action="GetAllBookMarks">BookMark</a>
                     </div>
                     <div class="link">
-                        <i class="fa-solid fa-diagram-project"></i>
-                        <a href="#">My Products</a>
+                        <i class="bi bi-patch-check-fill"></i>
+                        <a href="#">Get Verified</a>
                     </div>
                     <div class="link">
                         <img class="profile-pic" src="@Model.UserImage" alt="" />
-                        <a href="#">@@@Model.UserName</a>
+                        <a href="#">@Model.UserName</a>
                     </div>
                 </div>
 
@@ -128,48 +164,6 @@
         <!--* Main Context  *******************************************-->
         <div class="col-lg-6 col-md-8 col-12 main-content-container d-flex justify-content-center">
             <div class="container-box">
-                @*
-                <div class="add-post">
-                <div class="box">
-                <div class="write-text">
-                <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="">
-                <!-- <input oninput="auto_increase_input_height(this)" class="post-text" type="text" placeholder="What's on your mind"> -->
-                <textarea name="post-text" id="write-post-text" cols="30" rows="1" placeholder="What's on your mind"></textarea>
-                </div>
-                <div class="post-img">
-                <img class="add-post-img" src="" alt="">
-                </div>
-                <div class="bottom-btns">
-                <div class="left">
-                <i class="fa-solid fa-face-smile emoji-btn"></i>
-                <i class="fa-solid fa-hashtag hash-btn"></i>
-                <i class="fa-solid fa-images img-btn"></i>
-
-                <div class="post-privacy">
-                <div class="dropdown">
-                <button class="dropdown-toggle" id="privacyDropdown" aria-expanded="false">
-                <i class="fa-solid fa-earth-americas"></i>
-                <span>Public</span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="privacyDropdown">
-                <li data-value="public"><i class="fa-solid fa-earth-americas"></i> Public</li>
-                <li data-value="friends"><i class="fa-solid fa-users"></i> Friends</li>
-                <li data-value="private"><i class="fa-solid fa-lock"></i> Private</li>
-                </ul>
-                </div>
-                </div>
-
-
-                </div>
-                <div class="right">
-                <button class="post-btn">Post</button>
-                </div>
-                </div>
-                </div>
-                </div> *@
-
-
-              
                 <div class="add-post">
                     <div class="box">
 
@@ -202,15 +196,15 @@
                                             </a>
                                             <ul class="dropdown-menu" aria-labelledby="privacyDropdown">
                                                 <li data-value="public"><i class="fa-solid fa-earth-americas"></i> Public</li>
-                                                <li data-value="friends"><i class="fa-solid fa-users"></i> Friends</li>
-                                                <li data-value="private"><i class="fa-solid fa-lock"></i> Private</li>
+                                                <li data-value="friends"><i class="fa-solid fa-users"></i> Followers</li>
+                                                <li data-value="private"><i class="fa-solid fa-lock"></i> Only me</li>
                                             </ul>
                                             <input type="hidden" name="privacyValue" id="selected-privacy" value="Public">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="right">
-                                    <button  type="submit" class="post-btn" >Post</button>
+                                    <button type="submit" class="post-btn">Post</button>
                                 </div>
                             </div>
                         </form>
@@ -223,89 +217,7 @@
 
 
 
-                    <!-- ! Post ConTainer -->
-                    @foreach (Post post in Model.LatestPosts)
-
-                    {
-                        <div class="post" data-post-date=@post.PostDate>
-                            <div class="box">
-                                <div class="top">
-                                    <!-- Profile -- views -->
-                                    <div class="profile">
-                                        <img class="profile-pic" src="@post.User.PersonalImage" alt="Profile image">
-                                        <div class="name">
-
-                                            <p class="username">@post.User.UserName</p>
-                                            @* Using js funciton to calc the time  *@
-                                            <p class="post-time">@post.User.UserName</p>
-                                        </div>
-                                    </div>
-                                    <div class="views">
-                                        <div class="views-number">
-                                            <i class="fa-solid fa-eye"></i>
-                                            <p>@post.ViewsCount</p>
-
-                                        </div>
-                                        <div class="more-options">
-                                            <i class="fa-solid fa-ellipsis more-options-icon"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- ! Post Content -->
-                                <div class="post-content">
-                                    @if (post.TextContent != null)
-                                    {
-                                        <p>@post.TextContent</p>
-                                    }
-
-                                    <div class="post-img">
-                                        @if (post.PostImage != null)
-                                        {
-                                            <img src=@post.PostImage alt="Post Image">
-                                        }
-                                    </div>
-
-                                    <div class="interactions">
-                                        <div class="box">
-                                            <i class="fa-solid fa-heart like-icon"></i>
-                                            <span>@post.LikeCount</span>
-                                        </div>
-
-                                        <div class="box">
-                                            <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                                            <span>@post.DislikeCount</span>
-                                        </div>
-
-                                        <div class="box">
-                                            <i class="fa-solid fa-retweet repost-icon"></i>
-                                            <span>@post.RepostCount</span>
-                                        </div>
-
-                                        <div class="box">
-                                            <i class="fa-solid fa-comment comment-icon" data-bs-toggle="modal" data-bs-target="#show_comments"> </i>
-                                            <span>@post.CommentCount</span>
-                                        </div>
-
-                                    </div>
-                                    @if (post.CommentCount > 2)
-                                    {
-
-                                        <a href="#">View <span>@post.CommentCount</span> Comments</a>
-                                    }
-                                </div>
-                                <!-- Add Comment -->
-                                <div class="add-comment">
-                                    <img class="profile-pic" src="@Model.UserImage" alt="">
-                                    <input type="text" placeholder="Add a comment">
-                                    <i class="fa-solid fa-hand-pointer add-comment-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                    }
-
-
-
+                    
 
                     <!-- ! ===================================  ! -->
                 </div>
@@ -327,10 +239,12 @@
                     <p>set your profile pictuer <span class="checked">✓✓</span> </p>
                 </div>
 
-                <div class="links-container box-with-two-cols">
+
+                <!---------------------------------------------------------------------------------------------------- Trending-------------------------------------------------------------------------------------------------- -->
+      @*           <div class="links-container box-with-two-cols">
                     <div class="header">
                         <div class="left">
-                            <img src="./images/fire.svg" alt="Fire svg">
+                            <img src="~/HomePage/images/fire.svg" alt="Fire svg">
                             <p>Trending</p>
                         </div>
                         <a href="#">See more</a>
@@ -352,40 +266,49 @@
                         </div>
                     </div>
 
-                </div>
+                </div> *@
 
                 <div class="links-container box-with-two-cols friends-box">
                     <div class="header">
                         <div class="left">
                             <i class="fa-solid fa-user-group Friends-icon"></i>
-                            <p>Friends Suggesttion</p>
+                            <p>Friends Suggestion</p>
                         </div>
-                        <a href="#">See more</a>
+                        <a class="see-more-btn">See more</a>
                     </div>
 
-                    <div class="box-row">
+ @*                    <div class="box-row">
                         <div class="profile">
-                            <img src="./images/3.jpg" alt="profile pictuer">
+                            <img src="~/HomePage/images/3.jpg" alt="profile pictuer">
                             <p>Moudy Rasmy</p>
                         </div>
                         <div class="follow">
                             <a href="#"><i class="fa-solid fa-circle-plus"></i> Fllow</a>
                         </div>
-                    </div>
+                    </div> *@
 
 
-                    <div class="box-row">
-                        <div class="profile">
-                            <img src="./images/6.jpg" alt="profile pictuer">
-                            <p>Mahmoud salah</p>
+                    @foreach(var user in Model.SuggestesUsers)
+                    {
+                        <div class="box-row">
+                            <div class="profile d-flex justify-content-center align-content-center">
+                                <a asp-controller="ViewUserProfile" asp-action="Index" asp-route-userId="@user.Id">
+                                    <img src="@user.PersonalImage" alt="profile picture">
+                                    <p>@user.FirstName @user.LastName</p>
+                                </a>
+                            </div>
+                            <div class="follow follow-btn" data-user-id="@user.Id">
+                                <a><i class="fa-solid fa-circle-plus"></i> Follow</a>
+                            </div>
                         </div>
-                        <div class="follow">
-                            <a href="#"><i class="fa-solid fa-circle-plus"></i> Fllow</a>
-                        </div>
-                    </div>
+
+                    }
 
                 </div>
-                <div class="links-container box-with-two-cols group-box">
+
+                <!---------------------------------------------------------------------------------------------------- Group Box-------------------------------------------------------------------------------------------------- -->
+
+            @*     <div class="links-container box-with-two-cols group-box">
                     <div class="header">
                         <div class="left">
                             <i class="fa-solid fa-user-group Friends-icon"></i>
@@ -396,7 +319,7 @@
 
                     <div class="box-row">
                         <div class="profile">
-                            <img src="./images/3.jpg" alt="profile pictuer">
+                            <img src="~/HomePage/images/3.jpg" alt="profile pictuer">
                             <p>Kersh Kepers</p>
                             <span class="joins-number">3M Member</span>
                         </div>
@@ -408,7 +331,7 @@
 
                     <div class="box-row">
                         <div class="profile">
-                            <img src="./images/iti.svg" alt="profile pictuer">
+                            <img src="~/HomePage/images/fire.svg" alt="profile pictuer">
                             <p>ITI-Assiut</p>
                             <span class="joins-number">25k Member</span>
 
@@ -418,7 +341,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> *@
 
 
 
@@ -430,7 +353,58 @@
 
 
 <!--  -->
-<!-- Modal -->
+<!-- Modal --><div class="modal fade" id="show_comments" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="show_commentsLabel">Comments</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="commentsModal" class="modal-body">
+
+
+                <div class="comment">
+                    <div class="profile">
+                        <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                        <div class="name">
+                            <p class="username">moudy rasmy</p>
+                            <p class="comment-time">1 hour ago</p>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <p class="comment-text">This is a comment.</p>
+                    </div>
+                    <div class="love-icon">
+                        <i class="fa-solid fa-heart like-icon"></i>
+                        <span>12</span>
+                    </div>
+                </div>
+
+                @*
+                <div class="comment">
+                <div class="profile">
+                <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                <div class="name">
+                <p class="username">moudy rasmy</p>
+                <p class="comment-time">1 hour ago</p>
+                </div>
+                </div>
+                <div class="comment-content">
+                <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, voluptates vero voluptatibus placeat, necessitatibus mollitia similique impedit quasi minima culpa magni, nulla sapiente ex non. Illo sequi tempora laboriosam impedit..</p>
+                </div>
+                <div class="love-icon">
+                <i class="fa-solid fa-heart like-icon"></i>
+                <span>12</span>
+                </div>
+                </div>
+                *@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="show_comments" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -439,9 +413,43 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div id="commentsModal" class="modal-body">
-                
-               
 
+
+                <div class="comment">
+                    <div class="profile">
+                        <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                        <div class="name">
+                            <p class="username">moudy rasmy</p>
+                            <p class="comment-time">1 hour ago</p>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <p class="comment-text">This is a comment.</p>
+                    </div>
+                    <div class="love-icon">
+                        <i class="fa-solid fa-heart like-icon"></i>
+                        <span>12</span>
+                    </div>
+                </div>
+
+@* 
+                <div class="comment">
+                    <div class="profile">
+                        <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                        <div class="name">
+                            <p class="username">moudy rasmy</p>
+                            <p class="comment-time">1 hour ago</p>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, voluptates vero voluptatibus placeat, necessitatibus mollitia similique impedit quasi minima culpa magni, nulla sapiente ex non. Illo sequi tempora laboriosam impedit..</p>
+                    </div>
+                    <div class="love-icon">
+                        <i class="fa-solid fa-heart like-icon"></i>
+                        <span>12</span>
+                    </div>
+                </div>
+ *@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -449,6 +457,298 @@
         </div>
     </div>
 </div>
+<!--  -->
+<!--====================================================================================================================-->
+<!-- ====================  Model Of Show More user to Follow list ===================================-->
+<div class="modal fade" id="show_followes_list" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+    <input type="hidden" value="@Model.userId" id="CurrentUserID">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="show_commentsLabel">Suggestion List </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="FollowersModal" class="modal-body">
+                <!-- Iterate over the list of users -->
+
+                <div class="user">
+                    <h1>THER IS NO FOLLOWERS</h1>
+                </div>
+
+            </div>
+            @*          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div> *@
+        </div>
+    </div>
+</div>
+<!--====================================================================================================================-->
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //----------Make it boolean----------
+    function lovePost(postId, likeOption) {
+        console.log("Love post");
+        likePost = $("#likePost" + postId);
+        dislikePost = $("#dislikePost" + postId);
+        
+        likesCount = $("#likePostCount" + postId);
+        dislikesCount = $("#dislikePostCount" + postId);
+        console.log(likePost)
+        console.log(dislikePost)
+     
+
+        $.ajax({
+            url: `/posts/InteractPost?PostId=${postId}&LikeOption=${likeOption}`,
+            type: 'POST',
+            //data: {commentId:commentId  }, // Include the postId and commentText parameters
+            success: function (response) {
+                if (likeOption == true) {
+                    if (likePost.css('color') == "rgb(128, 128, 128)") {
+                        likePost.css('color', "red");
+                        dislikePost.css('color', "grey");
+                    }
+                    else {
+                        likePost.css('color', "grey");
+                    }
+                }
+                else {
+                    console.log("Not if")
+                    if (dislikePost.css('color') == "rgb(128, 128, 128)") {
+                        dislikePost.css('color', "black");
+                        likePost.css('color', "grey");
+                    }
+                    else {
+                        dislikePost.css('color', "grey");
+                    }
+                }
+                console.log(response);
+                likesCount.text(response['likes'])
+                dislikesCount.text(response['dislikes'])
+            },
+            error: function (xhr, status, error) {
+            }
+        });
+    }
+
+
+    function getPostComments(postId) {
+        console.log(postId);
+        console.log("Post id" + postId);
+        console.log("Get Post Comments");
+        $('#commentsModal').html("");
+        $.ajax({
+            url: `/comments/getComments?postId=` + postId, // Endpoint URL
+            type: 'GET',
+            //data: { postId: postId, commentText: commentText }, // Include the postId and commentText parameters
+            success: function (response) {
+                // Handle the success response from the server
+                console.log('AJAX request successful');
+                console.log(response);
+                let a = ``;
+                $('#commentsModal').append(a);
+                for (let comment of response) {
+                    
+                    let profileImage = @Url.Content("~/images/");
+                    profileImage += comment.userProfileImage;
+                    console.log(comment);
+                    console.log(profileImage);
+                    a = `<div id="${comment.commentId}" class="comment">
+                                        <div class="profile">
+                                                        <img class="profile-pic" src=${profileImage} alt="Profile image">
+                                            <div class="name">
+                                                        <p class="username">${comment.userFirstName} ${comment.userLastName}</p>
+                                                <p class="comment-time">${comment.commentDate}</p>
+                                            </div>
+                                        </div>
+                                        <div class="comment-content">
+                                            <p class="comment-text">${comment.commentText}</p>
+                                        </div>
+                                        <div class="love-icon">
+                                                <i id="likeIcon${comment.commentId}" class="fa-solid fa-heart like-icon" style="color: ${comment.isLikedByMe == true? 'red' : 'grey'}" onclick="likeComment(${comment.commentId})"></i>
+                                                <span id="likeCommentIcon${comment.commentId}">${comment.likeCount}</span>
+                                        </div>
+                                    </div>`
+                    $('#commentsModal').append(a);
+                }
+                $(`#postCommentCount` + postId).text(response.length);
+                $('#show_comments').modal('show');
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('AJAX request failed');
+                console.error(xhr.responseText);
+            }
+        });
+    }
+    
+
+    function calculatePostTime(postDateAttr) {
+        const postDate = new Date(postDateAttr);
+
+        //console.log(`THis is the date that i convert to ${postDate} `)
+        //console.log(`THis is the date converting ${postDateAttr} `)
+
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+
+        const timeDifference = currentDate.getTime() - postDate.getTime();
+        const secondsDifference = Math.floor(timeDifference / 1000);
+        const minutesDifference = Math.floor(secondsDifference / 60);
+        const hoursDifference = Math.floor(minutesDifference / 60);
+        const daysDifference = Math.floor(hoursDifference / 24);
+
+
+        if (daysDifference < 1) {
+            if (hoursDifference < 1) {
+                if (minutesDifference < 1) {
+                    return 'Just now';
+                } else if (minutesDifference === 1) {
+                    return '1m';
+                } else {
+                    return `${minutesDifference}m`;
+                }
+            } else if (hoursDifference === 1) {
+                return '1h';
+            } else {
+                return `${hoursDifference}h`;
+            }
+        } else if (daysDifference === 1) {
+            return '1d';
+        } else if (daysDifference < 7) {
+            return `${daysDifference}d`;
+        } else {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return postDate.toLocaleDateString('en-US', options);
+        }
+    }
+
+
+
+
+    function addNewComment(PostId) {
+        console.log("Works");
+        let commentText = $(`#postId` + PostId).val(); // Get the commentText value from the input field
+        $(`#postId` + PostId).val("");
+        
+        if (commentText == "")
+            return;
+
+        let commentsViewsCount = $(`#postCommentCount` + PostId).text();
+        console.log(commentsViewsCount);
+        $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) + 1)
+
+        
+        $.ajax({
+            url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}`, // Endpoint URL
+            type: 'POST',
+            //data: { postId: PostId, commenttext: commentText }, // Include the postId and commentText parameters
+
+            success: function (response) {
+                // Handle the success response from the server
+                console.log('AJAX request successful');
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('AJAX request failed');
+                console.error(xhr.responseText);
+                $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) - 1)
+                //(`#postCommentCount` + PostId).val() = numOfComments - 1;
+            }
+        });
+    }
+
+
+    //asd
+    function likeComment(commentId) {
+        console.log(commentId);
+        var color = $(`#likeIcon${commentId}`).css('color');
+        console.log(color)
+        if (color == 'rgb(128, 128, 128)') {
+            console.log("From grey to red");
+            $(`#likeIcon${commentId}`).css('color', 'red');
+            $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) + 1)
+        }
+        else {
+            console.log("From red to grey");
+            $(`#likeIcon${commentId}`).css('color', 'grey');
+            $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) - 1)
+        }
+
+        $.ajax({
+            url: `/comments/LikeComment?commentId=${commentId}`,
+            type: 'POST',
+            //data: {commentId:commentId  }, // Include the postId and commentText parameters
+            success: function (response) {
+            },
+            error: function (xhr, status, error) {
+                if (color == 'red') {
+                    $(`#likeIcon${commentId}`).css('color', 'grey');
+                    $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) - 1)
+                }
+                else {
+                    $(`#likeIcon${commentId}`).css('color', 'red');
+                    $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) + 1)
+                }
+            }
+        });
+    }
+
+
+    function addBookmark(postId) {
+        fetch('/BookMark/AddBookMark', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ postId: postId }), 
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Post bookmarked successfully');
+                } else {
+                    console.error('Failed to add bookmark');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding bookmark:', error);
+            });
+    }
+
+    
+
+
+
+</script>
+
+
+  
+
+
+
+</script>
 

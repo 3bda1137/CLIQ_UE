@@ -361,3 +361,30 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/CLIQ_UE/ViewModels/ProfileViewModel.cs
+/CLIQ_UE/Views/Profile/test.cshtml
+/CLIQ_UE/Views/Shared/_personalProfileLayout.cshtml
+/CLIQ_UE/wwwroot/images/1662d661-9064-41bd-b926-5d70218b5a6b.gif
+/CLIQ_UE/wwwroot/images/20047947-3f28-4f73-af9e-6e26058d464b.png
+/CLIQ_UE/wwwroot/images/c75c0416-d247-46bf-9166-971cfbde24ec.webp
+/CLIQ_UE/wwwroot/PersonalProfile/css/all.css
+/CLIQ_UE/wwwroot/PersonalProfile/css/bootstrap.min.css
+/CLIQ_UE/wwwroot/PersonalProfile/css/style.css
+/CLIQ_UE/wwwroot/PersonalProfile/images/3.jpg
+/CLIQ_UE/wwwroot/PersonalProfile/images/6.jpg
+/CLIQ_UE/wwwroot/PersonalProfile/images/a.png
+/CLIQ_UE/wwwroot/PersonalProfile/images/default user pic.png
+/CLIQ_UE/wwwroot/PersonalProfile/images/fire.svg
+/CLIQ_UE/wwwroot/PersonalProfile/images/friends.svg
+/CLIQ_UE/wwwroot/PersonalProfile/images/giphy (1).gif
+/CLIQ_UE/wwwroot/PersonalProfile/images/giphy.gif
+/CLIQ_UE/wwwroot/PersonalProfile/images/iti.svg
+/CLIQ_UE/wwwroot/PersonalProfile/images/t1.mp4
+/CLIQ_UE/wwwroot/PersonalProfile/images/_cd8db45b-6f9b-4a1c-8f84-9fe3a75f1941.jpeg
+/CLIQ_UE/wwwroot/PersonalProfile/js/bootstrap.bundle.min.js
+/CLIQ_UE/wwwroot/PersonalProfile/js/main.js
+/CLIQ_UE/wwwroot/PersonalProfile/js/script.js
+/CLIQ_UE/wwwroot/PostsImages/0982f8be-dba9-4cc2-97d4-70fc4cc51e2e.jpg
+/CLIQ_UE/wwwroot/PostsImages/61aef4d2-f979-4a22-b75c-d193393f670c.jpg
+/CLIQ_UE/wwwroot/PostsImages/66c3c2e6-4ee1-4516-95b0-a3e4cd56ff5a.jpg
+/CLIQ_UE/wwwroot/PostsImages/b195cbf0-50d3-4bde-a314-cf140088d90a.webp

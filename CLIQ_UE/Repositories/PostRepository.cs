@@ -26,6 +26,17 @@ namespace CLIQ_UE.Repositories
             throw new NotImplementedException();
         }
 
+        public List<string> allPostsImagesById(string id)
+        {
+            List<string> images = context.Posts
+             .Where(p => p.UserId == id && p.PostImage != null && !p.isDeleted)
+             .OrderByDescending(p => p.PostDate)
+             .Select(p => p.PostImage)
+             .ToList();
+
+            return images;
+        }
+
         public Post CreatePost(CreatePostViewModel postModel, ApplicationUser user)
         {
             byte[] imageData = null;
@@ -66,46 +77,109 @@ namespace CLIQ_UE.Repositories
                 postAddedTime = FormatTime.FormatingTime(DateTime.Now),
                 TextContent = postModel.postContent,
                 PostImage = imageUrl,
-                User = user
+                User = user,
+                isDeleted = false,
+
             };
 
             context.Posts.Add(post);
             return post;
         }
 
-
         public void DeletePost(int id)
         {
-            throw new NotImplementedException();
+            var post = context.Posts.Find(id);
+            if (post != null)
+            {
+                post.isDeleted = true;
+                context.SaveChanges();
+            }
         }
 
-        public List<Post> GetLatestPosts()
+        public List<Post> GetLatestPosts(int pageIndex, int pageSize)
         {
+            int postsToSkip = pageIndex * pageSize;
+
             List<Post> latestPosts = context.Posts
                 .Include(p => p.User)
+                  .Where(p => !p.isDeleted)
                 .OrderByDescending(p => p.PostDate)
-                                                  .Take(100)
-                                                  .ToList();
+                .Skip(postsToSkip)
+                .Take(pageSize)
+                .Select(p => new Post
+                {
+                    postAddedTime = FormatTime.FormatingTime(p.PostDate),
+                    CommentCount = p.CommentCount,
+                    //Comments = p.Comments,
+                    ViewsCount = p.ViewsCount,
+                    DislikeCount = p.DislikeCount,
+                    LikeCount = p.LikeCount,
+                    RepostCount = p.RepostCount,
+                    TextContent = p.TextContent,
+                    Id = p.Id,
+                    PostDate = p.PostDate,
+                    PostImage = p.PostImage,
+                    User = p.User,
+                    privacy = p.privacy,
+                })
+                .ToList();
 
-            //foreach (var post in latestPosts)
-            //{
-            //    post.postAddedTime = FormatTime.FormatingTime(post.PostDate);
-            //}
-
-
-            context.SaveChanges();
+            foreach (var post in latestPosts)
+            {
+                post.postAddedTime = FormatTime.FormatingTime(post.PostDate);
+            }
 
             return latestPosts;
         }
 
 
-        public Post GetPostById(int id)
+        public List<Post> GetLatestPostsByUserId(string id, int pageIndex, int pageSize)
         {
-            return context.Posts.Include(p => p.User)
-                  .Include(p => p.Reactions)
-                  .Include(p => p.Comments)
-                  .Include(p => p.Views)
-                  .FirstOrDefault(p => p.Id == id);
+            int postsToSkip = pageIndex * pageSize;
+
+            List<Post> latestPosts = context.Posts
+                .Include(p => p.User)
+              .Where(p => p.UserId == id && !p.isDeleted)
+                .OrderByDescending(p => p.PostDate)
+                .Skip(postsToSkip)
+                .Take(pageSize)
+                .Select(p => new Post
+                {
+                    postAddedTime = FormatTime.FormatingTime(p.PostDate),
+                    CommentCount = p.CommentCount,
+                    Comments = p.Comments,
+                    ViewsCount = p.ViewsCount,
+                    DislikeCount = p.DislikeCount,
+                    LikeCount = p.LikeCount,
+                    RepostCount = p.RepostCount,
+                    TextContent = p.TextContent,
+                    Id = p.Id,
+                    PostDate = p.PostDate,
+                    PostImage = p.PostImage,
+                    User = p.User,
+                    privacy = p.privacy,
+                })
+                .ToList();
+
+            foreach (var post in latestPosts)
+            {
+                post.postAddedTime = FormatTime.FormatingTime(post.PostDate);
+            }
+
+            return latestPosts;
+        }
+
+
+
+        public Post? GetPostById(int id)
+
+        {
+            return context.Posts
+                .Include(p => p.User)
+                .Include(p => p.Reactions)
+                //.Include(p => p.Comments)
+                .Include(p => p.Views)
+            .FirstOrDefault(p => p.Id == id && !p.isDeleted);
         }
 
         public List<Reaction> GetReactionsByPostID(int id)
@@ -113,14 +187,23 @@ namespace CLIQ_UE.Repositories
             throw new NotImplementedException();
         }
 
+        public int GetUserPostCount(string userId)
+        {
+            return context.Posts.Count(p => p.UserId == userId && !p.isDeleted);
+
+        }
+
         public void Save()
         {
             context.SaveChanges();
         }
 
-        public void UpdatePost(Post post)
+        public async Task<int> UpdatePost(Post post)
         {
-            throw new NotImplementedException();
+            context.Posts.Update(post);
+            return await context.SaveChangesAsync();
         }
     }
+
+
 }

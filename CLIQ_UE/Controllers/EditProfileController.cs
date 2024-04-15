@@ -10,14 +10,14 @@ namespace CLIQ_UE.Controllers
     public class EditProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IUserServices userServices;
         private readonly IEditUserServices editUserServices;
 
-        public EditProfileController(IEditUserServices editUserServices, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public EditProfileController(IEditUserServices editUserServices, UserManager<ApplicationUser> userManager, IUserServices userServices)
         {
             this.editUserServices = editUserServices;
             this.userManager = userManager;
-            this.signInManager = signInManager;
+            this.userServices = userServices;
         }
 
         public IActionResult EditProfile()
@@ -45,20 +45,23 @@ namespace CLIQ_UE.Controllers
         }
 
 
-        public IActionResult EditBio()
+        public async Task<IActionResult> CompleteProfile()
         {
-            return View("EditBio");
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ApplicationUser applicationUser = await userManager.FindByIdAsync(userId);
+            CompleteProfileViewModel completeProfileViewModel = userServices.MapAppUserToViewModel(applicationUser);
+            return View("CompleteProfile", completeProfileViewModel);
         }
         [HttpPost]
-        public IActionResult EditBio(EditBioAndUploadImageViewModel BioVM)
+        public IActionResult CompleteProfile(CompleteProfileViewModel completeProfileViewModel)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (ModelState.IsValid == true)
             {
-                if (BioVM.Image != null && BioVM.Image.Length > 0)
+                if (completeProfileViewModel.Image != null && completeProfileViewModel.Image.Length > 0)
                 {
-                    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(BioVM.Image.FileName);
+                    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(completeProfileViewModel.Image.FileName);
 
                     // Path to save the image
                     var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images");
@@ -67,18 +70,18 @@ namespace CLIQ_UE.Controllers
                     // Save the uploaded image
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
-                        BioVM.Image.CopyTo(fileStream);
+                        completeProfileViewModel.Image.CopyTo(fileStream);
                     }
 
                     // Set the new filename in the bio object
-                    BioVM.ProfileImageName = uniqueFileName;
+                    completeProfileViewModel.ProfileImageName = uniqueFileName;
                 }
 
                 //edit ApplicationUser
-                editUserServices.UpdateBio(BioVM, userId);
-                return RedirectToAction("Index", "Home");
+                editUserServices.UpdateBio(completeProfileViewModel, userId);
+                return RedirectToAction("Index", "HomePage");
             }
-            return View("EditBio", BioVM);
+            return View("EditBio", completeProfileViewModel);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using CLIQ_UE.Models;
+using CLIQ_UE.Repositories;
 using CLIQ_UE.ViewModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 
 namespace CLIQ_UE.Services
@@ -7,19 +9,32 @@ namespace CLIQ_UE.Services
     public class UserServices : IUserServices
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly ApplicationContext context;
+        private readonly IUserRepository userRepository;
 
-        public UserServices(UserManager<ApplicationUser> userManager, ApplicationContext context)
+        public UserServices(UserManager<ApplicationUser> userManager, IUserRepository userRepository)
         {
             this.userManager = userManager;
-            this.context = context;
+            this.userRepository = userRepository;
         }
+
+        public CompleteProfileViewModel MapAppUserToViewModel(ApplicationUser applicationUser)
+        {
+            CompleteProfileViewModel completeProfileViewModel = new CompleteProfileViewModel();
+            completeProfileViewModel.Bio = applicationUser.Bio;
+            completeProfileViewModel.FirstName = applicationUser.FirstName;
+            completeProfileViewModel.LastName = applicationUser.LastName;
+            completeProfileViewModel.Location = applicationUser.Location;
+            completeProfileViewModel.UserName = applicationUser.UserName;
+            completeProfileViewModel.PhoneNum = applicationUser.PhoneNumber;
+            return completeProfileViewModel;
+        }
+
         public ApplicationUser MapRegisterViewModelToAppUser(RegisterViewModel viewModel)
         {
             ApplicationUser applicationUser = new ApplicationUser();
             applicationUser.Email = viewModel.Email;
             applicationUser.PasswordHash = viewModel.Password;
-            applicationUser.PersonalImage = "./images/defualtImage.jpg";
+            applicationUser.PersonalImage = "./images/Man-Avatar.png";
             //??????
             applicationUser.UserName = GenerateUsernameFromEmail(viewModel.Email);
             return applicationUser;
@@ -40,9 +55,39 @@ namespace CLIQ_UE.Services
             return username;
         }
 
-        public ApplicationUser GetUserById(string id)
+        public ApplicationUser GetUserByUserName(string userName)
         {
-            return context.Users.FirstOrDefault(u => u.Id == id);
+            return userRepository.GetByUserName(userName);
         }
+
+        public ApplicationUser GetByID(string userId)
+        {
+            return userRepository.GetById(userId);
+        }
+        public async Task<BookMark> BookMark(String UserID)
+        {
+
+            ApplicationUser user =  userRepository.GetById(UserID);
+
+            if (user != null)
+            {
+                user.BookMark += 1;
+                 userRepository.Update(user);
+
+                BookMark bookMark = new BookMark
+                {
+
+                    UserID = user.Id
+                };
+
+                return bookMark;
+            }
+            else
+            {
+                throw new Exception("User not found");
+            }
+        }
+
     }
+
 }

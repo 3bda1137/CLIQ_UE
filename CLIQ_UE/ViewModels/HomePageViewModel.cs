@@ -9,12 +9,10 @@ namespace CLIQ_UE.ViewModels
         public string UserName { get; set; }
         public string UserImage { get; set; }
         public List<Post>? LatestPosts { get; set; }
+        public string userId { get; set; }
         ApplicationUser user { get; set; }
-        public string FullName
-        {
-            get => $"{FirstName} {LastName}";
-            set { }
-        }
 
+        public int newNotificationCount { get; set; }
+        public List<ApplicationUser> SuggestesUsers { get; set; }
     }
 }

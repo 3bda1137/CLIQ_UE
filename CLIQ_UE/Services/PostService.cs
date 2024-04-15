@@ -31,13 +31,14 @@ namespace CLIQ_UE.Services
 
         public void DeletePost(int id)
         {
-            throw new NotImplementedException();
+            postRepository.DeletePost(id);
         }
 
-        public List<Post> GetLatestPosts()
+        public List<Post> GetLatestPosts(int pageIndex, int pageSize)
         {
-            return postRepository.GetLatestPosts();
+            return postRepository.GetLatestPosts(pageIndex, pageSize);
         }
+
 
         public Post GetPostById(int id)
         {
@@ -54,9 +55,32 @@ namespace CLIQ_UE.Services
             postRepository.Save();
         }
 
-        public void UpdatePost(Post post)
+        public async Task<int> UpdatePost(Post post)
         {
-            throw new NotImplementedException();
+            return await postRepository.UpdatePost(post);
+        }
+
+
+        public List<Post> GetLatestPostsByUserId(string id, int pageIndex, int pageSize)
+        {
+            return postRepository.GetLatestPostsByUserId(id, pageIndex, pageSize);
+        }
+
+        public List<string> allPostsImagesById(string id)
+        {
+            return postRepository.allPostsImagesById(id);
+        }
+        public Task<int> IncreasePostComments(int postId)
+        {
+            Post Post = postRepository.GetPostById(postId);
+            Post.CommentCount += 1;
+            return postRepository.UpdatePost(Post);
+
+        }
+
+        public int GetUserPostCount(string userId)
+        {
+            return postRepository.GetUserPostCount(userId);
         }
     }
 }

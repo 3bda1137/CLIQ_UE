@@ -22,6 +22,8 @@ namespace CLIQ_UE
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
             });
+
+            builder.Services.AddScoped<DbContext, ApplicationContext>();
             //Add Service Identity
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
                             option =>
@@ -34,6 +36,10 @@ namespace CLIQ_UE
                             .AddDefaultTokenProviders();//to generat token
 
             //register My Services
+
+            builder.Services.AddScoped<IOnlineUserServices, OnlineUserServices>();
+            builder.Services.AddScoped<IOnlineUserRepository, OnlineUserRepository>();
+
             builder.Services.AddScoped<IUserServices, UserServices>();
             builder.Services.AddScoped<IPostRepository, PostRepository>();
             builder.Services.AddScoped<IPostService, PostService>();
@@ -44,15 +50,51 @@ namespace CLIQ_UE
             builder.Services.AddScoped<IReactionRepository, ReactionRepository>();
             builder.Services.AddScoped<IReactionService, ReactionService>();
 
+            builder.Services.AddScoped<ISuggestesUsersRepository, SuggestesUsersRepository>();
+            builder.Services.AddScoped<ISuggestesUsersService, SuggestesUsersService>();
+
+            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+            builder.Services.AddScoped<INotificationService, NotificationService>();
+
+
             builder.Services.AddScoped<IViewRepository, ViewRepository>();
             builder.Services.AddScoped<IViewService, ViewService>();
-
             builder.Services.AddScoped<IEditUserServices, EditUserServices>();
-            builder.Services.AddScoped<IEditUserRepository, EditUserRepository>();
+
+
+
+            builder.Services.AddScoped<IFollowersServices, FollowersServices>();
+            builder.Services.AddScoped<IFollowersRepository, FollowersRepository>();
+
+            builder.Services.AddScoped<ILastMessageServices, LastMessageServices>();
+            builder.Services.AddScoped<ILastMessageRepository, LastMessageRepository>();
+
+
+            builder.Services.AddScoped<IUserServices, UserServices>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            builder.Services.AddScoped<IUserLikeCommentService, UserLikeCommentService>();
+            builder.Services.AddScoped<IUserLikeCommentRepository, UserLikeCommentRepository>();
+
+            builder.Services.AddScoped<IBookMarkService, BookMarkService>();
+            builder.Services.AddScoped<IBookMrakRepository , BookMarkRepository>();
+
+
+            builder.Services.AddScoped<IChatIndividualServices, ChatIndividualServices>();
+            builder.Services.AddScoped<IChatIndividualRepository, ChatIndividualRepository>();
+
+            builder.Services.AddScoped<IUserLikePostService, UserLikePostService>();
+            builder.Services.AddScoped<IUserLikePostRepository, UserLikePostRepository>();
+
+
+            builder.Services.AddScoped<ILastSeenRepository, LastSeenRepository>();
+            builder.Services.AddScoped<ILastSeenServices, LastSeenServices>();
+
 
             builder.Services.AddSignalR();
             //AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             var app = builder.Build();
 
 
@@ -73,7 +115,7 @@ namespace CLIQ_UE
             app.MapHub<ChatIndividualHub>("/ChatIndividual");
             app.MapHub<OnlineUsersHub>("/OnlineUsers");
             app.MapHub<PostsHub>("/PostHub");
-
+            app.MapHub<NotificationHub>("/NotificationHub");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=HomePage}/{action=Index}/{id?}");
