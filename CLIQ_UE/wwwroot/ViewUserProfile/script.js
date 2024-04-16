@@ -439,6 +439,13 @@ function fetchContent(filter) {
 // Function to display posts
 function displayPosts(Model) {
     Model.posts.forEach(post => {
+        const isBookmarkedValue = Model.bookmarksIds.includes(post.id)
+        let bookmarkIconHtml = '';
+        if (isBookmarkedValue) {
+            bookmarkIconHtml = `<i class="bi bi-bookmark-fill bookmark-icon text-primary" onclick="removeBookmark('${post.id}', this)"></i>`;
+        } else {
+            bookmarkIconHtml = `<i class="fa-regular fa-bookmark bookmark-icon" onclick="addBookmark('${post.id}', this)"></i>`;
+        }
 
         let postHtml = `
             <div class="post" data-post-date="Just now">
@@ -483,7 +490,10 @@ function displayPosts(Model) {
                             </div>
                         </div>
 
-                                <i class="bi bi-bookmark-fill"></i>
+                                         <div class="box bookmark-box">
+                   ${bookmarkIconHtml}
+                            </div>
+
                         </div>
                         ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
                     </div>
@@ -517,6 +527,46 @@ function loadMore() {
 }
 
 window.addEventListener('scroll', loadMore);
+
+
+
+/////////////////  Add and remove bookmark function --> /////////
+///////////////////////////////////////////////////////////////////
+function addBookmark(postId, bookmarkIcon) {
+    const bookmarkBox = bookmarkIcon.closest('.bookmark-box');
+
+    fetch('/BookMark/AddBookMark?postId=' + postId, {
+        method: 'POST',
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log(bookmarkBox)
+                bookmarkBox.innerHTML = " ";
+                bookmarkBox.innerHTML = `<i class="bi bi-bookmark-fill bookmark-icon text-primary" onclick="removeBookmark('${postId}', this)"></i>`;
+                console.log('Post bookmarked successfully');
+            } else {
+                console.error('Failed to add bookmark');
+            }
+        })
+}
+
+function removeBookmark(postId, bookmarkIcon) {
+    const bookmarkBox = bookmarkIcon.closest('.bookmark-box');
+    fetch('/BookMark/removeBookmark?postId=' + postId, {
+        method: 'POST',
+    })
+        .then(response => {
+            if (response.ok) {
+                bookmarkBox.innerHTML = " ";
+                bookmarkBox.innerHTML = `<i class="fa-regular fa-bookmark bookmark-icon" onclick="addBookmark('${postId}', this)"></i>`;
+                console.log('Bookmark removed successfully');
+            } else {
+                console.error('Failed to remove bookmark');
+            }
+        })
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// Following  /////////////////
 

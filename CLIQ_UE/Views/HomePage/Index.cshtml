@@ -8,6 +8,7 @@
 }
 
 
+
 <!-- ! Navbar -->
 <div class="row">
     <div class="col-12">
@@ -107,7 +108,7 @@
                     </div>
                     <div class="link">
                         <i class="fa-solid fa-comments"></i>
-                        <a href="#" class="chat">Chat</a>
+                        <a href="/chat" class="chat">Chat</a>
                     </div>
                     <div class="link">
                         <i class="fa-solid fa-user-group"></i>
@@ -121,9 +122,9 @@
 
 
                 <div class="links-container">
-                    <div class="box">
-                        <i class="bi bi-bookmark-fill bookmark-icon" onclick="addBookmark('${post.id}')"></i>
-                        <a asp-controller="BookMark" asp-action="GetAllBookMarks">BookMark</a>
+                    <div class="link">
+                        <i class="bi bi-bookmark-fill bookmark-icon"></i>
+                        <a class="Bookmark-btn">BookMark</a>
                     </div>
                     <div class="link">
                         <i class="bi bi-patch-check-fill"></i>
@@ -131,7 +132,7 @@
                     </div>
                     <div class="link">
                         <img class="profile-pic" src="@Model.UserImage" alt="" />
-                        <a href="#">@Model.UserName</a>
+                        <a asp-action="Index" asp-controller="Profile">@@@Model.UserName</a>
                     </div>
                 </div>
 
@@ -238,6 +239,9 @@
                     <p>set your username <span class="checked">✓✓</span> </p>
                     <p>set your profile pictuer <span class="checked">✓✓</span> </p>
                 </div>
+
+
+
 
 
                 <!---------------------------------------------------------------------------------------------------- Trending-------------------------------------------------------------------------------------------------- -->
@@ -483,6 +487,28 @@
     </div>
 </div>
 <!--====================================================================================================================-->
+<!-- ====================  Model Of Show saved Posts ===================================-->
+<div class="modal fade" id="show_bookmarks_list" tabindex="-1" aria-labelledby="show-bookmarks" aria-hidden="true">
+    <input type="hidden" value="@Model.userId" id="CurrentUserID">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="show-bookmarks">Saved Posts </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="bookMarksModal" class="modal-body">
+                <!-- Iterate over the list of users -->
+
+                <div class="posts-container saved-posts-container">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--====================================================================================================================-->
+
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -719,25 +745,25 @@
     }
 
 
-    function addBookmark(postId) {
-        fetch('/BookMark/AddBookMark', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ postId: postId }), 
-        })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Post bookmarked successfully');
-                } else {
-                    console.error('Failed to add bookmark');
-                }
-            })
-            .catch(error => {
-                console.error('Error adding bookmark:', error);
-            });
-    }
+    // function addBookmark(postId) {
+    //     fetch('/BookMark/AddBookMark', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({ postId: postId }), 
+    //     })
+    //         .then(response => {
+    //             if (response.ok) {
+    //                 console.log('Post bookmarked successfully');
+    //             } else {
+    //                 console.error('Failed to add bookmark');
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error('Error adding bookmark:', error);
+    //         });
+    // }
 
     
 

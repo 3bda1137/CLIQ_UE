@@ -5,6 +5,7 @@
 
 
 
+
     const profile_pic = document.querySelector('.profile-pic');
     const searchInput = document.querySelector('.nav-content .search-bar .search-input');
     //const notification_icon = document.querySelector('.nav-content .right-items .items .notification i');
@@ -303,10 +304,18 @@ function fetchPosts(pageIndex) {
 
 // Function to display posts
 function displayPosts(Model) {
+   
     //console.log("Model posts")
     Model.posts.forEach(post => {
         const isCurrentUserPost = post.user.id === Model.currentUserId;
-        console.log(isCurrentUserPost);
+        const isBookmarkedValue = Model.bookmarksIds.includes(post.id)
+        let bookmarkIconHtml = '';
+        if (isBookmarkedValue) {
+            bookmarkIconHtml = `<i class="bi bi-bookmark-fill bookmark-icon text-primary" onclick="removeBookmark('${post.id}', this)"></i>`;
+        } else {
+            bookmarkIconHtml = `<i class="fa-regular fa-bookmark bookmark-icon" onclick="addBookmark('${post.id}', this)"></i>`;
+        }
+
         let postHtml = `
             <div class="post" data-post-date="Just now">
                 <div class="box">
@@ -356,9 +365,9 @@ function displayPosts(Model) {
                             </div>
                         </div>
 
-                              <div class="box">
-    <i class="bi bi-bookmark-fill bookmark-icon" onclick="addBookmark('${post.id}')"></i>
-</div>
+                              <div class="box bookmark-box">
+                   ${bookmarkIconHtml}
+                            </div>
 
                         </div>
                         ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
@@ -395,28 +404,7 @@ function displayPosts(Model) {
 
 }
 
-
-
-function addBookmark(postId) {
-    // Make an AJAX request to add the post to bookmarks
-    fetch('/BookMark/AddBookMark?postId=' + postId, {
-        method: 'POST',
-    })
-        .then(response => {
-            if (response.ok) {
-                // Update UI or provide feedback as needed
-                console.log('Post bookmarked successfully');
-            } else {
-                console.error('Failed to add bookmark');
-            }
-        })
-        .catch(error => {
-            console.error('Error adding bookmark:', error);
-        });
-}
-
-
-
+///////////////////////////////////////////////////////////////////////////////////////////
 function loadMore() {
     const lastPost = document.querySelector('.post:last-of-type');
     const theLastPost = lastPost.getBoundingClientRect().bottom - window.innerHeight;
@@ -428,7 +416,120 @@ function loadMore() {
 }
 
 window.addEventListener('scroll', loadMore);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////  Add and remove bookmark function --> /////////
+///////////////////////////////////////////////////////////////////
+function addBookmark(postId, bookmarkIcon) {
+    const bookmarkBox = bookmarkIcon.closest('.bookmark-box');
+
+    fetch('/BookMark/AddBookMark?postId=' + postId, {
+        method: 'POST',
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log(bookmarkBox)
+                bookmarkBox.innerHTML = " ";
+                bookmarkBox.innerHTML = `<i class="bi bi-bookmark-fill bookmark-icon text-primary" onclick="removeBookmark('${postId}', this)"></i>`;
+                console.log('Post bookmarked successfully');
+            } else {
+                console.error('Failed to add bookmark');
+            }
+        })
+}
+
+function removeBookmark(postId, bookmarkIcon) {
+    const bookmarkBox = bookmarkIcon.closest('.bookmark-box');
+    fetch('/BookMark/removeBookmark?postId=' + postId, {
+        method: 'POST',
+    })
+        .then(response => {
+            if (response.ok) {
+                bookmarkBox.innerHTML = " ";
+                bookmarkBox.innerHTML = `<i class="fa-regular fa-bookmark bookmark-icon" onclick="addBookmark('${postId}', this)"></i>`;
+                console.log('Bookmark removed successfully');
+            } else {
+                console.error('Failed to remove bookmark');
+            }
+        })
+
+}
+
+document.querySelector(".Bookmark-btn").addEventListener('click', function () {
+    fetchAllSavedPosts()
+})
+
+function fetchAllSavedPosts() {
+    fetch(`/BookMark/GetAllBookMarks`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch saved posts');
+            }
+            return response.json();
+        })
+        .then(posts => {
+            console.log(posts);
+            var savedPostsContainer = document.querySelector('.saved-posts-container');
+            savedPostsContainer.innerHTML = '';
+            posts.forEach(post => {
+                let postHtml = `
+            <div class="post" data-post-date="Just now">
+                <div class="box">
+                           <input type="hidden" class="post-id" value="${post.id}">
+                    <div class="top">
+                        <!-- Profile -- views -->
+                        <div class="profile post-profile">
+                                 <input type="hidden" value="${post.user.id}" id="PostID">
+                            <img class="profile-pic" src="${post.user.personalImage}"  alt="Profile image">
+                            <div class="name">
+                                <p class="username">${post.user.userName} <i class="bi bi-patch-check-fill text-primary"></i> </p>
+                                <!-- Using js function to calculate the time -->
+                                <p class="post-time">${post.postAddedTime}</p>
+                            </div>
+                        </div>
+                            <div class=" bookmark-box">
+                                         <i class="bi bi-bookmark-fill bookmark-icon text-primary" onclick="removeBookmark('${post.id}', this)"></i>
+                            </div>
+                    </div>
+                    <!-- Post Content -->
+                    <div id="post${post.id}" class="post-content">
+                        ${post.textContent ? `<p>${post.textContent}</p>` : ''}
+                        <div class="post-img">
+                            ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
+                        </div>
+                        <div class="interactions">
+                        <div class="interactions-container">
+                              <div class="box">
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey"></i>
+                                <span id="likePostCount${post.id}">${post.likeCount}</span>
+                            </div>
+                            <div class="box">
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey"></i>
+                                <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
+                            </div>
+                            <div class="box">
+                                <i class="fa-solid fa-comment comment-icon")"></i>
+                                <span id="postCommentCount${post.id}">${post.commentCount}</span>
+                            </div>
+                        </div>
+
+                        </div>
+                        ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
+                    </div>
+                   
+                </div>
+            </div>`;
+                savedPostsContainer.insertAdjacentHTML('afterbegin', postHtml);
+            })
+      
+            var myModal = new bootstrap.Modal(document.getElementById('show_bookmarks_list'));
+            myModal.show();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // * All Post Functionally * 
@@ -518,9 +619,11 @@ window.addEventListener('scroll', loadMore);
                                         <p class="post-time">Just now</p>
                                     </div>
                                 </div>
+                                <!--
                     <div class="delete-post" onclick="deletePost(${post.id})">
                         <i class="fa-solid fa-trash delete-icon text-danger"></i>
                     </div>
+                    -->
                     </div>
                             <!-- Post Content -->
                             <div class="post-content">
@@ -549,8 +652,9 @@ window.addEventListener('scroll', loadMore);
                                 <span id="postCommentCount${post.id}">${post.commentCount}</span>
                             </div>
                         </div>
-
-                                <i class="bi bi-bookmark-fill"></i>
+                                <div class=" bookmark-box">
+               <i class="fa-regular fa-bookmark bookmark-icon" onclick="addBookmark('${post.id}', this)"></i>
+                            </div>
                         </div>
                                 ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
                             </div>
