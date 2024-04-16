@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CLIQ_UE.Models
 {
@@ -7,7 +6,7 @@ namespace CLIQ_UE.Models
     {
         public String Id { get; set; }
         [ForeignKey("Post")]
-        public String PostID { get; set; }
+        public int PostID { get; set; }
         public ICollection<Post> Posts { get; set; }
         public String UserID { get; set; }
 

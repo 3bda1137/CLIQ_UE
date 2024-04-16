@@ -14,8 +14,10 @@ namespace CLIQ_UE.Controllers
         private readonly IFollowersServices followersServices;
         private readonly IPostService postService1;
         private readonly INotificationService notificationService;
+        private readonly IBookMarkService bookMarkService;
 
-        public ViewUserProfileController(UserManager<ApplicationUser> userManager, IPostService postService, IUserServices userServices, IFollowersServices followersServices, IPostService postService1, INotificationService notificationService)
+        public ViewUserProfileController(UserManager<ApplicationUser> userManager, IPostService postService, IUserServices userServices, IFollowersServices followersServices, IPostService postService1, INotificationService notificationService,
+            IBookMarkService bookMarkService)
         {
             this.userManager = userManager;
             this.postService = postService;
@@ -23,6 +25,7 @@ namespace CLIQ_UE.Controllers
             this.followersServices = followersServices;
             this.postService1 = postService1;
             this.notificationService = notificationService;
+            this.bookMarkService = bookMarkService;
         }
 
         public async Task<IActionResult> Index(ProfileViewVM model, string userId)
@@ -72,7 +75,7 @@ namespace CLIQ_UE.Controllers
 
 
             var userVisited = userServices.GetByID(userId);
-
+            ApplicationUser user = await userManager.GetUserAsync(User);
             List<Post> posts = postService.GetLatestPostsByUserId(userId, pageIndex, pageSize);
 
             displayPostViewModel displayPostViewModel = new displayPostViewModel();
@@ -83,7 +86,7 @@ namespace CLIQ_UE.Controllers
             displayPostViewModel.currentUserusername = userVisited.UserName;
             displayPostViewModel.currentUserFirstName = userVisited.FirstName;
             displayPostViewModel.currentUserLastName = userVisited.LastName;
-
+            displayPostViewModel.BookmarksIds = bookMarkService.getAllPostsId(user.Id);
 
 
             return Json(displayPostViewModel);

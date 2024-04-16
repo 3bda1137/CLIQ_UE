@@ -174,12 +174,16 @@ namespace CLIQ_UE.Repositories
         public Post? GetPostById(int id)
 
         {
-            return context.Posts
+            Post p = context.Posts
                 .Include(p => p.User)
                 .Include(p => p.Reactions)
                 //.Include(p => p.Comments)
                 .Include(p => p.Views)
             .FirstOrDefault(p => p.Id == id && !p.isDeleted);
+
+            p.postAddedTime = FormatTime.FormatingTime(p.PostDate);
+            return p;
+
         }
 
         public List<Reaction> GetReactionsByPostID(int id)

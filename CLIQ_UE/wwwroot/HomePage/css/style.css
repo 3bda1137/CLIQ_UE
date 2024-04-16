@@ -139,8 +139,23 @@ i {
     height:400px;
     overflow-y:scroll;
 }
+
+
 .profile img{
     cursor:pointer;
+}
+
+#show_bookmarks_list .modal-body {
+    height: 500px;
+}
+#show_bookmarks_list .modal-content {
+    width:70% !important;
+}
+#bookMarksModal {
+    height: 80vh !important;
+}
+.posts-container.saved-posts-container {
+/*    width: 50%;*/
 }
 /* //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////// */
@@ -162,6 +177,7 @@ i {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor:pointer;
 }
 
 .links-container {
@@ -585,7 +601,7 @@ nav .nav-content {
     padding: 10px 5px;
     right: 0;
     width: 500px;
-height: 445px;
+height: 250px;
     overflow-y: auto;
     background-color: #ffffff;
     border: 1px solid #ccc;
@@ -628,7 +644,7 @@ height: 445px;
     transition: background-color 0.3s ease;
 }
 
-    }
+    
 .notification-item.seen {
     background-color: #f9f9f9;
 }
@@ -1381,6 +1397,10 @@ height: 445px;
 
     .main-content-container .container-box {
         width: 100%;
+    }
+
+    #show_bookmarks_list .modal-content{
+        width:100% !important;
     }
 }
 

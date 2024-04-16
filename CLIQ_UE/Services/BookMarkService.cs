@@ -2,7 +2,6 @@
 using CLIQ_UE.Models;
 using CLIQ_UE.Repositories;
 using CLIQ_UE.Services;
-using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 public class BookMarkService : IBookMarkService
@@ -22,7 +21,7 @@ public class BookMarkService : IBookMarkService
 
     public void AddBookMark(BookMark BookMarkVM)
     {
-      
+
 
 
         bookMrakRepository.AddBookMark(BookMarkVM);
@@ -31,7 +30,22 @@ public class BookMarkService : IBookMarkService
     public List<BookMark> GetAllBookMark(string UserID)
     {
 
-    return bookMrakRepository.GetAllBookMarkList(UserID);
-       
+        return bookMrakRepository.GetAllBookMarkList(UserID);
+
+    }
+
+    public List<int> getAllPostsId(string userId)
+    {
+        return bookMrakRepository.getAllPostsId(userId);
+    }
+
+    public bool isBookmarked(int postId, string userId)
+    {
+        return bookMrakRepository.isBookmarked(postId, userId);
+    }
+
+    public void removeBookmark(int postId, string userId)
+    {
+        bookMrakRepository.removeBookmark(postId, userId);
     }
 }

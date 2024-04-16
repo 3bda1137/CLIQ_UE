@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using CLIQ_UE.Models;
 using CLIQ_UE.Services;
-using CLIQ_UE.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace CLIQ_UE.Controllers
 {
@@ -20,7 +15,7 @@ namespace CLIQ_UE.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IPostService postService;
 
-        public BookMarkController(IBookMarkService bookMarkService, IMapper mapper, IUserServices userServices, UserManager<ApplicationUser> userManager,IPostService postService)
+        public BookMarkController(IBookMarkService bookMarkService, IMapper mapper, IUserServices userServices, UserManager<ApplicationUser> userManager, IPostService postService)
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -34,48 +29,67 @@ namespace CLIQ_UE.Controllers
             return View();
         }
 
-
+        [HttpGet]
         public IActionResult GetAllBookMarks()
         {
             string currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (currentUserId == null)
+            var postIds = _bookMarkService.getAllPostsId(currentUserId);
+            List<Post> posts = new List<Post>();
+
+            if (postIds != null)
             {
-                return Unauthorized();
+                foreach (var post in postIds)
+                {
+                    posts.Add(postService.GetPostById(post));
+                }
             }
 
-            List<BookMark> bookMarks = _bookMarkService.GetAllBookMark(currentUserId);
-           // List<Post> posts = postService.GetPostById(currentUserId);
-
-           // List<BookMarkViewModel> bookMarkVMs = _mapper.Map<List<BookMarkViewModel>>(bookMarks);
-
-            return View("GetAllBookMark", bookMarks);
+            return Json(posts);
         }
 
         [HttpPost]
-        public  void AddBookMark(string postId)
-        {  if (!string.IsNullOrEmpty(postId))
-                {
-                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    // Create a new bookmark
-                    BookMark bookmark = new BookMark
-                    {
-                        Id=Guid.NewGuid().ToString(),
-                        PostID = postId,
-                        UserID = userId
-                    
-                    };
+        public void AddBookMark(int postId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Create a new bookmark
+            BookMark bookmark = new BookMark
+            {
+                Id = Guid.NewGuid().ToString(),
+                PostID = postId,
+                UserID = userId
 
-                     _bookMarkService.AddBookMark(bookmark);
+            };
 
-                 
-                }
+            _bookMarkService.AddBookMark(bookmark);
 
-              
-            }
-         
         }
 
 
+        public async Task<IActionResult> RemoveBookmark(int postId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            _bookMarkService.removeBookmark(postId, user.Id);
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> IsisBookmarked(int postId)
+        {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+
+            bool isBookmarked = _bookMarkService.isBookmarked(postId, user.Id);
+            if (isBookmarked)
+            {
+                return Ok();
+            }
+            else
+                return BadRequest();
+
+        }
+
     }
+
+
+}
 

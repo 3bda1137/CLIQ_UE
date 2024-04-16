@@ -15,15 +15,17 @@ namespace CLIQ_UE.Controllers
         private readonly IPostService postService;
         private readonly ISuggestesUsersService suggestesUsersService;
         private readonly INotificationService notificationService;
+        private readonly IBookMarkService bookMarkService;
 
         // Injection in the constructor 
-        public HomePageController(UserManager<ApplicationUser> userManager, IPostService postService, ISuggestesUsersService suggestesUsersService, INotificationService notificationService)
+        public HomePageController(UserManager<ApplicationUser> userManager, IPostService postService, ISuggestesUsersService suggestesUsersService, INotificationService notificationService, IBookMarkService bookMarkService)
         {
 
             this.userManager = userManager;
             this.postService = postService;
             this.suggestesUsersService = suggestesUsersService;
             this.notificationService = notificationService;
+            this.bookMarkService = bookMarkService;
         }
 
         public async Task<IActionResult> Index(HomePageViewModel model)
@@ -52,6 +54,7 @@ namespace CLIQ_UE.Controllers
             List<Post> posts = postService.GetLatestPosts(pageIndex, pageSize);
 
             displayPostViewModel displayPostViewModel = new displayPostViewModel();
+            displayPostViewModel.BookmarksIds = bookMarkService.getAllPostsId(user.Id);
 
             displayPostViewModel.Posts = posts;
             displayPostViewModel.currentUserId = user.Id;
