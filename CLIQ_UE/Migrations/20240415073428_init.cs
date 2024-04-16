@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -306,6 +307,7 @@ namespace CLIQ_UE.Migrations
                     PostImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     postAddedTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Videos = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LikeCount = table.Column<int>(type: "int", nullable: false),
                     DislikeCount = table.Column<int>(type: "int", nullable: false),

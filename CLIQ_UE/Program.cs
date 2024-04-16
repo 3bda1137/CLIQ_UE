@@ -90,6 +90,8 @@ namespace CLIQ_UE
             builder.Services.AddScoped<ILastSeenRepository, LastSeenRepository>();
             builder.Services.AddScoped<ILastSeenServices, LastSeenServices>();
 
+            builder.Services.AddScoped<ISearchRepository, SearchRepository>();
+
 
             builder.Services.AddSignalR();
             //AutoMapper

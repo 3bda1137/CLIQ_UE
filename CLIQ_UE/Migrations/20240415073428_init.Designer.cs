@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CLIQ_UE.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240413210318_init_4")]
-    partial class init_4
+    [Migration("20240415073428_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -446,6 +446,9 @@ namespace CLIQ_UE.Migrations
 
                     b.Property<int>("ViewsCount")
                         .HasColumnType("int");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("postAddedTime")
                         .IsRequired()

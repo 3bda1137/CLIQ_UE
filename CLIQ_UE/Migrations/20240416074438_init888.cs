@@ -5,7 +5,7 @@
 namespace CLIQ_UE.Migrations
 {
     /// <inheritdoc />
-    public partial class init_4 : Migration
+    public partial class init888 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
