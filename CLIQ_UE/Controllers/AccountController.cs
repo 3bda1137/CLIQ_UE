@@ -1,32 +1,33 @@
-﻿using CLIQ_UE.Helpers;
+using CLIQ_UE.Helpers;
 using CLIQ_UE.Models;
 using CLIQ_UE.Services;
 using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CLIQ_UE.Controllers
 {
-    public class AccountController : Controller
-    {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly IUserServices userServices;
-        private readonly IConfiguration configuration;
+	public class AccountController : Controller
+	{
+		private readonly UserManager<ApplicationUser> userManager;
+		private readonly SignInManager<ApplicationUser> signInManager;
+		private readonly IUserServices userServices;
+		private readonly IConfiguration configuration;
 
-        public AccountController(UserManager<ApplicationUser> _UserManager, SignInManager<ApplicationUser> _SignInManager, IUserServices _UserServices, IConfiguration _Configuration)
-        {
-            userManager = _UserManager;
-            signInManager = _SignInManager;
-            userServices = _UserServices;
-            configuration = _Configuration;
-        }
+		public AccountController(UserManager<ApplicationUser> _UserManager, SignInManager<ApplicationUser> _SignInManager, IUserServices _UserServices, IConfiguration _Configuration)
+		{
+			userManager = _UserManager;
+			signInManager = _SignInManager;
+			userServices = _UserServices;
+			configuration = _Configuration;
+		}
 
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
+		[HttpGet]
+		public IActionResult Register()
+		{
+			return View();
+		}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -37,24 +38,16 @@ namespace CLIQ_UE.Controllers
                 ApplicationUser ExistingUser = await userManager.FindByEmailAsync(registerViewModel.Email);
                 if (ExistingUser == null)
                 {
+                    string code = GenerateRandomCode.GetCode();
+                    TempData["code"] = code;
+					TempData["email"] = registerViewModel.Email;
+					TempData["password"] = registerViewModel.Password;
+					string body = FormatEmail.CreateDesignForConfirmEmail(code);
+					SendEmail sendEmail = new SendEmail(configuration);
+					await sendEmail.SendEmailAsync(registerViewModel.Email, body);
+					return RedirectToAction("ConfirmEmail", "Account");
 
-
-
-
-                    ApplicationUser applicationUser = userServices.MapRegisterViewModelToAppUser(registerViewModel);
-                    IdentityResult result = await userManager.CreateAsync(applicationUser, registerViewModel.Password);
-                    if (result.Succeeded)
-                    {
-                        await signInManager.SignInAsync(applicationUser, false);
-                        return RedirectToAction("CompleteProfile", "EditProfile");
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError("", error.Description);
-                        }
-                    }
+                    
 
                 }
                 else
@@ -65,41 +58,87 @@ namespace CLIQ_UE.Controllers
             return View(registerViewModel);
         }
 
-        public IActionResult Login()
+        public IActionResult ConfirmEmail()
         {
-
             return View();
         }
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
-        {
+		public async Task<IActionResult> ConfirmEmailAsync(ConfirmEmailViewModel confirmEmailViewModel)
+		{
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await userManager.FindByEmailAsync(loginViewModel.Email);
-                if (user != null)
+                if (TempData["code"] != null)
                 {
-                    bool isFound = await userManager.CheckPasswordAsync(user, loginViewModel.Password);
-                    if (isFound)
+                    if (TempData["code"].ToString() == confirmEmailViewModel.Code)
                     {
-                        await signInManager.SignInAsync(user, true);
-                        return RedirectToAction("Index", "HomePage");
-                    }
-                    ModelState.AddModelError("", "UserName or Password Not valid");
+						RegisterViewModel registerViewModel = new RegisterViewModel();
+                        registerViewModel.Password = TempData["password"].ToString();
+                        registerViewModel.Email = TempData["email"].ToString();
+						ApplicationUser applicationUser = userServices.MapRegisterViewModelToAppUser(registerViewModel);
+						IdentityResult result = await userManager.CreateAsync(applicationUser, registerViewModel.Password);
+						if (result.Succeeded)
+						{
+							await signInManager.SignInAsync(applicationUser, false);
+							return RedirectToAction("CompleteProfile", "EditProfile");
+							//return RedirectToAction("ConfirmEmail", "Account");
+						}
+						else
+						{
+							foreach (var error in result.Errors)
+							{
+								ModelState.AddModelError("", error.Description);
+							}
+						}
+					}
+                    else
+                    {
+                        TempData.Keep("password");
+                        TempData.Keep("email");
+                        TempData.Keep("code");
+						ModelState.AddModelError("code","code is not valid");
+					}
                 }
             }
-            return View(loginViewModel);
-        }
-        [HttpGet]
-        public async Task<IActionResult> Logout()
-        {
-            await signInManager.SignOutAsync();
-            return RedirectToAction("Login", "Account");
-        }
 
-        [HttpGet]
-        public async Task<IActionResult> ForgotPassword()
+			return View(confirmEmailViewModel);
+		}
+
+		public IActionResult Login()
         {
+
+			return View();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+		{
+			if (ModelState.IsValid)
+			{
+				ApplicationUser user = await userManager.FindByEmailAsync(loginViewModel.Email);
+				if (user != null)
+				{
+					bool isFound = await userManager.CheckPasswordAsync(user, loginViewModel.Password);
+					if (isFound)
+					{
+						await signInManager.SignInAsync(user, true);
+						return RedirectToAction("Index", "HomePage");
+					}
+					ModelState.AddModelError("", "UserName or Password Not valid");
+				}
+			}
+			return View(loginViewModel);
+		}
+		[HttpGet]
+		public async Task<IActionResult> Logout()
+		{
+			await signInManager.SignOutAsync();
+			return RedirectToAction("Login", "Account");
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> ForgotPassword()
+		{
 
             return View();
         }
@@ -114,61 +153,61 @@ namespace CLIQ_UE.Controllers
                 {
                     string token = await userManager.GeneratePasswordResetTokenAsync(user);
                     var urlForResetPassword = Url.Action("ResetPassword", "Account", null, protocol: Request.Scheme);
-                    string body = FormatEmail.CreateDesignOfEmail(urlForResetPassword, forgotPasswordViewModel.Email, token);
+                    string body = FormatEmail.CreateDesignForForgotPassword(urlForResetPassword, forgotPasswordViewModel.Email, token);
                     SendEmail sendEmail = new SendEmail(configuration);
                     await sendEmail.SendEmailAsync(forgotPasswordViewModel.Email, body);
 
-                    return RedirectToAction("ResetMessage", "Account");
-                }
+					return RedirectToAction("ResetMessage", "Account");
+				}
 
-            }
-            return View(forgotPasswordViewModel);
-        }
+			}
+			return View(forgotPasswordViewModel);
+		}
 
-        public IActionResult ResetMessage()
-        {
-            return View();
-        }
+		public IActionResult ResetMessage()
+		{
+			return View();
+		}
 
-        [HttpPost]
-        public IActionResult ResetPassword(string email, string token)
-        {
-            TempData["email"] = email;
-            TempData["token"] = token;
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SaveResetPassword(ResetPasswordViewModel resetPasswordViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                string email = TempData["email"].ToString();
-                string token = TempData["token"].ToString();
-                if (email == null || token == null)
-                    return RedirectToAction("Login", "Account");
+		[HttpPost]
+		public IActionResult ResetPassword(string email, string token)
+		{
+			TempData["email"] = email;
+			TempData["token"] = token;
+			return View();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> SaveResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+		{
+			if (ModelState.IsValid)
+			{
+				string email = TempData["email"].ToString();
+				string token = TempData["token"].ToString();
+				if (email == null || token == null)
+					return RedirectToAction("Login", "Account");
 
 
-                ApplicationUser user = await userManager.FindByEmailAsync(email);
-                if (user != null)
-                {
-                    var result = await userManager.ResetPasswordAsync(user, token, resetPasswordViewModel.Password);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Login", "Account");
-                    }
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Not Valid");
-                }
+				ApplicationUser user = await userManager.FindByEmailAsync(email);
+				if (user != null)
+				{
+					var result = await userManager.ResetPasswordAsync(user, token, resetPasswordViewModel.Password);
+					if (result.Succeeded)
+					{
+						return RedirectToAction("Login", "Account");
+					}
+					foreach (var error in result.Errors)
+					{
+						ModelState.AddModelError("", error.Description);
+					}
+				}
+				else
+				{
+					ModelState.AddModelError("", "Not Valid");
+				}
 
-            }
-            return View(resetPasswordViewModel);
-        }
-    }
+			}
+			return View(resetPasswordViewModel);
+		}
+	}
 }
