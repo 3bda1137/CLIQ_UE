@@ -41,7 +41,11 @@ namespace CLIQ_UE.Controllers
             {
                 foreach (var post in postIds)
                 {
-                    posts.Add(postService.GetPostById(post));
+                    Post p = postService.GetPostById(post);
+                    if (p != null)
+                    {
+                        posts.Add(p);
+                    }
                 }
             }
 
