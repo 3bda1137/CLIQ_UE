@@ -100,5 +100,33 @@ namespace CLIQ_UE.Controllers
 
             return Json(allImages);
         }
+        [HttpGet]
+        public IActionResult GetUserByUserName(string userName)
+        {
+            // Logic to fetch userId by userName
+            var user = userServices.GetUserByUserName(userName);
+            if (user != null)
+            {
+                return Json(user.Id);
+            }
+            else
+            {
+                return Json(null);
+            }
+        }
+        [HttpGet]
+        public IActionResult GetUserByName(string Name)
+        {
+            // Logic to fetch userId by userName
+            var user = userServices.GetUserByName(Name);
+            if (user != null)
+            {
+                return Json(user.FirstName);
+            }
+            else
+            {
+                return Json(null);
+            }
+        }
     }
 }

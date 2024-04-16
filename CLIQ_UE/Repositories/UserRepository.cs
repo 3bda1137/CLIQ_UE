@@ -22,7 +22,11 @@ namespace CLIQ_UE.Repositories
             return context.ApplicationUsers
                 .FirstOrDefault(user => user.UserName == userName);
         }
-
+        public ApplicationUser GetByName(string FirstName)
+        {
+            return context.ApplicationUsers
+                .FirstOrDefault(user => user.FirstName == FirstName);
+        }
         public void Update(ApplicationUser appUser)
         {
             context.ApplicationUsers.Update(appUser);

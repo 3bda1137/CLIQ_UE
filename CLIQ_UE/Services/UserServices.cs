@@ -59,6 +59,10 @@ namespace CLIQ_UE.Services
         {
             return userRepository.GetByUserName(userName);
         }
+        public ApplicationUser GetUserByName(string FirstName)
+        {
+            return userRepository.GetByName(FirstName);
+        }
 
         public ApplicationUser GetByID(string userId)
         {

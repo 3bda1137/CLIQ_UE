@@ -1,0 +1,65 @@
+﻿@model List<SearchUserViewModel>
+
+@{
+    ViewData["Title"] = "SearchByUserName";
+}
+
+<h1>Search Users</h1>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+<form id="searchForm">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="userNameInput" placeholder="Search by First Name">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script>
+    $(function () {
+        $("#userNameInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/HomePage/SearchByUserName",
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 1
+        });
+    });
+    // jQuery(function () {
+    //     jQuery('#searchForm').submit(function (e) {
+    //         e.preventDefault();
+
+    //         var FirstName = jQuery('#userNameInput').val();
+
+    //         jQuery.ajax({
+    //             url: '@Url.Action("GetUserByName", "ViewUserProfile")',
+    //             type: 'GET',
+    //             data: { FirstName: FirstName },
+    //             success: function (userId) {
+    //                 if (userId) {
+    //                     window.location.href = '@Url.Action("Index", "ViewUserProfile")' + '?userId=' + userId;
+    //                 } else {
+    //                     alert('User not found.');
+    //                 }
+    //             },
+    //             error: function () {
+    //                 alert('Error occurred while searching for the user.');
+    //             }
+    //         });
+    //     });
+    // });
+</script> 

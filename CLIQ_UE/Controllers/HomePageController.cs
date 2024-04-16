@@ -1,4 +1,5 @@
 ﻿using CLIQ_UE.Models;
+using CLIQ_UE.Repositories;
 using CLIQ_UE.Services;
 using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -15,15 +16,17 @@ namespace CLIQ_UE.Controllers
         private readonly IPostService postService;
         private readonly ISuggestesUsersService suggestesUsersService;
         private readonly INotificationService notificationService;
+        private readonly ISearchRepository searchRepository;
 
         // Injection in the constructor 
-        public HomePageController(UserManager<ApplicationUser> userManager, IPostService postService, ISuggestesUsersService suggestesUsersService, INotificationService notificationService)
+        public HomePageController(UserManager<ApplicationUser> userManager, IPostService postService, ISuggestesUsersService suggestesUsersService, INotificationService notificationService, ISearchRepository searchRepository)
         {
 
             this.userManager = userManager;
             this.postService = postService;
             this.suggestesUsersService = suggestesUsersService;
             this.notificationService = notificationService;
+            this.searchRepository = searchRepository;
         }
 
         public async Task<IActionResult> Index(HomePageViewModel model)
@@ -72,9 +75,56 @@ namespace CLIQ_UE.Controllers
             List<Notification> notifications = notificationService.GetAllNotifications(user.Id);
             return Json(notifications);
         }
+        [HttpGet]
+        public IActionResult SearchByName(string search)
+        {
+            return View("SearchByUserName");
+        }
 
+            [HttpPost]
+        public IActionResult SearchByUserName(string term)
+        {
+            //List<ApplicationUser> users = searchRepository.GetAllUsers();
+            List<SearchUserViewModel> users;
 
+            if (term != null)
+            {
+                var applicationUsers = searchRepository.SearchUsers(term);
+                users = applicationUsers.Select(user => new SearchUserViewModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    UserImage = user.UserName
+                }).ToList();
+            }
+            else
+            {
+                var applicationUsers = searchRepository.GetAllUsers();
+                users = applicationUsers.Select(User => new SearchUserViewModel
+                {
+                    FirstName = User.FirstName,
+                    LastName = User.LastName,
+                    UserName = User.UserName,
+                    UserImage = User.UserName
+                }).ToList();
+            }
 
+            ViewBag.Search = term;
+            return View("SearchByUserName", users);
+        }
 
+        public IActionResult SearchSuggestions(string term)
+        {
+            var userNames = searchRepository.GetSuggestions(term);
+            var userVM = userNames.Select(user => new SearchUserViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                UserImage = user.UserName
+            }).ToList();
+            return Json(userNames);
+        }
     }
 }
