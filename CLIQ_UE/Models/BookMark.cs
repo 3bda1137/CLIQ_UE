@@ -9,6 +9,6 @@ namespace CLIQ_UE.Models
         public int PostID { get; set; }
         public ICollection<Post> Posts { get; set; }
         public String UserID { get; set; }
-
+        public DateTime saveDate { get; set; }
     }
 }

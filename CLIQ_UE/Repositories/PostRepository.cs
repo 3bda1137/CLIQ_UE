@@ -180,7 +180,7 @@ namespace CLIQ_UE.Repositories
                 //.Include(p => p.Comments)
                 .Include(p => p.Views)
             .FirstOrDefault(p => p.Id == id && !p.isDeleted);
-
+            if (p == null) return null;
             p.postAddedTime = FormatTime.FormatingTime(p.PostDate);
             return p;
 

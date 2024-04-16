@@ -21,6 +21,7 @@ namespace CLIQ_UE.Repositories
         {
             List<BookMark> bm = context.bookMarks
                 .Where(b => b.UserID == userId)
+                .OrderBy(b => b.saveDate)
                 .Include(p => p.Posts)
                 .ToList();
 
