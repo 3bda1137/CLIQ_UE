@@ -26,26 +26,30 @@ namespace CLIQ_UE.Hubs
             //var connectionId = Context.ConnectionId;
             if (userName != null)
             {
-                string userId = userServices.GetUserByUserName(userName).Id;
-                OnlineUser existingOnlineUser= onlineUserServices.GetByID(userId);
-                if (existingOnlineUser != null)
+                ApplicationUser user = userServices.GetUserByUserName(userName);
+                if (user != null)
                 {
-                    existingOnlineUser.ConnectionId = connectionId;
-                    onlineUserServices.UpdateUser(existingOnlineUser);
-                }
-                else
-                {
-                    OnlineUser onlineUser = new OnlineUser()
+                    string userId =user.Id;
+                    OnlineUser existingOnlineUser = onlineUserServices.GetByID(userId);
+                    if (existingOnlineUser != null)
                     {
-                        UserId = userId,
-                        ConnectionId = connectionId,
-                    };
-                    onlineUserServices.AddUser(onlineUser);
+                        existingOnlineUser.ConnectionId = connectionId;
+                        onlineUserServices.UpdateUser(existingOnlineUser);
+                    }
+                    else
+                    {
+                        OnlineUser onlineUser = new OnlineUser()
+                        {
+                            UserId = userId,
+                            ConnectionId = connectionId,
+                        };
+                        onlineUserServices.AddUser(onlineUser);
+                    }
+
+                    //send to my folloyer------>  i online
+
+                    Clients.Others.SendAsync("Online", userId);
                 }
-
-                //send to my folloyer------>  i online
-
-                Clients.Others.SendAsync("Online", userId);
             }
         }
         public void DeleteOnlineUser(string connectionId)
@@ -53,41 +57,46 @@ namespace CLIQ_UE.Hubs
             var userName = Context.User.Identity.Name;
             //var connectionId = Context.ConnectionId;
             if (userName != null)
-            {
-                string userId = userServices.GetUserByUserName(userName).Id;
-                OnlineUser onlineUser = onlineUserServices.GetByID(userId);
-                if (onlineUser != null)
+			{
+				ApplicationUser user = userServices.GetUserByUserName(userName);
+                if (user != null)
                 {
-                    onlineUserServices.DeleteUser(onlineUser);
+                    string userId = user.Id;
+                    OnlineUser onlineUser = onlineUserServices.GetByID(userId);
+                    if (onlineUser != null)
+                    {
+                        onlineUserServices.DeleteUser(onlineUser);
+                    }
+                    LastSeen last = lastSeenServices.GetByUserId(userId);
+                    string timeFormated = FormatTimeForChat.CalculateLastSeenForUserList(last.LastSeenTime.ToString("yyyy-MM-dd HH:mm"));
+
+                    Clients.Others.SendAsync("OffLine", userId, timeFormated);
                 }
-                LastSeen last = lastSeenServices.GetByUserId(userId);
-                string timeFormated = FormatTimeForChat.CalculateLastSeenForUserList(last.LastSeenTime.ToString("yyyy-MM-dd HH:mm"));
-
-                Clients.Others.SendAsync("OffLine", userId, timeFormated);
             }
-
-           
-
         }
 
         private void UpDateLastSeen()
         {
             var userName = Context.User.Identity.Name;
             if (userName != null)
-            {
-                string userId = userServices.GetUserByUserName(userName).Id;
-                LastSeen lastSeen= lastSeenServices.GetByUserId(userId);
-                if(lastSeen==null)
+			{
+				ApplicationUser user = userServices.GetUserByUserName(userName);
+                if (user != null)
                 {
-                    lastSeen= new LastSeen();
-                    lastSeen.LastSeenTime = DateTime.Now;
-                    lastSeen.UserID= userId;
-                    lastSeenServices.Add(lastSeen);
-                }
-                else
-                {
-                    lastSeen.LastSeenTime= DateTime.Now;
-                    lastSeenServices.Update(lastSeen);
+                    string userId = user.Id;
+                    LastSeen lastSeen = lastSeenServices.GetByUserId(userId);
+                    if (lastSeen == null)
+                    {
+                        lastSeen = new LastSeen();
+                        lastSeen.LastSeenTime = DateTime.Now;
+                        lastSeen.UserID = userId;
+                        lastSeenServices.Add(lastSeen);
+                    }
+                    else
+                    {
+                        lastSeen.LastSeenTime = DateTime.Now;
+                        lastSeenServices.Update(lastSeen);
+                    }
                 }
             }
 
