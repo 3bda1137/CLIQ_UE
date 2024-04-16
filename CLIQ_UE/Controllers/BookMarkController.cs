@@ -57,7 +57,8 @@ namespace CLIQ_UE.Controllers
             {
                 Id = Guid.NewGuid().ToString(),
                 PostID = postId,
-                UserID = userId
+                UserID = userId,
+                saveDate = DateTime.Now,
 
             };
 

@@ -29,8 +29,9 @@ namespace CLIQ_UE.Controllers
         [HttpPost]
         public async Task<ActionResult> CreatePost(CreatePostViewModel postModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && (postModel.PostImage != null || postModel.postContent != null))
             {
+
                 ApplicationUser user = await userManager.GetUserAsync(User);
                 Post post = postService.CreatePost(postModel, user);
 
