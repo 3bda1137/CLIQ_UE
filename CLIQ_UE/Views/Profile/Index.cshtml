@@ -256,42 +256,25 @@
             <!--Left Container -->
             <div class="col-lg-3 d-lg-block d-md-none right-content-container  d-lg-flex justify-content-center parent">
                 <div class="left-boxes">
-                    <div class="leeft col-lg-12">
-                        <div class="link active-link ">
-                            <h2 class="h5 text-start">Complete Your Profile</h2>
-                            <hr>
-                            <div class="line mt-3">
-                            </div>
-                            <div class="progress my-3" style="height: 5px;">
-                                <div class="progress-bar" role="progressbar" style="width: 70%; height: 5px;" aria-valuenow="70"
-                                     aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
 
-                            <ul class="list-unstyled text-start">
-                                <li class="text-secondary">
-                                    Set User Name <i class="fa-solid fa-check-double ms-3 text-primary"></i>
-                                </li>
-                                <li class="mt-3 text-secondary">
-                                    Set User Name <i class="fa-solid fa-check-double ms-3 text-primary"></i>
-                                </li>
-                                <li class="mt-3 text-secondary">
-                                    Set User Profile Picture <i class="fa-solid fa-check-double ms-3 text-primary"></i>
-                                </li>
-                                <li class="mt-3 fw-semibold">Set Your Cover Profile</li>
-                                <li class="mt-3 fw-semibold">Set Your Location Info </li>
-                            </ul>
-                        </div>
+                    <div class="links-container box-1">
+                        <p>Complete Your Profile</p>
+
+                        <progress id="profile-progress" value="0" max="100"></progress>
+
+                        <p class="complete-progress verify-email">Verify Your Email <span id="email-check"><i class="fa-solid fa-clock ms-3"></i></span></p>
+                        <p class="verify-username">Set Your Username <span id="username-check"><i class="fa-solid fa-clock ms-3"></i></span> </p>
+                        <p class="verify-profile-pic">Set Your Profile Picture <span id="profile-pic-check"><i class="fa-solid fa-clock ms-3"></i></span> </p>
+                        <p class="verify-cover-pic">Set Your Cover Picture <span id="cover-pic-check"><i class="fa-solid fa-clock ms-3"></i></span> </p>
+                        <p class="verify-following">Start Following Users <span id="following-check"><i class="fa-solid fa-clock ms-3"></i></span> </p>
+
+
                     </div>
-
-                    <br />
-                    <br />
-
 
                 </div>
             </div>
 
-        </div>
-    </div>
+
 
 
     <div class="modal fade" id="show_comments" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
@@ -477,6 +460,56 @@
     @* ------------------------------------------------------------- *@
 
 
+
+    <!--====================================================================================================================-->
+    @section Scripts {
+        <script>
+
+            // Check if email is verified
+            if (4) {
+                document.querySelector('.verify-email').classList.add('verified');
+
+                document.getElementById('email-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
+                document.getElementById('profile-progress').value += 20; // Assuming each step is worth 20%
+            }
+
+            // Check if username is set
+            if (true) {
+                document.querySelector('.verify-username').classList.add('verified');
+                document.getElementById('username-check').style.opacity = '1';
+                document.getElementById('username-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
+                document.getElementById('profile-progress').value += 20;
+            }
+
+            // Check if profile picture is set
+            if (true) {
+                document.querySelector('.verify-profile-pic').classList.add('verified');
+                document.getElementById('profile-pic-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
+                document.getElementById('profile-progress').value += 20;
+            }
+
+            // Check if cover picture is set
+            if (true) {
+                document.querySelector('.verify-cover-pic').classList.add('verified');
+                document.getElementById('cover-pic-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
+                document.getElementById('profile-progress').value += 20;
+            }
+
+            // Check if user is following users
+            if (false) {
+                document.querySelector('.verify-following').classList.add('verified');
+                document.getElementById('following-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
+                document.getElementById('profile-progress').value += 20;
+            }
+
+            const progress = document.getElementById('profile-progress');
+
+            // Check if the progress value is 100
+            if (progress.value === 100) {
+
+                progress.classList.add('completed');
+                // Get the progress element
+                const progressElement = document.getElementById('profile-progress');
 
                 // Get the text element
                 const textElement = document.querySelector('.links-container.box-1 p:first-child');
