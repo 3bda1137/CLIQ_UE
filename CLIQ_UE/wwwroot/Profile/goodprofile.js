@@ -524,9 +524,9 @@ function fetchAllSavedPosts() {
                                 <p class="post-time">${post.postAddedTime}</p>
                             </div>
                         </div>
-                            <div class=" bookmark-box">
-                              <i class="bi bi-bookmark-fill bookmark-icon text-primary" onclick="removeBookmark('${post.id}', this);removePostfromBookmark(this)"></i>
-                            </div>
+               <div class="bookmark-box" title="Click to Remove from Bookmarks" onclick="removeBookmark('${post.id}', this);removePostfromBookmark(this)">
+    <i class="bi bi-bookmark-x-fill bookmark-icon text-danger"></i>
+</div>
                     </div>
                     <!-- Post Content -->
                     <div id="post${post.id}" class="post-content">
