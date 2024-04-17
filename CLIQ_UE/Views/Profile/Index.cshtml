@@ -117,8 +117,8 @@
 
                 <div class="links-container">
                     <div class="link">
-                        <i class="bi bi-bookmark-fill"></i>
-                        <a href="#">Bookmarks </a>
+                        <i class="bi bi-bookmark-fill bookmark-icon"></i>
+                        <a class="Bookmark-btn">BookMark</a>
                     </div>
                     <div class="link">
                         <i class="bi bi-patch-check-fill"></i>
@@ -126,7 +126,7 @@
                     </div>
                     <div class="link">
                         <img class="profile-pic" src="@Model.UserImage" alt="" />
-                        <a href="#">@@@Model.UserName</a>
+                        <a asp-action="Index" asp-controller="Profile">@@@Model.UserName</a>
                     </div>
                 </div>
 
@@ -203,7 +203,8 @@
 
                         <div class="write-text">
                             <img class="profile-pic" src="@Model.UserImage" alt="">
-                            <textarea name="postContent" id="write-post-text" cols="30" rows="1" placeholder="What's on your mind"></textarea>
+                            <textarea name="postContent" id="write-post-text" cols="30" rows="1" placeholder="What's on your mind? (200 words)" maxlength="200"></textarea>
+                            <p id="char-count" class="char-count">200</p>
                         </div>
                         <div class="post-img">
                             <img class="add-post-img" src="" alt="">
@@ -288,7 +289,6 @@
 
                 </div>
             </div>
-
 
         </div>
     </div>
@@ -478,3 +478,19 @@
 
 
 
+                // Get the text element
+                const textElement = document.querySelector('.links-container.box-1 p:first-child');
+                textElement.style.opacity = 1
+
+                // Check if progress value is 100
+                if (progress.value === 100) {
+                    // Change the text content with emojis
+                    textElement.innerHTML =
+                        textElement.innerHTML = '<img src="https://i.postimg.cc/ZKJtvXkN/confetti.gif" alt="Confetti" width="30px">' +
+                        '<span class="ms-2">Profile Completed</span>' +
+                        '<img src="https://i.postimg.cc/0jDk5Swq/fireworks.gif" alt="Fireworks" width="30px">';
+                }
+            }
+
+        </script>
+    }

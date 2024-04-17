@@ -20,5 +20,6 @@ namespace CLIQ_UE.Models
         public int ? BookMark {  get; set; }
 
         public List<UserLikeComment>? UserLikeComments { get; set; }
+        
     }
 }

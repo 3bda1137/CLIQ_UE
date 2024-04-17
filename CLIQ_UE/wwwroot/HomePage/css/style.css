@@ -10,11 +10,11 @@ html {
     --secondary-color: #4385f5;
     --font-color: #282d38;
     --box-group-color: #5858580f;
-    --box-shadow: rgb(50 50 93 / 48%) -3px 6px 1px -1px, rgb(0 0 0 / 12%) 3px -1px 8px -1px;
+    --box-shadow: rgb(50 50 93 / 31%) -2px 4px 2px 0px, rgb(0 0 0 / 12%) 4px -1px 6px -1px;
     --margin: 1rem;
     --padding: 1.5rem;
     --transition: all 0.2s ease;
-    --border-radius: 1rem;
+    --border-radius: .5rem;
     --box-1-transform: translateX(-100%) translateY(-5%) scale(1.5);
     --box-1-filter: blur(1.875rem);
 }
@@ -157,6 +157,67 @@ i {
 .posts-container.saved-posts-container {
 /*    width: 50%;*/
 }
+
+/*////////////////////////////////////////////////////// circle of thead text-area --->*/
+.char-count {
+    color: green;
+    font-weight: normal; 
+    transition: color 0.3s, font-weight 0.3s;
+}
+
+    .char-count.low {
+        color: orange; 
+        font-weight: bold; 
+    }
+
+    .char-count.critical {
+        color: red; 
+        font-weight: bold; 
+    }
+
+
+
+/*////////////////////////////////     Customize the model        ///////////////////////////////*/
+.modal-content {
+    border-radius: var(--border-radius) !important;
+    box-shadow: -4px 7px 10px 0px #6666664d !important; overflow-y: auto !important;
+}
+
+    /* Customize scrollbar appearance */
+    .modal-content::-webkit-scrollbar {
+        width: 10px; 
+    }
+
+    .modal-content::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+    }
+
+    .modal-content::-webkit-scrollbar-thumb {
+        background: #888; 
+        border-radius: 5px; 
+    }
+
+/* Modal header */
+.modal-header {
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
+    background-color: #f8f9fa !important; 
+    box-shadow: 0 5px 7px 0px rgb(0 0 0 / 15%) !important;
+}
+..modal-title {
+    letter-spacing: 3px !important;
+    font-weight: 700 !important;
+}
+.btn-close {
+    color: #6c757d !important;
+    border: 2px solid #6c757d !important;
+    border-radius:50%;
+    transition: color 0.3s ease !important;
+}
+
+    .btn-close:hover {
+        color: #212529 !important; 
+    }
 /* //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////// */
 /* Main Structure */
@@ -191,7 +252,8 @@ i {
     flex-direction: column;
     gap: 1.2rem;
     margin-bottom: 30px;
-    background-color: #80808014;
+/*    background-color: #80808014;*/
+    border:1px solid;
     opacity: .6;
     transition:var(--transition);
 }
@@ -323,6 +385,24 @@ button.btn-follow-following {
 
 /*    //////////////////////////////////////////  Following btn */
 
+.verified {
+    color: var(--secondary-color) !important;
+    font-weight: bold !important;
+    opacity:1 !important;
+}
+/* Standard progress bar color */
+progress {
+    color: green; 
+}
+    progress::-webkit-progress-value {
+        background: green; 
+    }
+
+
+    progress::-moz-progress-bar {
+        background: green;
+    }
+
 
 
 .right-boxes {
@@ -336,7 +416,7 @@ button.btn-follow-following {
             width: 100%;
         }
 
-        .right-boxes .links-container.box-1 p:first-child {
+/*        .right-boxes .links-container.box-1 p:first-child {
             opacity: 1 !important;
             position: relative;
             width: 100%;
@@ -345,7 +425,7 @@ button.btn-follow-following {
             justify-content: flex-start;
             margin-bottom: 1.4rem;
         }
-
+*/
 
         .right-boxes .links-container.box-1 p {
             font-weight: 700;
@@ -358,10 +438,7 @@ button.btn-follow-following {
             /* opacity: 0; */
         }
 
-.complete-progress {
-    opacity: 1 !important;
-    position: relative;
-}
+
 
 /* Second Box */
 .right-boxes .links-container.box-with-two-cols {
@@ -1007,8 +1084,16 @@ height: 250px;
     gap: 1.3rem;
     margin-top: 30px;
     margin-bottom: 30px;
+    transition:var(--transition);
+}
+.post {
+    transition: transform 0.3s ease-out;
 }
 
+.move-out {
+    transform: translateX(100%);
+    opacity: 0;
+}
     .posts-container .post {
         box-shadow: var(--box-shadow);
         width: 90%;

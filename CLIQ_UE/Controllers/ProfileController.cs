@@ -12,13 +12,15 @@ namespace CLIQ_UE.Controllers
         private readonly IPostService postService;
         private readonly INotificationService notificationService;
         private readonly IFollowersServices followersServices;
+        private readonly IBookMarkService bookMarkService;
 
-        public ProfileController(UserManager<ApplicationUser> userManager, IPostService postService, INotificationService notificationService, IFollowersServices followersServices)
+        public ProfileController(UserManager<ApplicationUser> userManager, IPostService postService, INotificationService notificationService, IFollowersServices followersServices, IBookMarkService bookMarkService)
         {
             this.userManager = userManager;
             this.postService = postService;
             this.notificationService = notificationService;
             this.followersServices = followersServices;
+            this.bookMarkService = bookMarkService;
         }
         public async Task<IActionResult> Index(ProfileViewModel model)
         {
@@ -59,6 +61,7 @@ namespace CLIQ_UE.Controllers
             displayPostViewModel.currentUserusername = user.UserName;
             displayPostViewModel.currentUserFirstName = user.FirstName;
             displayPostViewModel.currentUserLastName = user.LastName;
+            displayPostViewModel.BookmarksIds = bookMarkService.getAllPostsId(user.Id);
 
 
 

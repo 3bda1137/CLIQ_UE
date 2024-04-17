@@ -307,6 +307,7 @@ function displayPosts(Model) {
    
     //console.log("Model posts")
     Model.posts.forEach(post => {
+        console.log(post)
         const isCurrentUserPost = post.user.id === Model.currentUserId;
         const isBookmarkedValue = Model.bookmarksIds.includes(post.id)
         let bookmarkIconHtml = '';
@@ -346,11 +347,11 @@ function displayPosts(Model) {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: ${post.isLikedByMe? 'red' : 'grey'}" onclick="lovePost(${post.id}, true)"></i>
                                 <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: ${!post.isLikedByMe? 'black' :  'grey'}" onclick="lovePost(${post.id}, false)"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                             <!--
@@ -380,6 +381,7 @@ function displayPosts(Model) {
                     </div>
                 </div>
             </div>`;
+        
 
        post_container.insertAdjacentHTML('beforeend', postHtml);
     });
@@ -455,6 +457,20 @@ function removeBookmark(postId, bookmarkIcon) {
 
 }
 
+
+
+function removePostfromBookmark(btn) {
+    const post = btn.closest('.post');
+    if (post) {
+        post.classList.add('move-out'); 
+        post.addEventListener('transitionend', function () {
+            post.remove();
+        });
+    } else {
+        console.log("Post not found.");
+    }
+}
+
 document.querySelector(".Bookmark-btn").addEventListener('click', function () {
     fetchAllSavedPosts()
 })
@@ -487,9 +503,15 @@ function fetchAllSavedPosts() {
                                 <p class="post-time">${post.postAddedTime}</p>
                             </div>
                         </div>
-                            <div class=" bookmark-box">
-                                         <i class="bi bi-bookmark-fill bookmark-icon text-primary" onclick="removeBookmark('${post.id}', this)"></i>
-                            </div>
+<div class="bookmark-box" title="Click to Remove from Bookmarks" onclick="removeBookmark('${post.id}', this);removePostfromBookmark(this)">
+    <i class="bi bi-bookmark-x-fill bookmark-icon text-danger"></i>
+</div>
+
+
+
+
+
+
                     </div>
                     <!-- Post Content -->
                     <div id="post${post.id}" class="post-content">
@@ -569,6 +591,24 @@ function fetchAllSavedPosts() {
     }
 
 
+    /////////////////////////////////////////////////////////////////////////////////////////////
+const textarea = document.getElementById('write-post-text');
+const charCount = document.getElementById('char-count');
+
+textarea.addEventListener('input', function () {
+    const remainingChars = 200 - textarea.value.length;
+    charCount.textContent = remainingChars;
+
+    if (remainingChars < 20) {
+        charCount.classList.add('critical');
+    } else if (remainingChars < 50) {
+        charCount.classList.add('low');
+    } else {
+        charCount.classList.remove('low', 'critical');
+    }
+});
+
+
 
     ////////////////////////////////////////////////// SignalR //////////////////////////////////////////////////////////////
     document.addEventListener("DOMContentLoaded", function () {
@@ -634,11 +674,11 @@ function fetchAllSavedPosts() {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: ${post.isLikedByMe == true ? 'red' : 'grey'}" onclick="lovePost(${post.id}, true)"></i>
                                 <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: ${post.isLikedByMe == false ? 'black' : 'grey'}" onclick="lovePost(${post.id}, false)"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                                  <!--
@@ -669,6 +709,7 @@ function fetchAllSavedPosts() {
 
                         
                 `;
+            
 
             post_container.insertAdjacentHTML('afterbegin', PostHtml);
             console.log("Comments COunt " + post.commentCount)
