@@ -385,6 +385,15 @@ button.btn-follow-following {
 
 /*    //////////////////////////////////////////  Following btn */
 
+.verified {
+    color: var(--secondary-color) !important;
+    font-weight: bold !important;
+    opacity:1 !important;
+}
+.completed {
+
+    color: green;
+}
 
 
 .right-boxes {
@@ -398,7 +407,7 @@ button.btn-follow-following {
             width: 100%;
         }
 
-        .right-boxes .links-container.box-1 p:first-child {
+/*        .right-boxes .links-container.box-1 p:first-child {
             opacity: 1 !important;
             position: relative;
             width: 100%;
@@ -407,7 +416,7 @@ button.btn-follow-following {
             justify-content: flex-start;
             margin-bottom: 1.4rem;
         }
-
+*/
 
         .right-boxes .links-container.box-1 p {
             font-weight: 700;
@@ -420,10 +429,7 @@ button.btn-follow-following {
             /* opacity: 0; */
         }
 
-.complete-progress {
-    opacity: 1 !important;
-    position: relative;
-}
+
 
 /* Second Box */
 .right-boxes .links-container.box-with-two-cols {
