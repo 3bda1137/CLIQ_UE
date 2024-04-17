@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CLIQ_UE.Models
 {
@@ -12,7 +13,7 @@ namespace CLIQ_UE.Models
         [Required(ErrorMessage = "Post text is required")]
         [MaxLength(500, ErrorMessage = "Post text cannot exceed 500 characters")]
         public string? TextContent { get; set; }
-
+        
         public bool BookMark { get; set; } = false;
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
@@ -30,10 +31,14 @@ namespace CLIQ_UE.Models
         public int CommentCount { get; set; }
         public int ViewsCount { get; set; }
         public string privacy { get; set; }
+        [NotMapped]
+        public bool? isLikedByMe { get; set; }
         // Navigation properties
         public ICollection<View>? Views { get; set; }
         public ICollection<Reaction>? Reactions { get; set; }
         public ICollection<Comment>? Comments { get; set; }
+        public ICollection<UserLikePost>? UsersLikedPost { get; set; }
+        
     }
 
     public enum ReactionType

@@ -96,7 +96,7 @@ namespace CLIQ_UE.Repositories
             }
         }
 
-        public List<Post> GetLatestPosts(int pageIndex, int pageSize)
+        public List<Post> GetLatestPosts(int pageIndex, int pageSize, string UserId)
         {
             int postsToSkip = pageIndex * pageSize;
 
@@ -106,6 +106,7 @@ namespace CLIQ_UE.Repositories
                 .OrderByDescending(p => p.PostDate)
                 .Skip(postsToSkip)
                 .Take(pageSize)
+                .Include(p => p.UsersLikedPost.Where(ULP => ULP != null && ULP.ApplicationUserId == UserId))
                 .Select(p => new Post
                 {
                     postAddedTime = FormatTime.FormatingTime(p.PostDate),
@@ -121,6 +122,9 @@ namespace CLIQ_UE.Repositories
                     PostImage = p.PostImage,
                     User = p.User,
                     privacy = p.privacy,
+                    isLikedByMe = p.UsersLikedPost.Count() > 0 && p.UsersLikedPost.First().isLiked? true 
+                    : p.UsersLikedPost.Count() > 0 && !p.UsersLikedPost.First().isLiked ? false 
+                    : null
                 })
                 .ToList();
 
@@ -138,11 +142,12 @@ namespace CLIQ_UE.Repositories
             int postsToSkip = pageIndex * pageSize;
 
             List<Post> latestPosts = context.Posts
+                .Where(p => p.UserId == id && !p.isDeleted)
                 .Include(p => p.User)
-              .Where(p => p.UserId == id && !p.isDeleted)
                 .OrderByDescending(p => p.PostDate)
                 .Skip(postsToSkip)
                 .Take(pageSize)
+                .Include(p => p.UsersLikedPost.Where(ULP => ULP != null && ULP.ApplicationUserId == id))
                 .Select(p => new Post
                 {
                     postAddedTime = FormatTime.FormatingTime(p.PostDate),
@@ -158,7 +163,11 @@ namespace CLIQ_UE.Repositories
                     PostImage = p.PostImage,
                     User = p.User,
                     privacy = p.privacy,
+                    isLikedByMe = p.UsersLikedPost != null && p.UsersLikedPost.Count() > 0 && p.UsersLikedPost.First().isLiked ? true
+                    : p.UsersLikedPost != null && p.UsersLikedPost.Count() > 0 && !p.UsersLikedPost.First().isLiked ? false
+                    : null
                 })
+                
                 .ToList();
 
             foreach (var post in latestPosts)

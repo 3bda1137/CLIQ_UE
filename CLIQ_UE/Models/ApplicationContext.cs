@@ -52,6 +52,18 @@ namespace CLIQ_UE.Models
                 .HasOne(ulc => ulc.ApplicationUser)
                 .WithMany(u => u.UserLikeComments)
                 .HasForeignKey(ulc => ulc.ApplicationUserId);
+
+
+            //For posts's likes
+            builder.Entity<UserLikePost>()
+            .HasOne(ulc => ulc.Post)
+            .WithMany(c => c.UsersLikedPost)
+            .HasForeignKey(ulc => ulc.PostId);
+
+            /*builder.Entity<UserLikePost>()
+                .HasOne(ulc => ulc.ApplicationUser)
+                .WithMany(u => u.UsersLikedPost)
+                .HasForeignKey(ulc => ulc.ApplicationUserId)*/;
         }
 
     }

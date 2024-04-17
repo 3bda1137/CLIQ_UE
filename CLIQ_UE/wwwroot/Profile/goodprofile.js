@@ -537,11 +537,11 @@ function fetchAllSavedPosts() {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey"></i>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: ${post.isLikedByMe ? 'red' : 'grey'}"></i>
                                 <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey"></i>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: ${!post.isLikedByMe ? 'black' : 'grey'}"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                             <div class="box">
@@ -789,6 +789,8 @@ function fetchContent(filter) {
 // Function to display posts
 function displayPosts(Model) {
     Model.posts.forEach(post => {
+        console.log("Time line");
+        console.log(post);
         const isCurrentUserPost = post.user.id === Model.currentUserId;
         const isBookmarkedValue = Model.bookmarksIds.includes(post.id)
         let bookmarkIconHtml = '';
@@ -828,11 +830,11 @@ function displayPosts(Model) {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: ${post.isLikedByMe ? 'red' : 'grey'}" onclick="lovePost(${post.id}, true)"></i>
                                 <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: ${!post.isLikedByMe ? 'black' : 'grey'}" onclick="lovePost(${post.id}, false)"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                             <!--
@@ -1006,11 +1008,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: ${post.isLikedByMe ? 'red' : 'grey'}" onclick="lovePost(${post.id}, true)"></i>
                                 <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: ${!post.isLikedByMe ? 'black' : 'grey'}" onclick="lovePost(${post.id}, false)"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                                        <!--
