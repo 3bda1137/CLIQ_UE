@@ -63,16 +63,16 @@ const notification__icon = document.getElementById('notification-container')
 
 
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.querySelector('.search-input');
+    //document.addEventListener('DOMContentLoaded', function () {
+    //    const searchInput = document.querySelector('.search-input');
 
-        searchInput.addEventListener('input', function () {
-            const inputValue = searchInput.value.trim();
-            if (inputValue.length > 0) {
-                searchInput.value = '';
-            }
-        });
-    });
+    //    searchInput.addEventListener('input', function () {
+    //        const inputValue = searchInput.value.trim();
+    //        if (inputValue.length > 0) {
+    //            searchInput.value = '';
+    //        }
+    //    });
+    //});
 
     //! Emoji Picker Function ==>
     const picker = new EmojiButton();
@@ -1079,3 +1079,76 @@ function goToTop() {
 
     smoothScroll();
 }
+/////////////////////////////////////////////////////////////////////////////////
+
+function generateDropdownItems(users) {
+    const dropdownMenu = document.querySelector('.search-dropdown .dropdown-menu');
+    dropdownMenu.innerHTML = '';
+
+    users.forEach(user => {
+        var userTemplate = `
+            <div class="user">
+                <div class="profile">
+                    <input type="hidden" value="${user.userId}" id="FolloweID">
+                    <img class="profile-pic" src="${user.userImage}" alt="Profile image">
+                    <div class="name">
+                        <p class="username">${user.userName}</p>
+                    </div>
+                </div>
+                <div class="follow-button">
+                    <button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, '${user.userId}')">
+                        <i class="fa-solid fa-user-plus btn-icon"></i> Follow
+                    </button>
+                </div>
+            </div>
+        `;
+
+        dropdownMenu.insertAdjacentHTML('beforeend', userTemplate);
+    });
+}
+document.getElementById('searchInput').addEventListener('input', handleSearchInput);
+
+function handleSearchInput(event) {
+    const searchString = event.target.value.toLowerCase();
+    const dropdownMenu = document.querySelector('.search-dropdown .dropdown-menu');
+
+    dropdownMenu.classList.add('show');
+
+    if (searchString.trim() !== '') {
+            const userTemplate = `
+                <div class="user">
+                    <div class="profile">
+                        <input type="hidden" value="dasd" id="FolloweID">
+                        <img class="profile-pic" src="https://shots.codepen.io/username/pen/bpOjEr-800.jpg?version=1462466517" alt="Profile image">
+                        <div class="name">
+                            <p class="username">MOUDY RASMY</p>
+                        </div>
+                    </div>
+                    <div class="follow-button">
+                        <button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, 'TEST')">
+                            <i class="fa-solid fa-user-plus btn-icon"></i> Follow
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            dropdownMenu.innerHTML = userTemplate;
+     
+    } else {
+        dropdownMenu.innerHTML = '';
+    }
+}
+
+
+document.addEventListener('click', function (event) {
+    const dropdown = document.querySelector('.search-dropdown');
+    const searchInput = document.getElementById('searchInput');
+
+    if (!dropdown.contains(event.target) && event.target !== searchInput) {
+        const dropdownMenu = document.querySelector('.search-dropdown .dropdown-menu');
+        dropdownMenu.classList.remove('show');
+    }
+});
+
+
+

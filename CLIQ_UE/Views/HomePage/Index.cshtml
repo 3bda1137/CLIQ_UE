@@ -18,8 +18,16 @@
 
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" class="search-input" placeholder="Search" />
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search" />
+                    <div class="dropdown search-dropdown">
+                        <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                <div class="users-list">
+
+                                </div>
+                        </div>
+                    </div>
                 </div>
+
 
                 <div class="right-items">
                     <div class="items">
@@ -38,14 +46,6 @@
 
                             <!-------------------------------------------  Notifications ------------------------------------------------------------>
                             <div class="notification-list">
-
-                   @*              <div class="notification-item">
-                                    <img src="@Model.UserImage" alt="User 1" class="user-avatar">
-                                    <div class="notification-details">
-                                        <span class="user-name"><strong>User 1</strong></span>
-                                        <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
-                                    </div>
-                                </div> *@
 
 
 
