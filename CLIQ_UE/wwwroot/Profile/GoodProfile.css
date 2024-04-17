@@ -9,11 +9,11 @@ html {
     --secondary-color: #4385f5;
     --font-color: #282d38;
     --box-group-color: #5858580f;
-    --box-shadow: rgb(50 50 93 / 48%) -3px 6px 1px -1px, rgb(0 0 0 / 12%) 3px -1px 8px -1px;
+    --box-shadow: rgb(50 50 93 / 31%) -2px 4px 2px 0px, rgb(0 0 0 / 12%) 4px -1px 6px -1px;
     --margin: 1rem;
     --padding: 1.5rem;
     --transition: all 0.2s ease;
-    --border-radius: 1rem;
+    --border-radius: .5rem;
     --box-1-transform: translateX(-100%) translateY(-5%) scale(1.5);
     --box-1-filter: blur(1.875rem);
 }
@@ -88,10 +88,10 @@ nav {
 
 
 .main-content-container {
-    margin-left: 20%;
+    margin-left: 25%;
     margin-right: 30%;
     margin-top: 53px;
-    width: 50%;
+    width: 40%;
     flex-direction: column !important;
     gap: 1.3rem !important;
     align-items: center;
@@ -173,7 +173,7 @@ progress {
 /*////////////////////////////////     Customize the model        ///////////////////////////////*/
 .modal-content {
     border-radius: var(--border-radius) !important;
-    box-shadow: -7px 14px 16px 16px #666666 !important;
+    box-shadow: -4px 7px 10px 0px #6666664d !important;
     overflow-y: auto !important;
 }
 
@@ -733,7 +733,7 @@ button.btn-follow-following {
 /* !POST BOX */
 .add-post {
     box-shadow: var(--box-shadow);
-    width: 90%;
+    width: 100%;
     border-radius: var(--border-radius);
     border: 1px solid #9b9baf;
 }
@@ -947,7 +947,7 @@ button.btn-follow-following {
 }
     .posts-container .post {
         box-shadow: var(--box-shadow);
-        width: 90%;
+        width: 100%;
         border-radius: var(--border-radius);
         transition: var(--transition);
         border: 1px solid #9b9baf;
@@ -1307,7 +1307,7 @@ button.btn-follow-following {
 @media screen and (max-width: 992px) {
 
   .main-content-container {
-    width: 75%;
+    width: 73%;
   }
   .nav-content .logo{
     font-size: 1.5rem;
@@ -1342,9 +1342,9 @@ button.btn-follow-following {
     display: none;
   }
   .main-content-container {
-  margin-left: 0;
+  margin-left: 5%;
   margin-right: 0;
-  width: 100%;
+  width: 90%;
   }
   .add-post .bottom-btns .left i{
     font-size: 1rem;
@@ -1374,9 +1374,9 @@ button.btn-follow-following {
 /* Start TimeLine  */
 .timeline {
     box-shadow: var(--box-shadow);
-    width: 80%;
+    width: 100%;
     border-radius: var(--border-radius);
-    box-shadow: -8px 7px 2px 0px #48484830, 4px -2px 10px 0px #48484830;
+    box-shadow: -5px 4px 2px 0px #48484824, 4px -2px 10px 0px #48484830;
     top: 619px;
     left: 340px;
     padding: 15px;
@@ -1438,8 +1438,8 @@ button.btn-follow-following {
 }
 
     .gallery img {
-        max-width: 100%; /* Ensure images don't exceed the width of their container */
-        height: auto; /* Maintain aspect ratio */
+        max-width: 100%; 
+        height: auto; 
     }
 
 .itemBox {
@@ -1458,18 +1458,19 @@ button.btn-follow-following {
 
 .cover {
     position: relative;
-    overflow: hidden; /* Ensure profile details are hidden if they overflow */
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    overflow: hidden; 
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: -6px 11px 9px #808080a1;
+    box-shadow: -3px 5px 6px #80808040;
+    border: 1px solid var(--font-color);
 }
 
 
     .profile-head .profile {
-        max-width: 100%; /* Ensure profile details don't exceed container width */
+        max-width: 100%;
         color: white;
     }
 
@@ -1485,15 +1486,15 @@ button.btn-follow-following {
 
     .btnedit {
         position: absolute;
-        bottom: 10px; /* Adjust button position as needed */
-        right: 10px; /* Adjust button position as needed */
+        bottom: 10px; 
+        right: 10px; 
     }
 
 /* bio */
 .bio-section {
 box-shadow:var(--box-shadow);
-  padding: 20px;
-  border-radius: 20px; 
+  padding: .5rem;
+  border-radius: .5rem;
   margin-top:10px;
 }
 .bio-content {
