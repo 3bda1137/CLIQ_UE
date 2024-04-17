@@ -307,6 +307,7 @@ function displayPosts(Model) {
    
     //console.log("Model posts")
     Model.posts.forEach(post => {
+        console.log(post)
         const isCurrentUserPost = post.user.id === Model.currentUserId;
         const isBookmarkedValue = Model.bookmarksIds.includes(post.id)
         let bookmarkIconHtml = '';
@@ -346,11 +347,11 @@ function displayPosts(Model) {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: ${post.isLikedByMe? 'red' : 'grey'}" onclick="lovePost(${post.id}, true)"></i>
                                 <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: ${!post.isLikedByMe? 'black' :  'grey'}" onclick="lovePost(${post.id}, false)"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                             <!--
@@ -380,6 +381,7 @@ function displayPosts(Model) {
                     </div>
                 </div>
             </div>`;
+        
 
        post_container.insertAdjacentHTML('beforeend', postHtml);
     });
@@ -672,11 +674,11 @@ textarea.addEventListener('input', function () {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: grey" onclick="lovePost(${post.id}, true)"></i>
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: ${post.isLikedByMe == true ? 'red' : 'grey'}" onclick="lovePost(${post.id}, true)"></i>
                                 <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: grey" onclick="lovePost(${post.id}, false)"></i>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: ${post.isLikedByMe == false ? 'black' : 'grey'}" onclick="lovePost(${post.id}, false)"></i>
                                 <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
                                  <!--
@@ -707,6 +709,7 @@ textarea.addEventListener('input', function () {
 
                         
                 `;
+            
 
             post_container.insertAdjacentHTML('afterbegin', PostHtml);
             console.log("Comments COunt " + post.commentCount)

@@ -34,9 +34,9 @@ namespace CLIQ_UE.Services
             postRepository.DeletePost(id);
         }
 
-        public List<Post> GetLatestPosts(int pageIndex, int pageSize)
+        public List<Post> GetLatestPosts(int pageIndex, int pageSize, string UserId)
         {
-            return postRepository.GetLatestPosts(pageIndex, pageSize);
+            return postRepository.GetLatestPosts(pageIndex, pageSize, UserId);
         }
 
 

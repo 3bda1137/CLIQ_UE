@@ -51,8 +51,17 @@ namespace CLIQ_UE.Controllers
         public async Task<IActionResult> GetPosts(int pageIndex = 0, int pageSize = 5)
         {
             ApplicationUser user = await userManager.GetUserAsync(User);
-            List<Post> posts = postService.GetLatestPosts(pageIndex, pageSize);
-
+            if(user == null) {
+                return BadRequest();
+            }
+            List<Post> posts = postService.GetLatestPosts(pageIndex, pageSize, user.Id);
+            foreach (var post in posts)
+            {
+                if(post.UsersLikedPost?.Count() > 0)
+                {
+                    post.isLikedByMe = true;
+                }
+            }
             displayPostViewModel displayPostViewModel = new displayPostViewModel();
             displayPostViewModel.BookmarksIds = bookMarkService.getAllPostsId(user.Id);
 
@@ -62,7 +71,7 @@ namespace CLIQ_UE.Controllers
             displayPostViewModel.currentUserusername = user.UserName;
             displayPostViewModel.currentUserFirstName = user.FirstName;
             displayPostViewModel.currentUserLastName = user.LastName;
-
+            
             return Json(displayPostViewModel);
         }
 

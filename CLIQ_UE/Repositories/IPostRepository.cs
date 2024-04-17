@@ -6,7 +6,7 @@ namespace CLIQ_UE.Repositories
     public interface IPostRepository
     {
         Post? GetPostById(int id);
-        List<Post> GetLatestPosts(int pageIndex, int pageSize);
+        List<Post> GetLatestPosts(int pageIndex, int pageSize, string UID);
         List<Post> GetLatestPostsByUserId(string id, int pageIndex, int pageSize);
         int GetUserPostCount(string userId);
 
