@@ -1,0 +1,45 @@
+﻿@model ChangeInfoOfUserViewModel
+<form>
+    <div>
+        <div id="alert"></div>
+        <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="password2">First Name</label>
+            <input asp-for="FirstName" class="form-control" />
+            <span id="firstNameValidation" class="text-danger"></span>
+            @* <span asp-validation-for="FirstName" id="CurrentPasswordvalidation" class="text-danger"></span> *@
+        </div>
+
+        <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="password2">Last Name</label>
+            <input asp-for="LastName" class="form-control" />
+            <span id="lastNameValidation" class="text-danger"></span>
+            @* <span asp-validation-for="LastName" class="text-danger"></span> *@
+        </div>
+        <div data-mdb-input-init class="form-outline mb-4">
+            <label asp-for="Gender">Gender</label>
+            <select asp-for="Gender" name="Gender" id="Gender" class="form form-select ">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        <div data-mdb-input-init class="form-outline mb-4">
+            <label asp-for="Language">Language</label>
+            <select asp-for="Language" name="Language" id="Language" class="form form-select">
+                <option value="E">English</option>
+                <option value="A">Arabic</option>
+            </select>
+        </div>
+        <div data-mdb-input-init class="form-outline mb-4">
+            <label asp-for="BirthDate">Birthday</label>
+            <input asp-for="BirthDate" type="date" id="BirthDay" name="BirthDay"
+                   class="form form-select  ">
+        </div>
+        <button onclick="SendData()" type="button" id="changeDataButton" class="btn btn-success w-100 btn-block">Change</button>
+    </div>
+
+</form>
+
+<script>
+
+
+</script>

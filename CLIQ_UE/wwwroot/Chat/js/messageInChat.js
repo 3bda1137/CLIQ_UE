@@ -59,7 +59,7 @@ function showChat(otherUserId,otherUserName,otherUserImageUrl) {
 function displayChat(results) {
 
     console.log("----------Start displayChat--------------")
-
+    console.log(results);
     let msg = "";
     let chat = "";
     $.each(results, function (index, result) {
@@ -209,9 +209,9 @@ function displayChat(results) {
     //console.log(searchResultsContainer)
     searchResultsContainer.empty();
     searchResultsContainer.html(chat);
-
-    console.log("----------end displayChat--------------")
-
+    console.log("call Funtion ChatProperties");
+    ChatProperties();
+    console.log("----------end displayChat--------------");
 }
 function closeChat() {
     document.querySelector('.Conversation_default').classList.add('active');

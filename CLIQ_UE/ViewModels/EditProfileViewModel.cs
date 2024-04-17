@@ -26,6 +26,5 @@ namespace CLIQ_UE.ViewModels
         [Compare("NewPassword")]
         public string? ConfirmPassword { get; set; }
 
-
     }
 }

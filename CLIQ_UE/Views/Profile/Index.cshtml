@@ -1,12 +1,14 @@
 ﻿﻿@using CLIQ_UE.ViewModels
-  @model ProfileViewModel
+@model ProfileViewModel
 
 
 @{
 
     Layout = "_ProfileLayout";
 }
-
+<script src="~/js/editprofile/editprofile.js"></script>
+<script src="~/js/editprofile/editprofilechangeimage.js"></script>
+<script src="~/js/editprofile/editprofilechangecoverimage.js"></script>
 
 <!-- ! Navbar -->
 <div class="row">
@@ -37,13 +39,13 @@
                             <!-------------------------------------------  Notifications ------------------------------------------------------------>
                             <div class="notification-list">
 
-                                 @*              <div class="notification-item">
-                                 <img src="@Model.UserImage" alt="User 1" class="user-avatar">
-                                 <div class="notification-details">
-                                 <span class="user-name"><strong>User 1</strong></span>
-                                 <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
-                                 </div>
-                                 </div> *@
+                                @*              <div class="notification-item">
+                                <img src="@Model.UserImage" alt="User 1" class="user-avatar">
+                                <div class="notification-details">
+                                <span class="user-name"><strong>User 1</strong></span>
+                                <span class="notification-text">commented on your post . <strong>5h ago</strong></span>
+                                </div>
+                                </div> *@
 
 
 
@@ -85,9 +87,9 @@
     </div>
 </div>
 
-    <div class="container-fluid">
+<div class="container-fluid">
 
-        <!-- * ---------------------------------------------------------------- -->
+    <!-- * ---------------------------------------------------------------- -->
     <!-- ! Content -->
     <div class="row mt-3">
         <!-- *! Left Content !*-->
@@ -159,7 +161,7 @@
 
         <div class="col-lg-9 col-md-7 col-12 main-content-container  justify-content-center">
             <div class="px-4 pt-0 pb-4 position-relative col-12 cover" style="height: 30vh;">
-                <img src="/images/@Model.CoverImage" alt="Cover Image" class="img-fluid">
+                <img src="@Model.CoverImage" alt="Cover Image" class="img-fluid">
 
                 <div class="media align-items-end profile-head px-4 d-flex position-absolute w-100 bottom-0">
                     <div class="profile mr-3">
@@ -167,7 +169,7 @@
                         <div class="media-body text-white">
                             <h4>@Model.FirstName @Model.LastName <i class="bi bi-patch-check-fill text-primary"></i></h4>
                         </div>
-                        <button class="btn btn-primary btnedit">Edit Profile</button>
+                        <button data-bs-toggle="modal" href="#exampleModalToggle" role="button" class="btn btn-primary btnedit">Edit Profile</button>
                     </div>
                 </div>
             </div>
@@ -179,7 +181,7 @@
             <div class="bio-content">
                 <div class="bio-text">
                     <p>TEST BIO..........</p>
-        
+
                 </div>
                 <div class="bio-info">
                     <p class="location"><i class="bi bi-geo-alt-fill"></i> @Model.Location </p>
@@ -249,45 +251,43 @@
             </div>
 
             <div class="posts-container" style="width: 90%;">
-              
-
             </div>
-                <!--Left Container -->
+            <!--Left Container -->
             <div class="col-lg-3 d-lg-block d-md-none right-content-container  d-lg-flex justify-content-center parent">
-                    <div class="left-boxes">
-                        <div class="leeft col-lg-12">
-                            <div class="link active-link ">
-                                <h2 class="h5 text-start">Complete Your Profile</h2>
-                                <hr>
-                                <div class="line mt-3">
-                                </div>
-                                <div class="progress my-3" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 70%; height: 5px;" aria-valuenow="70"
-                                         aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-
-                                <ul class="list-unstyled text-start">
-                                    <li class="text-secondary">
-                                        Set User Name <i class="fa-solid fa-check-double ms-3 text-primary"></i>
-                                    </li>
-                                    <li class="mt-3 text-secondary">
-                                        Set User Name <i class="fa-solid fa-check-double ms-3 text-primary"></i>
-                                    </li>
-                                    <li class="mt-3 text-secondary">
-                                        Set User Profile Picture <i class="fa-solid fa-check-double ms-3 text-primary"></i>
-                                    </li>
-                                    <li class="mt-3 fw-semibold">Set Your Cover Profile</li>
-                                    <li class="mt-3 fw-semibold">Set Your Location Info </li>
-                                </ul>
+                <div class="left-boxes">
+                    <div class="leeft col-lg-12">
+                        <div class="link active-link ">
+                            <h2 class="h5 text-start">Complete Your Profile</h2>
+                            <hr>
+                            <div class="line mt-3">
                             </div>
+                            <div class="progress my-3" style="height: 5px;">
+                                <div class="progress-bar" role="progressbar" style="width: 70%; height: 5px;" aria-valuenow="70"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+
+                            <ul class="list-unstyled text-start">
+                                <li class="text-secondary">
+                                    Set User Name <i class="fa-solid fa-check-double ms-3 text-primary"></i>
+                                </li>
+                                <li class="mt-3 text-secondary">
+                                    Set User Name <i class="fa-solid fa-check-double ms-3 text-primary"></i>
+                                </li>
+                                <li class="mt-3 text-secondary">
+                                    Set User Profile Picture <i class="fa-solid fa-check-double ms-3 text-primary"></i>
+                                </li>
+                                <li class="mt-3 fw-semibold">Set Your Cover Profile</li>
+                                <li class="mt-3 fw-semibold">Set Your Location Info </li>
+                            </ul>
                         </div>
-
-                        <br />
-                        <br />
-
-
                     </div>
+
+                    <br />
+                    <br />
+
+
                 </div>
+            </div>
 
 
         </div>
@@ -366,10 +366,115 @@
                     </div>
 
                 </div>
-       @*          <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                @*          <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div> *@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+    @* ----------------------------Abdallah------------------------------------ *@
+
+    <div class="modal fade" data-bs-backdrop="static" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel">Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="alert2"></div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary my-2 w-100" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Change Passowrd</button>
+                        <button onclick="GetDataOfUser()" class="btn btn-outline-secondary w-100" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal" data-bs-dismiss="modal">Change Information</button>
+                        <button id="changeImage" class="btn btn-outline-info w-100" data-bs-target="#imageModal" data-bs-toggle="modal" data-bs-dismiss="modal">Change Personal Image</button>
+                        <button id="changeCoverImage" class="btn btn-outline-primary w-100" data-bs-target="#profileImageModal" data-bs-toggle="modal" data-bs-dismiss="modal">Change Cover Image</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" data-bs-backdrop="static" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel2">Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="coseX" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @* <partial name="_ChangePassword.cshtml" /> *@
+                    @Html.Partial("_ChangePassword.cshtml", new CLIQ_UE.ViewModels.ChangePassowrdViewModel())
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @* ----------------------------------------------------------------- *@
+    <div class="modal fade" data-bs-backdrop="static" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel2">Change Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @* <partial name="_ChangePassword.cshtml" /> *@
+                    @Html.Partial("_ChangeInformation.cshtml", new CLIQ_UE.ViewModels.ChangeInfoOfUserViewModel())
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @* ------------------------------------------------------------- *@
+
+    <!-- Modal -->
+    <div class="modal fade" data-bs-backdrop="static" id="imageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                @Html.Partial("_ChangePersonalImage.cshtml")
+                <div class="modal-footer">
+                    <button@*  onclick="resatDefault()" *@ type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="uploadBtn">Upload</button>
+                    <button onclick="showAllImages()" type="button" class="btn btn-primary" id="showAllBtn">Show All Images</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* ------------------------------------------------------------- *@
+
+    <!-- Modal -->
+    <div class="modal fade" data-bs-backdrop="static" id="profileImageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                @Html.Partial("_ChangeCoverImage.cshtml")
+                <div class="modal-footer">
+                    <button @* onclick="resatDefault()" *@ type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="uploadCoverBtn">Upload</button>
+                    <button onclick="showAllCoverImages()" type="button" class="btn btn-primary" id="showAllCoverBtn">Show All Images</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* ------------------------------------------------------------- *@
+    <partial name="_ValidationScriptsPartial"></partial>
+    @* ------------------------------------------------------------- *@
+
+
 
