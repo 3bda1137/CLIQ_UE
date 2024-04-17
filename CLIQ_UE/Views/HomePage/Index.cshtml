@@ -174,7 +174,8 @@
 
                             <div class="write-text">
                                 <img class="profile-pic" src="@Model.UserImage" alt="">
-                                <textarea name="postContent" id="write-post-text" cols="30" rows="1" placeholder="What's on your mind"></textarea>
+                                <textarea name="postContent" id="write-post-text" cols="30" rows="1" placeholder="What's on your mind? (200 words)" maxlength="200"></textarea>
+                                <p id="char-count" class="char-count">200</p>   
                             </div>
                             <div class="post-img">
                                 <img class="add-post-img" src="" alt="">
@@ -493,16 +494,13 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5 text-primary" id="show-bookmarks">Saved Posts </h1>
+                <h1 class="modal-title fs-5 text-primary" id="show-bookmarks">Saved Posts</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div id="bookMarksModal" class="modal-body">
-                <!-- Iterate over the list of users -->
-
                 <div class="posts-container saved-posts-container">
-
+                    <!--All posts-->
                 </div>
-
             </div>
         </div>
     </div>
