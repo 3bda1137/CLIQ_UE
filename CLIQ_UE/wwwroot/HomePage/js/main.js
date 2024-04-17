@@ -455,6 +455,20 @@ function removeBookmark(postId, bookmarkIcon) {
 
 }
 
+
+
+function removePostfromBookmark(btn) {
+    const post = btn.closest('.post');
+    if (post) {
+        post.classList.add('move-out'); 
+        post.addEventListener('transitionend', function () {
+            post.remove();
+        });
+    } else {
+        console.log("Post not found.");
+    }
+}
+
 document.querySelector(".Bookmark-btn").addEventListener('click', function () {
     fetchAllSavedPosts()
 })
@@ -488,7 +502,7 @@ function fetchAllSavedPosts() {
                             </div>
                         </div>
                             <div class=" bookmark-box">
-                                         <i class="bi bi-bookmark-fill bookmark-icon text-primary" onclick="removeBookmark('${post.id}', this)"></i>
+                              <i class="bi bi-bookmark-fill bookmark-icon text-primary" onclick="removeBookmark('${post.id}', this);removePostfromBookmark(this)"></i>
                             </div>
                     </div>
                     <!-- Post Content -->
@@ -567,6 +581,24 @@ function fetchAllSavedPosts() {
     // Function to update the number of comments on a post
     function updateComments(postId, numberOfComments) {
     }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+const textarea = document.getElementById('write-post-text');
+const charCount = document.getElementById('char-count');
+
+textarea.addEventListener('input', function () {
+    const remainingChars = 200 - textarea.value.length;
+    charCount.textContent = remainingChars;
+
+    if (remainingChars < 20) {
+        charCount.classList.add('critical');
+    } else if (remainingChars < 50) {
+        charCount.classList.add('low');
+    } else {
+        charCount.classList.remove('low', 'critical');
+    }
+});
 
 
 

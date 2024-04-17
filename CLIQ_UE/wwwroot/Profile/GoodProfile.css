@@ -137,6 +137,90 @@ i {
     height: 400px;
     overflow-y: scroll;
 }
+#show_bookmarks_list .modal-body {
+    height: 500px;
+}
+
+#show_bookmarks_list .modal-content {
+    width: 70% !important;
+}
+
+#bookMarksModal {
+    height: 80vh !important;
+}
+
+/*////////////////////////////////     Customize the model        ///////////////////////////////*/
+.modal-content {
+    border-radius: var(--border-radius) !important;
+    box-shadow: -7px 14px 16px 16px #666666 !important;
+    overflow-y: auto !important;
+}
+
+    /* Customize scrollbar appearance */
+    .modal-content::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .modal-content::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .modal-content::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 5px;
+    }
+
+/* Modal header */
+.modal-header {
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
+    background-color: #f8f9fa !important;
+    box-shadow: 0 5px 7px 0px rgb(0 0 0 / 15%) !important;
+}
+
+..modal-title {
+    letter-spacing: 3px !important;
+    font-weight: 700 !important;
+}
+
+.btn-close {
+    color: #6c757d !important;
+    border: 2px solid #6c757d !important;
+    border-radius: 50%;
+    transition: color 0.3s ease !important;
+}
+
+    .btn-close:hover {
+        color: #212529 !important;
+    }
+
+
+/*////////////////////////////////////////////////////// circle of thead text-area --->*/
+.char-count {
+    color: green;
+    font-weight: normal;
+    transition: color 0.3s, font-weight 0.3s;
+}
+
+    .char-count.low {
+        color: orange;
+        font-weight: bold;
+    }
+
+    .char-count.critical {
+        color: red;
+        font-weight: bold;
+    }
+
+
+
+/*////////////////////////////////     Customize the model        ///////////////////////////////*/
+.modal-content {
+    border-radius: var(--border-radius) !important;
+    box-shadow: -7px 14px 16px 16px #666666 !important;
+    overflow-y: auto !important;
+}
+
 /* //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////// */
 
@@ -155,6 +239,7 @@ i {
 .links-container a {
     text-decoration: none;
     color: var(--font-color);
+    cursor:pointer;
 }
 
 .links-container {
@@ -824,7 +909,14 @@ button.btn-follow-following {
     margin-top: 30px;
     margin-bottom: 30px;
 }
+.post {
+    transition: transform 0.3s ease-out;
+}
 
+.move-out {
+    transform: translateX(100%);
+    opacity: 0;
+}
     .posts-container .post {
         box-shadow: var(--box-shadow);
         width: 90%;
