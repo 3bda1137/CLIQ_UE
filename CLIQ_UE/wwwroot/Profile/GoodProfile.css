@@ -149,6 +149,27 @@ i {
     height: 80vh !important;
 }
 
+
+.verified {
+    color: var(--secondary-color) !important;
+    font-weight: bold !important;
+    opacity: 1 !important;
+}
+/* Standard progress bar color */
+progress {
+    color: green;
+}
+
+    progress::-webkit-progress-value {
+        background: green;
+    }
+
+
+    progress::-moz-progress-bar {
+        background: green;
+    }
+
+
 /*////////////////////////////////     Customize the model        ///////////////////////////////*/
 .modal-content {
     border-radius: var(--border-radius) !important;
@@ -253,11 +274,18 @@ i {
     flex-direction: column;
     gap: 1.2rem;
     margin-bottom: 30px;
-    background-color: #80808014;
+    /*    background-color: #80808014;*/
+    border: 1px solid;
     opacity: .6;
     transition: var(--transition);
 }
 
+ .links-container.box-1 p{
+    font-weight:700;
+}
+.links-container.box-1 progress {
+    width: 100%;
+}
     .links-container:hover {
         opacity: 1;
     }
@@ -1381,7 +1409,7 @@ button.btn-follow-following {
   border-radius: var(--border-radius);
   justify-content: center;
   padding: 20px;
-   
+   border:1px solid var(--font-color);
 }
 
 
