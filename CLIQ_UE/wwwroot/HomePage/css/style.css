@@ -253,7 +253,8 @@ i {
     flex-direction: column;
     gap: 1.2rem;
     margin-bottom: 30px;
-    background-color: #80808014;
+/*    background-color: #80808014;*/
+    border:1px solid;
     opacity: .6;
     transition:var(--transition);
 }
@@ -390,10 +391,19 @@ button.btn-follow-following {
     font-weight: bold !important;
     opacity:1 !important;
 }
-.completed {
-
-    color: green;
+/* Standard progress bar color */
+progress {
+    color: green; 
 }
+    progress::-webkit-progress-value {
+        background: green; 
+    }
+
+
+    progress::-moz-progress-bar {
+        background: green;
+    }
+
 
 
 .right-boxes {
