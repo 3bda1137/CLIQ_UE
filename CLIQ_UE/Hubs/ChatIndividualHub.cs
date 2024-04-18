@@ -3,7 +3,6 @@ using CLIQ_UE.Models;
 using CLIQ_UE.Services;
 using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.SignalR;
-using System.Security.Claims;
 
 namespace CLIQ_UE.Hubs
 {
@@ -14,18 +13,21 @@ namespace CLIQ_UE.Hubs
         private readonly IFollowersServices followersServices;
         private readonly IUserServices userServices;
         private readonly IOnlineUserServices onlineUserServices;
+        private readonly INotificationService notificationService;
 
         public ChatIndividualHub(IChatIndividualServices chatIndividualServices
                                 , ILastMessageServices lastMessageServices
                                 , IFollowersServices followersServices
                                 , IUserServices userServices
-                                , IOnlineUserServices onlineUserServices)
+                                , IOnlineUserServices onlineUserServices,
+            INotificationService notificationService)
         {
             this.chatIndividualServices = chatIndividualServices;
             this.lastMessageServices = lastMessageServices;
             this.followersServices = followersServices;
             this.userServices = userServices;
             this.onlineUserServices = onlineUserServices;
+            this.notificationService = notificationService;
         }
 
         public async void SaveMessage(string message, string currentId, string otherUserId)
@@ -71,10 +73,14 @@ namespace CLIQ_UE.Hubs
                 await Clients.Caller.SendAsync("desplayMessageForCaller", messageResav , applicationUser.PersonalImage);
                 await Clients.Others.SendAsync("displayMessage", messageResav, applicationUser.PersonalImage);
 
+                await Clients.User(currentId).SendAsync("NewMessageNotification", currentId);
+                notificationService.AddNotification(otherUserId, currentId, "sent you a message");
+
+
                 await UpdateListAsync(lastMessage, currentId, otherUserId);
             }
         }
-        private async Task UpdateListAsync(LastMessage lastMessage,string currentId,string otherUserId)
+        private async Task UpdateListAsync(LastMessage lastMessage, string currentId, string otherUserId)
         {
 
             //Followers follower = followersServices.GetByFollowerId(lastMessage.ReseverID, lastMessage.SendId);

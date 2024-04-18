@@ -108,7 +108,16 @@ i {
     height: 400px;
     overflow-y: scroll;
 }
-
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 10;
+}
 /*////////////////////////////////     Customize the model        ///////////////////////////////*/
 .modal-content {
     border-radius: var(--border-radius) !important;
@@ -956,7 +965,7 @@ button.btn-follow-following {
             display: flex;
             justify-content: center;
             flex-direction: column;
-            padding: 1.1rem;
+            padding: .8rem;
             gap: 1.5rem;
             background-color: rgb(238 238 238 / 40%);
             border-radius: var(--border-radius);
@@ -1001,13 +1010,13 @@ button.btn-follow-following {
                     }
 
                         .posts-container .post .box .top .profile .name p:first-child {
-                            font-size: 1.2rem;
+                            font-size: 1rem;
                             font-weight: 600;
                             letter-spacing: 1px;
                         }
 
                         .posts-container .post .box .top .profile .name p:last-child {
-                            font-size: 0.8rem;
+                            font-size: 0.5rem;
                             align-self: baseline;
                         }
 
@@ -1049,7 +1058,7 @@ button.btn-follow-following {
                 .posts-container .post .box .post-content p {
                     font-weight: 500;
                     text-align: left;
-                    font-size: 1.2rem;
+                    font-size: 1.3rem;
                     width: 100%;
                     overflow-wrap: break-word;
                 }
@@ -1079,7 +1088,7 @@ button.btn-follow-following {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 1rem;
 }
 
                     .posts-container .post .box .post-content .interactions .box {

@@ -341,6 +341,7 @@ function displayPosts(Model) {
                     <!-- Post Content -->
                     <div id="post${post.id}" class="post-content">
                         ${post.textContent ? `<p>${post.textContent}</p>` : ''}
+
                         <div class="post-img">
                             ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
                         </div>
@@ -1188,4 +1189,14 @@ document.addEventListener('click', function (event) {
         dropdownMenu.classList.remove('show');
         searchInput.value = "";
     }
+});
+
+const overlayElement = document.querySelector('.overlay');
+
+searchInput.addEventListener('focus', function () {
+    overlayElement.style.display = 'block';
+});
+
+searchInput.addEventListener('blur', function () {
+    overlayElement.style.display = 'none';
 });

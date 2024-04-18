@@ -157,6 +157,15 @@ i {
 .posts-container.saved-posts-container {
 /*    width: 50%;*/
 }
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: none;    z-index:10;
+}
 
 /*////////////////////////////////////////////////////// circle of thead text-area --->*/
 .char-count {
@@ -797,7 +806,7 @@ height: 250px;
     right: -9px;
     background-color: red;
     color: white;
-    font-size: 5px;
+    font-size: 14px;
     padding: 0px 7px;
     border-radius: 29px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
@@ -1215,7 +1224,7 @@ height: 250px;
             display: flex;
             justify-content: center;
             flex-direction: column;
-            padding: 1.1rem;
+            padding: .8rem;
             gap: 1.5rem;
             background-color: rgb(238 238 238 / 40%);
             border-radius: var(--border-radius);
@@ -1260,13 +1269,13 @@ height: 250px;
                     }
 
                         .posts-container .post .box .top .profile .name p:first-child {
-                            font-size: 1.2rem;
+                            font-size: 1rem;
                             font-weight: 600;
                             letter-spacing: 1px;
                         }
 
                         .posts-container .post .box .top .profile .name p:last-child {
-                            font-size: 0.8rem;
+                            font-size: 0.5rem;
                             align-self: baseline;
                         }
 
@@ -1308,7 +1317,7 @@ height: 250px;
                 .posts-container .post .box .post-content p {
                     font-weight: 500;
                     text-align: left;
-                    font-size: 1.2rem;
+                    font-size: 1.3rem;
                     width: 100%;
                     overflow-wrap:break-word;
                 }
@@ -1336,7 +1345,7 @@ height: 250px;
     display:flex;
    align-items:center;
    justify-content:center;
-   gap:2rem;
+   gap:1rem;
 }
 
 .posts-container .post .box .post-content .interactions .box {
