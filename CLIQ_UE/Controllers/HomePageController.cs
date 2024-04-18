@@ -16,9 +16,10 @@ namespace CLIQ_UE.Controllers
         private readonly ISuggestesUsersService suggestesUsersService;
         private readonly INotificationService notificationService;
         private readonly IBookMarkService bookMarkService;
+        private readonly IFollowersServices followersServices;
 
         // Injection in the constructor 
-        public HomePageController(UserManager<ApplicationUser> userManager, IPostService postService, ISuggestesUsersService suggestesUsersService, INotificationService notificationService, IBookMarkService bookMarkService)
+        public HomePageController(UserManager<ApplicationUser> userManager, IPostService postService, ISuggestesUsersService suggestesUsersService, INotificationService notificationService, IBookMarkService bookMarkService, IFollowersServices followersServices)
         {
 
             this.userManager = userManager;
@@ -26,6 +27,7 @@ namespace CLIQ_UE.Controllers
             this.suggestesUsersService = suggestesUsersService;
             this.notificationService = notificationService;
             this.bookMarkService = bookMarkService;
+            this.followersServices = followersServices;
         }
 
         public async Task<IActionResult> Index(HomePageViewModel model)
@@ -40,6 +42,9 @@ namespace CLIQ_UE.Controllers
                 model.SuggestesUsers = suggestesUsersService.GetSuggestesUsers(user.Id);
                 model.userId = user.Id;
                 model.newNotificationCount = notificationService.GetNewNotifications(user.Id).Count();
+                model.coverImage = user?.ProfileImage;
+                model.numberOfFollowing = followersServices.GetFollowerCount(user.Id);
+
                 return View(model);
             }
             return RedirectToAction("Login", "Account");
@@ -51,13 +56,14 @@ namespace CLIQ_UE.Controllers
         public async Task<IActionResult> GetPosts(int pageIndex = 0, int pageSize = 5)
         {
             ApplicationUser user = await userManager.GetUserAsync(User);
-            if(user == null) {
+            if (user == null)
+            {
                 return BadRequest();
             }
             List<Post> posts = postService.GetLatestPosts(pageIndex, pageSize, user.Id);
             foreach (var post in posts)
             {
-                if(post.UsersLikedPost?.Count() > 0)
+                if (post.UsersLikedPost?.Count() > 0)
                 {
                     post.isLikedByMe = true;
                 }
@@ -71,7 +77,7 @@ namespace CLIQ_UE.Controllers
             displayPostViewModel.currentUserusername = user.UserName;
             displayPostViewModel.currentUserFirstName = user.FirstName;
             displayPostViewModel.currentUserLastName = user.LastName;
-            
+
             return Json(displayPostViewModel);
         }
 
