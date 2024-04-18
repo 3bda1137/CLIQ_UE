@@ -115,7 +115,7 @@ function sendDataToAction(data) {
 
 
 function displayMessageInChangeinformation(response) {
-    console.log("---------------displayMessageInChangeCoverImage----------")
+    console.log("---------------displayMessageInChangeinformation----------")
 
     $('#exampleModalToggle3').modal('hide');
     console.log(response)
@@ -129,6 +129,11 @@ function displayMessageInChangeinformation(response) {
                    </div>
               `;
         alert.innerHTML = msg;
+        var userNameInProfile = document.getElementById('userNameInProfile');
+        console.log(userNameInProfile)
+        userNameInProfile.innerHTML = `
+                                ${response.fullName}<i class="bi bi-patch-check-fill text-primary"></i>
+                                    `;
     }
     else if (response.success == false && response.code == "failed") {
 

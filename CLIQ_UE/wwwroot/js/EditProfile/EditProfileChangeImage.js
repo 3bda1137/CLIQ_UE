@@ -38,10 +38,12 @@ document.addEventListener('DOMContentLoaded', function () {
             var fileInput = document.getElementById('uploadInput');
             var file = fileInput.files[0];
             formData.append('image', file);
+            defaultImageSrc = null;
         } else {
             formData.append('defaultImageSrc', defaultImageSrc);
         }
-
+        console.log("*******************************");
+        console.log(formData);
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/EditProfile/ChangePersonalImage');
         xhr.onload = function () {
@@ -57,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Change event handler for file input
     document.getElementById('changeImage').addEventListener('click', function (event) {
         document.getElementById('uploadInput').addEventListener('change', function (event) {
+            isDefault = false;
             var file = event.target.files[0];
             var reader = new FileReader();
 
@@ -82,6 +85,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function displayMessageInChangePersonalImage(response) {
         console.log("---------------displayMessageInChangePersonalImage----------")
         $('#imageModal').modal('hide');
+        
+        console.log("-------------------------------")
         console.log(response)
         var alert = document.getElementById("alert2");
         if (response.success == true && response.code == "succeeded") {
@@ -93,6 +98,17 @@ document.addEventListener('DOMContentLoaded', function () {
                    </div>
               `;
             alert.innerHTML = msg;
+
+            var profilePics = document.getElementsByClassName('profile-pic');
+            for (var i = 0; i < profilePics.length; i++) {
+                // Change the 'src' attribute of each element
+                profilePics[i].src = response.src;
+            } var profilePics2 = document.getElementsByClassName('profile-pic2');
+            for (var i = 0; i < profilePics2.length; i++) {
+                // Change the 'src' attribute of each element
+                profilePics2[i].src = response.src;
+            }
+            console.log(profilePics2)
         }
         else if (response.success == false && response.code == "failed") {
            
@@ -102,21 +118,19 @@ document.addEventListener('DOMContentLoaded', function () {
                              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                         `;
-            alert.innerHTML = msg;
-
-            showAllImages
+            alert.innerHTML = msg; 
         }
     }
     function showAllImages() {
         document.querySelector('.default-images').innerHTML = `
          <div class="col-md-4 mb-3">
-                <img src="~/images/defaultimages/women-avater.png" class="img-fluid rounded default-image" alt="Default Image 1">
+                <img src="/images/defaultimages/women-avater.png" class="img-fluid rounded default-image" alt="Default Image 1">
             </div>
             <div class="col-md-4 mb-3">
-                <img src="~/images/defaultimages/man-avatar.png" class="img-fluid rounded default-image" alt="Default Image 2">
+                <img src="/images/defaultimages/man-avatar.png" class="img-fluid rounded default-image" alt="Default Image 2">
             </div>
             <div class="col-md-4 mb-3">
-                <img src="~/images/defaultimages/1.jpg" class="img-fluid rounded default-image" alt="Default Image 3">
+                <img src="/images/defaultimages/1.jpg" class="img-fluid rounded default-image" alt="Default Image 3">
             </div>
             <div class="col-md-4 mb-3">
                 <img src="/images/defaultimages/2.jpg" class="img-fluid rounded default-image" alt="Default Image 4">

@@ -15,10 +15,9 @@ function ChatProperties() {
 
     // start Conversation 
     var elem = document.querySelectorAll('.Conversation_Item_dropdown_toggle');
-    console.log("--------------- elements")
-    console.log(elem);
+    
     document.querySelectorAll('.Conversation_Item_dropdown_toggle').forEach(function (item) {
-        console.log("drop")
+       
         item.addEventListener('click', function (e) {
 
             e.preventDefault();
@@ -29,8 +28,6 @@ function ChatProperties() {
                 document.querySelectorAll('.Conversation_Item_dropdown').forEach(function (i) {
                     i.classList.remove('active')
                 })
-                this.parentElement.classList.add('active')
-                console.log("test::::", this);
             }
         })
     })

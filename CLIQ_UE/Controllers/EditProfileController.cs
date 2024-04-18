@@ -26,8 +26,7 @@ namespace CLIQ_UE.Controllers
             EditProfileViewModel viewModel = editUserServices.GetUserViewModelById(userId);
             return View("EditProfile", viewModel);
         }
-        [HttpPost]
-
+        [HttpGet]
         public async Task<IActionResult> CompleteProfile()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -116,7 +115,8 @@ namespace CLIQ_UE.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             editUserServices.UpdateProfile(changeInfoOfUserViewModel, userId);
-            return Json(new { success = true, code = "succeeded", message = "Data changed successfully" });
+            string name = string.Concat(changeInfoOfUserViewModel.FirstName, " ", changeInfoOfUserViewModel.LastName);
+            return Json(new { fullName= name, success = true, code = "succeeded", message = "Data changed successfully" });
         }
 
         public async Task<IActionResult> ChangePersonalImage(IFormFile image, string defaultImageSrc)
@@ -151,9 +151,9 @@ namespace CLIQ_UE.Controllers
                 }
                 editUserServices.UpdateUser(applicationUser);
 
-                return Json(new { success = true, code = "succeeded", message = "personal image changed successfully" });
+                return Json(new { src = applicationUser.PersonalImage, success = true, code = "succeeded", message = "personal image changed successfully" });
             }
-            return Json(new { success = false, code = "failed", message = "select Image" });
+            return Json(new { success = false, code = "failed", message = "select Image", });
         }
         public async Task<IActionResult> ChangeCoverImage(IFormFile image, string defaultImageSrc)
         {
@@ -187,7 +187,7 @@ namespace CLIQ_UE.Controllers
                 }
                 editUserServices.UpdateUser(applicationUser);
 
-                return Json(new { success = true, code = "succeeded", message = "Cover image changed successfully" });
+                return Json(new { src = applicationUser.ProfileImage, success = true, code = "succeeded", message = "Cover image changed successfully" });
             }
             return Json(new { success = false, code = "failed", message = "select Image" });
         }

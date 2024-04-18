@@ -54,6 +54,7 @@ namespace CLIQ_UE.Services
                     }
                 }
             }
+
             userConntactVMWithLastMessage= userConntactVMWithLastMessage
                         .Where(e => e.LastMessage != null)
                         .OrderByDescending(e => e.LastMessage.Time)
@@ -66,25 +67,34 @@ namespace CLIQ_UE.Services
 
         {
             List<Followers> followers = followersRepository.GetAllBySeachWords(searchword, followingId);
-            List<UserConntactViewModel> userConntactViewModel = new List<UserConntactViewModel>();
+
+            List<UserConntactViewModel> userConntactVMWithLastMessage = new List<UserConntactViewModel>();
+            List<UserConntactViewModel> userConntactVMWithOutLastMessage = new List<UserConntactViewModel>();
             foreach (Followers follower in followers)
             {
                 UserConntactViewModel viewModel = new UserConntactViewModel();
 
-                if (follower.FollowerId == followingId)//FollowingId ==me
+                if (follower.FollowerId == followingId)//FollowerId ==me
                 {
-                    //ApplicationUser user = userServices.GetByID(follower.FollowerId);
                     viewModel.UserId = follower.FollowingId;
                     viewModel.UserName = follower.FollowingName;
                     viewModel.ImageUrl = follower.ImageUrl;
                     viewModel.LastMessage = lastMessageServices.Get(followingId, follower.FollowingId);
-                   viewModel.FormatedTime= FormatTimeForChat.CalculateLastSeenForUserList(viewModel.LastMessage.Time.ToString("yyyy-MM-dd HH:mm"));
-
+                    if (viewModel.LastMessage == null)
+                        userConntactVMWithOutLastMessage.Add(viewModel);
+                    else
+                    {
+                        viewModel.FormatedTime = FormatTimeForChat.CalculateLastSeenForUserList(viewModel.LastMessage.Time.ToString("yyyy-MM-dd HH:mm"));
+                        userConntactVMWithLastMessage.Add(viewModel);
+                    }
                 }
-
-                userConntactViewModel.Add(viewModel);
             }
-            return userConntactViewModel;
+            userConntactVMWithLastMessage = userConntactVMWithLastMessage
+                        .Where(e => e.LastMessage != null)
+                        .OrderByDescending(e => e.LastMessage.Time)
+                        .ToList();
+            userConntactVMWithLastMessage.AddRange(userConntactVMWithOutLastMessage);
+            return userConntactVMWithLastMessage;
         }
 
         public Followers GetByFollowerId(string followingId, string followerId)

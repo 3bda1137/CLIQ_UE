@@ -8,6 +8,7 @@ namespace CLIQ_UE.Services
         public void Add(LastMessage lastMessage);
         public LastMessage Get(string senderId, string ReseverId);
         public void Update(LastMessage lastMessage);
+
         public void Delete(LastMessage lastMessage);
         //public List<UserConntactViewModel> GetAll(string userId);
     }

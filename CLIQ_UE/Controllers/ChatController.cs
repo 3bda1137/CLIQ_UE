@@ -2,6 +2,7 @@
 using CLIQ_UE.Models;
 using CLIQ_UE.Services;
 using CLIQ_UE.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -14,19 +15,22 @@ namespace CLIQ_UE.Controllers
         private readonly ILastSeenServices lastSeenServices;
         private readonly IOnlineUserServices onlineUserServices;
         private readonly ILastMessageServices lastMessageServices;
+        private readonly UserManager<ApplicationUser> userManager;
 
         //private string userId; 
         public ChatController(IFollowersServices followersServices
                                 , IChatIndividualServices chatIndividualServices
                                 , ILastSeenServices lastSeenServices
                                 , IOnlineUserServices onlineUserServices
-                                ,ILastMessageServices lastMessageServices)
+                                ,ILastMessageServices lastMessageServices
+                                , UserManager<ApplicationUser> userManager)
         {
             this.followersServices = followersServices;
             this.chatIndividualServices = chatIndividualServices;
             this.lastSeenServices = lastSeenServices;
             this.onlineUserServices = onlineUserServices;
             this.lastMessageServices = lastMessageServices;
+            this.userManager = userManager;
             //this.userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
         public IActionResult Index()
@@ -53,11 +57,12 @@ namespace CLIQ_UE.Controllers
             return Json(userConntactViewModels);
         }
 
-        public IActionResult GetMessages(string otherUserId)
+        public async Task<IActionResult> GetMessages(string otherUserId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            List<ChatIndividual> chat = chatIndividualServices.GetChat(otherUserId, userId);
-            return Json(chat);
+            List<ChatIndividual> chatt = chatIndividualServices.GetChat(otherUserId, userId);
+            ApplicationUser applicationUser = await userManager.FindByIdAsync(userId);
+            return Json(new { chat = chatt, myImage = applicationUser.PersonalImage });
         }
 
         public IActionResult GetLastSeen(string otherUserId)

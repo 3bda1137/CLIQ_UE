@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var fileInput = document.getElementById('uploadCoverInput');
             var file = fileInput.files[0];
             formData.append('image', file);
+            isCoverDefault = false;
         } else {
             formData.append('defaultImageSrc', defaultImageSrc);
         }
@@ -60,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('changeCoverImage').addEventListener('click', function (event) {
         document.getElementById('uploadCoverInput').addEventListener('change', function (event) {
             var file = event.target.files[0];
+            isCoverDefault = false;
             var reader = new FileReader();
 
             reader.onload = function (event) {
@@ -95,6 +97,8 @@ document.addEventListener('DOMContentLoaded', function () {
                    </div>
               `;
             alert.innerHTML = msg;
+            var imgFluidElements = document.getElementsByClassName('img-fluid');
+            imgFluidElements[0].src = response.src;
         }
         else if (response.success == false && response.code == "failed") {
 

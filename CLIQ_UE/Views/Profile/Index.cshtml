@@ -71,7 +71,7 @@
                         </div>
 
                         <div class="profile-box" id="profile-box">
-                            <div class="profile-pic"><img src="@Model.UserImage" alt="Profile image"></div>
+                            <div class="profile-pic"><img class ="profile-pic2" src="@Model.UserImage" alt="Profile image"></div>
                             <div class="profile-name">
                                 @Model.UserName
                                 <i class="fa-solid fa-caret-down"></i>
@@ -173,9 +173,9 @@
 
                 <div class="media align-items-end profile-head px-4 d-flex position-absolute w-100 bottom-0">
                     <div class="profile mr-3">
-                        <img src="@Model.UserImage" alt="Profile Image" class="mb-2 profile-image">
+                        <img class="profile-pic2" src="@Model.UserImage" alt="Profile Image" class="mb-2 profile-image">
                         <div class="media-body text-white">
-                            <h4>@Model.FirstName @Model.LastName <i class="bi bi-patch-check-fill text-primary"></i></h4>
+                            <h4 id="userNameInProfile">@Model.FirstName @Model.LastName <i class="bi bi-patch-check-fill text-primary"></i></h4>
                         </div>
                         <button data-bs-toggle="modal" href="#exampleModalToggle" role="button" class="btn btn-primary btnedit">Edit Profile</button>
                     </div>

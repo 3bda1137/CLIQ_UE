@@ -67,8 +67,9 @@ namespace CLIQ_UE.Hubs
                 //{
                 //    await Clients.Clients([Context.ConnectionId]).SendAsync("displayMessage", messageResav);
                 //}
-                await Clients.Caller.SendAsync("desplayMessageForCaller", messageResav);
-                await Clients.Others.SendAsync("displayMessage", messageResav);
+                ApplicationUser applicationUser = userServices.GetByID(otherUserId);
+                await Clients.Caller.SendAsync("desplayMessageForCaller", messageResav , applicationUser.PersonalImage);
+                await Clients.Others.SendAsync("displayMessage", messageResav, applicationUser.PersonalImage);
 
                 await UpdateListAsync(lastMessage, currentId, otherUserId);
             }

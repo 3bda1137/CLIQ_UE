@@ -167,7 +167,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("bookMarks", (string)null);
+                    b.ToTable("bookMarks");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.ChatIndividual", b =>
@@ -208,7 +208,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChatIndividual", (string)null);
+                    b.ToTable("ChatIndividual");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Comment", b =>
@@ -245,7 +245,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Followers", b =>
@@ -281,7 +281,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasIndex("FollowingId");
 
-                    b.ToTable("Followers", (string)null);
+                    b.ToTable("Followers");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.LastMessage", b =>
@@ -309,7 +309,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LastMessages", (string)null);
+                    b.ToTable("LastMessages");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.LastSeen", b =>
@@ -329,7 +329,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LastSeens", (string)null);
+                    b.ToTable("LastSeens");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Notification", b =>
@@ -372,7 +372,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.OnlineUser", b =>
@@ -393,7 +393,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OnlineUsers", (string)null);
+                    b.ToTable("OnlineUsers");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Post", b =>
@@ -463,7 +463,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.Reaction", b =>
@@ -490,7 +490,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reactions", (string)null);
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.UserLikeComment", b =>
@@ -505,7 +505,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("UserLikeComments", (string)null);
+                    b.ToTable("UserLikeComments");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.UserLikePost", b =>
@@ -523,7 +523,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("UserLikePosts", (string)null);
+                    b.ToTable("UserLikePosts");
                 });
 
             modelBuilder.Entity("CLIQ_UE.Models.View", b =>
@@ -550,7 +550,7 @@ namespace CLIQ_UE.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Views", (string)null);
+                    b.ToTable("Views");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -759,7 +759,7 @@ namespace CLIQ_UE.Migrations
                         .IsRequired();
 
                     b.HasOne("CLIQ_UE.Models.Post", "Post")
-                        .WithMany()
+                        .WithMany("UsersLikedPost")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -859,6 +859,8 @@ namespace CLIQ_UE.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Reactions");
+
+                    b.Navigation("UsersLikedPost");
 
                     b.Navigation("Views");
                 });

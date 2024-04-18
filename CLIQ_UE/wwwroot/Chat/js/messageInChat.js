@@ -4,6 +4,7 @@ var followingImageUrl = "";
 var followingName = "";
 var lastSeen = "";
 var tagOfLastSeen = "";
+var myImage = "";
 function showChat(otherUserId,otherUserName,otherUserImageUrl) {
     otherUser = otherUserId;
     followingImageUrl = otherUserImageUrl;
@@ -17,7 +18,7 @@ function showChat(otherUserId,otherUserName,otherUserImageUrl) {
         type: 'GET',
         data: { otherUserId: otherUserId },
         success: function (data) {
-
+            
             //console.log("Last seen : "+data);
             lastSeen = data;
         },
@@ -31,9 +32,11 @@ function showChat(otherUserId,otherUserName,otherUserImageUrl) {
         type: 'GET',
         data: { otherUserId: otherUserId },
         success: function (data) {
+            myImage = data.myImage;
+            console.log(data);
+            console.log(myImage);
 
-            //console.log(data);
-            displayChat(data);
+            displayChat(data.chat);
         }, 
         error: function () {
             console.error('Error occurred while fetching search results.');
@@ -42,19 +45,6 @@ function showChat(otherUserId,otherUserName,otherUserImageUrl) {
 
     console.log("----------end showChat--------------")
 }
-[
-    {
-        "id": 2,
-        "senderId": "87680356-74e7-4c08-bfd1-f4c610b03260",
-        "receiverId": "c105c759-f3fe-4a84-ad1f-6f176f1c20be",
-        "createdAt": "2024-01-01T00:00:00",
-        "time": "12",
-        "messageContant": "hi  ahmed my name abdallah",
-        "isDeleted": false,
-        "isImage": false,
-        "isReaded": false
-    } 
-]
 
 function displayChat(results) {
 
@@ -86,7 +76,7 @@ function displayChat(results) {
             msg += `
             <li class="Conversation_Item">
                 <div class="Conversation_Item_Side">
-                    <img src="/chat/images/test.jpg" class="Conversation_Item_Image">
+                    <img src="${myImage}" class="Conversation_Item_Image">
                 </div>
                 <div class="Conversation_Item_Content">
                     <div class="Conversation_Item_Wrapper">
@@ -102,8 +92,8 @@ function displayChat(results) {
                                     <i class="ri-more-2-line"></i>  
                                 </button>
                                 <ul class="Conversation_Item_dropdown_List">
-                                    <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
-                                    <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+                                    <li><a><i class="ri-share-forward-line"></i>Forward</a></li>
+                                    <li><a id="${results[index].id}" onclick="deleteMessag(${results[index].id})"><i class="ri-delete-bin-line"></i>Delete</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -118,7 +108,7 @@ function displayChat(results) {
                 `
             <li class="Conversation_Item me">
                     <div class="Conversation_Item_Side">
-                        <img src="/chat/images/test.jpg" class="Conversation_Item_Image">
+                        <img src="${followingImageUrl}" class="Conversation_Item_Image">
                     </div>
                     <div class="Conversation_Item_Content">
                         <div class="Conversation_Item_Wrapper">
@@ -134,8 +124,8 @@ function displayChat(results) {
                                         <i class="ri-more-2-line"></i>
                                     </button>
                                     <ul class="Conversation_Item_dropdown_List">
-                                        <li><a href="#"><i class="ri-share-forward-line"></i>Forward</a></li>
-                                        <li><a href="#"><i class="ri-delete-bin-line"></i>Delete</a></li>
+                                        <li><a ><i class="ri-share-forward-line"></i>Forward</a></li>
+                                        <li><a id="${results[index].id} onclick="deleteMessag(${results[index].id})"><i class="ri-delete-bin-line"></i>Delete</a></li>
                                     </ul>
                                 </div>
                             </div>

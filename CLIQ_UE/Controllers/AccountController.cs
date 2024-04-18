@@ -47,8 +47,7 @@ namespace CLIQ_UE.Controllers
 					await sendEmail.SendEmailAsync(registerViewModel.Email, body);
 					return RedirectToAction("ConfirmEmail", "Account");
 
-                    
-
+                 
                 }
                 else
                 {

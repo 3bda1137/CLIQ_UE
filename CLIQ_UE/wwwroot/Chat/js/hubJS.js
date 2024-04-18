@@ -19,14 +19,14 @@ function sendMessage(otherUser) {//otherUser --> The user to whom the message wi
     console.log("----------end sendMessage --------------")
 }
 
-chatHub.on("desplayMessageForCaller", function (messageresevd) {
+chatHub.on("desplayMessageForCaller", function (messageresevd,personalImage) {
 
     console.log("----------start desplayMessageForCaller------------")
     let msg = "";
     msg += `
         <li class="Conversation_Item me">
             <div class="Conversation_Item_Side">
-                <img src="/chat/images/test.jpg" class="Conversation_Item_Image">
+                <img src="${personalImage}" class="Conversation_Item_Image">
             </div>
             <div class="Conversation_Item_Content">
                 <div class="Conversation_Item_Wrapper">
@@ -56,7 +56,7 @@ chatHub.on("desplayMessageForCaller", function (messageresevd) {
     console.log("----------end desplayMessageForCaller------------")
 
 });
-chatHub.on("displayMessage", function (messageresevd) {
+chatHub.on("displayMessage", function (messageresevd, personalImage) {
     console.log("----------start displayMessage------------")
     const currentId = document.querySelector('#currentId').textContent;//my ID
     const otherUserid = document.querySelector('#otherUserid').textContent;
@@ -68,7 +68,7 @@ chatHub.on("displayMessage", function (messageresevd) {
         msg += ` 
             <li class="Conversation_Item">
                 <div class="Conversation_Item_Side">
-                    <img src="/chat/images/test.jpg" class="Conversation_Item_Image">
+                    <img src="${personalImage}" class="Conversation_Item_Image">
                 </div>
                 <div class="Conversation_Item_Content">
                     <div class="Conversation_Item_Wrapper">
