@@ -150,6 +150,7 @@ namespace CLIQ_UE.Controllers
                     }
                 }
                 editUserServices.UpdateUser(applicationUser);
+                //change image in follwoer 
 
                 return Json(new { src = applicationUser.PersonalImage, success = true, code = "succeeded", message = "personal image changed successfully" });
             }

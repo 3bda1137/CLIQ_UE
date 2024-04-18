@@ -11,7 +11,7 @@
 		public static string GetCode()
 		{
 			Random random = new Random();
-			code = random.Next(10000000, 100000000).ToString();
+			code = random.Next(100000, 1000000).ToString();
 
 			return code;
 		}

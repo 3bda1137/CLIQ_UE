@@ -45,9 +45,10 @@ namespace CLIQ_UE.Controllers
 					string body = FormatEmail.CreateDesignForConfirmEmail(code);
 					SendEmail sendEmail = new SendEmail(configuration);
 					await sendEmail.SendEmailAsync(registerViewModel.Email, body);
-					return RedirectToAction("ConfirmEmail", "Account");
+                    return RedirectToAction("ConfirmEmail", "Account", new { Email = registerViewModel.Email });
 
-                 
+
+
                 }
                 else
                 {
@@ -57,9 +58,10 @@ namespace CLIQ_UE.Controllers
             return View(registerViewModel);
         }
 
-        public IActionResult ConfirmEmail()
+        public IActionResult ConfirmEmail(string Email)
         {
-            return View();
+			ViewBag.email = Email;
+            return View("ConfirmEmail");
         }
 
         [HttpPost]
@@ -80,14 +82,14 @@ namespace CLIQ_UE.Controllers
 						{
 							await signInManager.SignInAsync(applicationUser, false);
 							return RedirectToAction("CompleteProfile", "EditProfile");
-							//return RedirectToAction("ConfirmEmail", "Account");
 						}
 						else
 						{
 							foreach (var error in result.Errors)
 							{
 								ModelState.AddModelError("", error.Description);
-							}
+                            
+                            }
 						}
 					}
                     else
@@ -99,11 +101,11 @@ namespace CLIQ_UE.Controllers
 					}
                 }
             }
+            return View(confirmEmailViewModel);
+            //return Json(new { success = false, code = 0, message = "Code is incorrect" });
+        }
 
-			return View(confirmEmailViewModel);
-		}
-
-		public IActionResult Login()
+        public IActionResult Login()
         {
 
 			return View();

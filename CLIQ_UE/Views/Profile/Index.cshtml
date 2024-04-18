@@ -10,6 +10,12 @@
 <script src="~/js/editprofile/editprofilechangeimage.js"></script>
 <script src="~/js/editprofile/editprofilechangecoverimage.js"></script>
 
+<style>
+    .profile-pic2 {
+        width: 100px;
+        border-radius: 30px;
+    }
+</style>
 <!-- ! Navbar -->
 <div class="row">
     <!-- Overlay element -->
@@ -73,7 +79,7 @@
                         </div>
 
                         <div class="profile-box" id="profile-box">
-                            <div class="profile-pic"><img class ="profile-pic2" src="@Model.UserImage" alt="Profile image"></div>
+                            <div class="profile-pic"><img class="profile-pic2" src="@Model.UserImage" alt="Profile image"></div>
                             <div class="profile-name">
                                 @Model.UserName
                                 <i class="fa-solid fa-caret-down"></i>
@@ -287,253 +293,255 @@
 
 
 
-    <div class="modal fade" id="show_comments" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+            <div class="modal fade" id="show_comments" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
 
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="show_commentsLabel">Comments</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div id="commentsModal" class="modal-body">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="show_commentsLabel">Comments</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="commentsModal" class="modal-body">
 
 
-                    <div class="comment">
-                        <div class="profile">
+                            <div class="comment">
+                                <div class="profile">
+                                    <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
+                                    <div class="name">
+                                        <p class="username">moudy rasmy</p>
+                                        <p class="comment-time">1 hour ago</p>
+                                    </div>
+                                </div>
+                                <div class="comment-content">
+                                    <p class="comment-text">This is a comment.</p>
+                                </div>
+                                <div class="love-icon">
+                                    <i class="fa-solid fa-heart like-icon"></i>
+                                    <span>12</span>
+                                </div>
+                            </div>
+
+                            @*
+                            <div class="comment">
+                            <div class="profile">
                             <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
                             <div class="name">
-                                <p class="username">moudy rasmy</p>
-                                <p class="comment-time">1 hour ago</p>
+                            <p class="username">moudy rasmy</p>
+                            <p class="comment-time">1 hour ago</p>
                             </div>
-                        </div>
-                        <div class="comment-content">
-                            <p class="comment-text">This is a comment.</p>
-                        </div>
-                        <div class="love-icon">
+                            </div>
+                            <div class="comment-content">
+                            <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, voluptates vero voluptatibus placeat, necessitatibus mollitia similique impedit quasi minima culpa magni, nulla sapiente ex non. Illo sequi tempora laboriosam impedit..</p>
+                            </div>
+                            <div class="love-icon">
                             <i class="fa-solid fa-heart like-icon"></i>
                             <span>12</span>
+                            </div>
+                            </div>
+                            *@
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
-
-                    @*
-                    <div class="comment">
-                    <div class="profile">
-                    <img class="profile-pic" src="~/HomePage/images/giphy.gif" alt="Profile image">
-                    <div class="name">
-                    <p class="username">moudy rasmy</p>
-                    <p class="comment-time">1 hour ago</p>
-                    </div>
-                    </div>
-                    <div class="comment-content">
-                    <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, voluptates vero voluptatibus placeat, necessitatibus mollitia similique impedit quasi minima culpa magni, nulla sapiente ex non. Illo sequi tempora laboriosam impedit..</p>
-                    </div>
-                    <div class="love-icon">
-                    <i class="fa-solid fa-heart like-icon"></i>
-                    <span>12</span>
-                    </div>
-                    </div>
-                    *@
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
-        </div>
-    </div>
 
 
-    <!-- ====================  Model Of Followers and Following list ===================================-->
-    <div class="modal fade" id="show_followes_list" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
-        <input type="hidden" value="@Model.userId" id="CurrentUserID">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5 text-primary" id="show_commentsLabel"></h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div id="FollowersModal" class="modal-body">
-                    <!-- Iterate over the list of users -->
+            <!-- ====================  Model Of Followers and Following list ===================================-->
+            <div class="modal fade" id="show_followes_list" tabindex="-1" aria-labelledby="show_commentsLabel" aria-hidden="true">
+                <input type="hidden" value="@Model.userId" id="CurrentUserID">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-primary" id="show_commentsLabel"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="FollowersModal" class="modal-body">
+                            <!-- Iterate over the list of users -->
 
-                    <div class="user">
-                        <h1>THER IS NO FOLLOWERS</h1>
-                    </div>
+                            <div class="user">
+                                <h1>THER IS NO FOLLOWERS</h1>
+                            </div>
 
-                </div>
-                @*          <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div> *@
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-    @* ----------------------------Abdallah------------------------------------ *@
-
-    <div class="modal fade" data-bs-backdrop="static" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalToggleLabel">Edit</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="alert2"></div>
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-outline-primary my-2 w-100" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Change Passowrd</button>
-                        <button onclick="GetDataOfUser()" class="btn btn-outline-secondary w-100" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal" data-bs-dismiss="modal">Change Information</button>
-                        <button id="changeImage" class="btn btn-outline-info w-100" data-bs-target="#imageModal" data-bs-toggle="modal" data-bs-dismiss="modal">Change Personal Image</button>
-                        <button id="changeCoverImage" class="btn btn-outline-primary w-100" data-bs-target="#profileImageModal" data-bs-toggle="modal" data-bs-dismiss="modal">Change Cover Image</button>
+                        </div>
+                        @*          <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div> *@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="modal fade" data-bs-backdrop="static" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalToggleLabel2">Change Password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="coseX" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    @* <partial name="_ChangePassword.cshtml" /> *@
-                    @Html.Partial("_ChangePassword.cshtml", new CLIQ_UE.ViewModels.ChangePassowrdViewModel())
-                </div>
 
-            </div>
-        </div>
-    </div>
 
-    @* ----------------------------------------------------------------- *@
-    <div class="modal fade" data-bs-backdrop="static" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalToggleLabel2">Change Information</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    @* <partial name="_ChangePassword.cshtml" /> *@
-                    @Html.Partial("_ChangeInformation.cshtml", new CLIQ_UE.ViewModels.ChangeInfoOfUserViewModel())
 
-                </div>
 
-            </div>
-        </div>
-    </div>
-    @* ------------------------------------------------------------- *@
 
-    <!-- Modal -->
-    <div class="modal fade" data-bs-backdrop="static" id="imageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Upload Image</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                @Html.Partial("_ChangePersonalImage.cshtml")
-                <div class="modal-footer">
-                    <button@*  onclick="resatDefault()" *@ type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="uploadBtn">Upload</button>
-                    <button onclick="showAllImages()" type="button" class="btn btn-primary" id="showAllBtn">Show All Images</button>
+
+
+
+            @* ----------------------------Abdallah------------------------------------ *@
+
+            <div class="modal fade" data-bs-backdrop="static" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel">Edit</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="alert2"></div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary my-2 w-100" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Change Passowrd</button>
+                                <button onclick="GetDataOfUser()" class="btn btn-outline-secondary w-100" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal" data-bs-dismiss="modal">Change Information</button>
+                                <button id="changeImage" class="btn btn-outline-info w-100" data-bs-target="#imageModal" data-bs-toggle="modal" data-bs-dismiss="modal">Change Personal Image</button>
+                                <button id="changeCoverImage" class="btn btn-outline-primary w-100" data-bs-target="#profileImageModal" data-bs-toggle="modal" data-bs-dismiss="modal">Change Cover Image</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    @* ------------------------------------------------------------- *@
+            <div class="modal fade" data-bs-backdrop="static" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel2">Change Password</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" id="coseX" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @* <partial name="_ChangePassword.cshtml" /> *@
+                            @Html.Partial("_ChangePassword.cshtml", new CLIQ_UE.ViewModels.ChangePassowrdViewModel())
+                        </div>
 
-    <!-- Modal -->
-    <div class="modal fade" data-bs-backdrop="static" id="profileImageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Upload Image</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                @Html.Partial("_ChangeCoverImage.cshtml")
-                <div class="modal-footer">
-                    <button @* onclick="resatDefault()" *@ type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="uploadCoverBtn">Upload</button>
-                    <button onclick="showAllCoverImages()" type="button" class="btn btn-primary" id="showAllCoverBtn">Show All Images</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    @* ------------------------------------------------------------- *@
-    <partial name="_ValidationScriptsPartial"></partial>
-    @* ------------------------------------------------------------- *@
+
+            @* ----------------------------------------------------------------- *@
+            <div class="modal fade" data-bs-backdrop="static" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel2">Change Information</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @* <partial name="_ChangePassword.cshtml" /> *@
+                            @Html.Partial("_ChangeInformation.cshtml", new CLIQ_UE.ViewModels.ChangeInfoOfUserViewModel())
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @* ------------------------------------------------------------- *@
+
+            <!-- Modal -->
+            <div class="modal fade" data-bs-backdrop="static" id="imageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Upload Image</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        @Html.Partial("_ChangePersonalImage.cshtml")
+                        <div class="modal-footer">
+                            <button@* onclick="resatDefault()" *@ type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close</button>
+                                <button type="button" class="btn btn-primary" id="uploadBtn">Upload</button>
+                                <button onclick="showAllImages()" type="button" class="btn btn-primary" id="showAllBtn">Show All Images</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* ------------------------------------------------------------- *@
+
+            <!-- Modal -->
+            <div class="modal fade" data-bs-backdrop="static" id="profileImageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Upload Image</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        @Html.Partial("_ChangeCoverImage.cshtml")
+                        <div class="modal-footer">
+                            <button @* onclick="resatDefault()" *@ type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="uploadCoverBtn">Upload</button>
+                            <button onclick="showAllCoverImages()" type="button" class="btn btn-primary" id="showAllCoverBtn">Show All Images</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* ------------------------------------------------------------- *@
+            <partial name="_ValidationScriptsPartial"></partial>
+            @* ------------------------------------------------------------- *@
 
 
 
-    <!--====================================================================================================================-->
-    @section Scripts {
-        <script>
+            <!--====================================================================================================================-->
+            @section Scripts {
 
-            // Check if email is verified
-            if (4) {
-                document.querySelector('.verify-email').classList.add('verified');
+                <script>
 
-                document.getElementById('email-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
-                document.getElementById('profile-progress').value += 20; // Assuming each step is worth 20%
+                    // Check if email is verified
+                    if (4) {
+                        document.querySelector('.verify-email').classList.add('verified');
+
+                        document.getElementById('email-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
+                        document.getElementById('profile-progress').value += 20; // Assuming each step is worth 20%
+                    }
+
+                    // Check if username is set
+                    if (true) {
+                        document.querySelector('.verify-username').classList.add('verified');
+                        document.getElementById('username-check').style.opacity = '1';
+                        document.getElementById('username-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
+                        document.getElementById('profile-progress').value += 20;
+                    }
+
+                    // Check if profile picture is set
+                    if (true) {
+                        document.querySelector('.verify-profile-pic').classList.add('verified');
+                        document.getElementById('profile-pic-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
+                        document.getElementById('profile-progress').value += 20;
+                    }
+
+                    // Check if cover picture is set
+                    if (true) {
+                        document.querySelector('.verify-cover-pic').classList.add('verified');
+                        document.getElementById('cover-pic-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
+                        document.getElementById('profile-progress').value += 20;
+                    }
+
+                    // Check if user is following users
+                    if (false) {
+                        document.querySelector('.verify-following').classList.add('verified');
+                        document.getElementById('following-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
+                        document.getElementById('profile-progress').value += 20;
+                    }
+
+                    const progress = document.getElementById('profile-progress');
+
+                    // Check if the progress value is 100
+                    if (progress.value === 100) {
+
+                        progress.classList.add('completed');
+                        // Get the progress element
+                        const progressElement = document.getElementById('profile-progress');
+
+                        // Get the text element
+                        const textElement = document.querySelector('.links-container.box-1 p:first-child');
+                        textElement.style.opacity = 1
+
+                        // Check if progress value is 100
+                        if (progress.value === 100) {
+                            // Change the text content with emojis
+                            textElement.innerHTML =
+                                textElement.innerHTML = '<img src="https://i.postimg.cc/ZKJtvXkN/confetti.gif" alt="Confetti" width="30px">' +
+                                '<span class="ms-2">Profile Completed</span>' +
+                                '<img src="https://i.postimg.cc/0jDk5Swq/fireworks.gif" alt="Fireworks" width="30px">';
+                        }
+                    }
+
+                </script>
             }
-
-            // Check if username is set
-            if (true) {
-                document.querySelector('.verify-username').classList.add('verified');
-                document.getElementById('username-check').style.opacity = '1';
-                document.getElementById('username-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
-                document.getElementById('profile-progress').value += 20;
-            }
-
-            // Check if profile picture is set
-            if (true) {
-                document.querySelector('.verify-profile-pic').classList.add('verified');
-                document.getElementById('profile-pic-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
-                document.getElementById('profile-progress').value += 20;
-            }
-
-            // Check if cover picture is set
-            if (true) {
-                document.querySelector('.verify-cover-pic').classList.add('verified');
-                document.getElementById('cover-pic-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
-                document.getElementById('profile-progress').value += 20;
-            }
-
-            // Check if user is following users
-            if (false) {
-                document.querySelector('.verify-following').classList.add('verified');
-                document.getElementById('following-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
-                document.getElementById('profile-progress').value += 20;
-            }
-
-            const progress = document.getElementById('profile-progress');
-
-            // Check if the progress value is 100
-            if (progress.value === 100) {
-
-                progress.classList.add('completed');
-                // Get the progress element
-                const progressElement = document.getElementById('profile-progress');
-
-                // Get the text element
-                const textElement = document.querySelector('.links-container.box-1 p:first-child');
-                textElement.style.opacity = 1
-
-                // Check if progress value is 100
-                if (progress.value === 100) {
-                    // Change the text content with emojis
-                    textElement.innerHTML =
-                        textElement.innerHTML = '<img src="https://i.postimg.cc/ZKJtvXkN/confetti.gif" alt="Confetti" width="30px">' +
-                        '<span class="ms-2">Profile Completed</span>' +
-                        '<img src="https://i.postimg.cc/0jDk5Swq/fireworks.gif" alt="Fireworks" width="30px">';
-                }
-            }
-
-        </script>
-    }
