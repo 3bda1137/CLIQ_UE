@@ -76,7 +76,8 @@ namespace CLIQ_UE.Controllers
 
             var userVisited = userServices.GetByID(userId);
             ApplicationUser user = await userManager.GetUserAsync(User);
-            List<Post> posts = postService.GetLatestPostsByUserId(userId, pageIndex, pageSize);
+            postService.LoadFollowingId(user.Id);
+            List<Post> posts = postService.GetLatestPostsByUserId(userId, user.Id, pageIndex, pageSize);
 
             displayPostViewModel displayPostViewModel = new displayPostViewModel();
 
@@ -96,9 +97,10 @@ namespace CLIQ_UE.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPostsImages(string userId)
         {
+            ApplicationUser user = await userManager.GetUserAsync(User);
+            postService.LoadFollowingId(user.Id);
 
-
-            List<string> allImages = postService.allPostsImagesById(userId);
+            List<string> allImages = postService.allPostsImagesById(userId, user.Id);
 
 
             return Json(allImages);

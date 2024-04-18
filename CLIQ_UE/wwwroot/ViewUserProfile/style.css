@@ -707,6 +707,11 @@ nav .nav-content {
 }
 
 /* !POST BOX */
+.post-time i {
+    font-size: 10px;
+    margin-right: 3px;
+    opacity: .7
+}
 .add-post {
     box-shadow: var(--box-shadow);
     width: 100%;

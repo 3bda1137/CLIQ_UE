@@ -492,6 +492,7 @@ function removePostfromBookmark(btn) {
     }
 }
 
+
 document.querySelector(".Bookmark-btn").addEventListener('click', function () {
     fetchAllSavedPosts()
 })
@@ -509,6 +510,15 @@ function fetchAllSavedPosts() {
             var savedPostsContainer = document.querySelector('.saved-posts-container');
             savedPostsContainer.innerHTML = '';
             posts.forEach(post => {
+                const postPrivacy = post.privacy;
+                let privacy_icon = "";
+                if (postPrivacy === "Public") {
+                    privacy_icon = "<i class='fas fa-globe'></i>"; // Public icon
+                } else if (postPrivacy === "friends") {
+                    privacy_icon = "<i class='fas fa-users'></i>"; // Friends icon
+                } else if (postPrivacy === "private") {
+                    privacy_icon = "<i class='fas fa-lock'></i>";
+                }
                 let postHtml = `
             <div class="post" data-post-date="Just now">
                 <div class="box">
@@ -519,9 +529,9 @@ function fetchAllSavedPosts() {
                                  <input type="hidden" value="${post.user.id}" id="PostID">
                             <img class="profile-pic" src="${post.user.personalImage}"  alt="Profile image">
                             <div class="name">
-                                <p class="username">${post.user.userName} <i class="bi bi-patch-check-fill text-primary"></i> </p>
+                       <p class="username">${post.user.firstName}  ${post.user.lastName} <i class="bi bi-patch-check-fill text-primary"></i> </p>
                                 <!-- Using js function to calculate the time -->
-                                <p class="post-time">${post.postAddedTime}</p>
+                                <p class="post-time">${privacy_icon}${post.postAddedTime}</p>
                             </div>
                         </div>
                <div class="bookmark-box" title="Click to Remove from Bookmarks" onclick="removeBookmark('${post.id}', this);removePostfromBookmark(this)">
@@ -569,7 +579,6 @@ function fetchAllSavedPosts() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// Following  /////////////////
-
 
 function clickOnFollow(followingId) {
     const follow____btn = document.querySelector(".btn-follow-following");

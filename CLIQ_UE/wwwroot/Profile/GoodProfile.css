@@ -461,7 +461,10 @@ nav .nav-content {
     height: 50px;
     border-radius: 50%;
 }
-
+.profile-pic2{
+    width:100px;
+    border-radius:30px;
+}
 .search-dropdown .dropdown-menu.show {
     top: 0;
     display: block;
@@ -826,6 +829,11 @@ button.btn-follow-following {
 }
 
 /* !POST BOX */
+.post-time i {
+    font-size: 10px;
+    margin-right: 3px;
+    opacity: .7
+}
 .add-post {
     box-shadow: var(--box-shadow);
     width: 100%;

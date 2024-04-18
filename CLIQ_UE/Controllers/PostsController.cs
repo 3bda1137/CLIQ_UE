@@ -32,6 +32,7 @@ namespace CLIQ_UE.Controllers
             if (ModelState.IsValid && (postModel.PostImage != null || postModel.postContent != null))
             {
                 ApplicationUser user = await userManager.GetUserAsync(User);
+                postService.LoadFollowingId(user.Id);
                 Post post = postService.CreatePost(postModel, user);
                 List<string> followerIds = followersServices.GetFollowingIds(user.Id);
 
@@ -48,15 +49,16 @@ namespace CLIQ_UE.Controllers
                         }
                     }
                 }
-                else if (post.privacy == "Public")
-                {
-                    await hub.Clients.All.SendAsync("NewPostCreated", post);
-                }
                 else if (post.privacy == "private")
                 {
                     string connectionId = ConnectionManager.GetConnectionIdForUserId(user.Id);
                     await hub.Clients.Client(connectionId).SendAsync("NewPostCreated", post);
 
+                }
+
+                else
+                {
+                    await hub.Clients.All.SendAsync("NewPostCreated", post);
                 }
 
                 postService.Save();

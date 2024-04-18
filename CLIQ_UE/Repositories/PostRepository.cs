@@ -1,5 +1,6 @@
 ﻿using CLIQ_UE.Helpers;
 using CLIQ_UE.Models;
+using CLIQ_UE.Services;
 using CLIQ_UE.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,12 +10,22 @@ namespace CLIQ_UE.Repositories
     {
         private readonly ApplicationContext context;
         private readonly UserManager<ApplicationUser> userManager;
-
-        public PostRepository(ApplicationContext _context, UserManager<ApplicationUser> userManager)
+        private readonly IFollowersServices followersServices;
+        private List<string> followingIds;
+        public PostRepository(ApplicationContext _context, UserManager<ApplicationUser> userManager, IFollowersServices followersServices)
         {
             context = _context;
             this.userManager = userManager;
+            this.followersServices = followersServices;
+
         }
+
+        public void LoadFollowingId(string userId)
+        {
+            followingIds = followersServices.GetFollowersIds(userId);
+            followingIds.Add(userId);
+        }
+
 
         public void AddReaction(Reaction reaction)
         {
@@ -26,16 +37,7 @@ namespace CLIQ_UE.Repositories
             throw new NotImplementedException();
         }
 
-        public List<string> allPostsImagesById(string id)
-        {
-            List<string> images = context.Posts
-             .Where(p => p.UserId == id && p.PostImage != null && !p.isDeleted)
-             .OrderByDescending(p => p.PostDate)
-             .Select(p => p.PostImage)
-             .ToList();
 
-            return images;
-        }
 
         public Post CreatePost(CreatePostViewModel postModel, ApplicationUser user)
         {
@@ -96,13 +98,18 @@ namespace CLIQ_UE.Repositories
             }
         }
 
+
         public List<Post> GetLatestPosts(int pageIndex, int pageSize, string UserId)
         {
             int postsToSkip = pageIndex * pageSize;
 
             List<Post> latestPosts = context.Posts
                 .Include(p => p.User)
-                  .Where(p => !p.isDeleted)
+.Where(p => !p.isDeleted &&
+            ((p.privacy == "public") ||
+             (p.privacy == "private" && p.UserId == UserId) ||
+           (p.privacy == "friends" && followingIds.Contains(p.UserId))))
+
                 .OrderByDescending(p => p.PostDate)
                 .Skip(postsToSkip)
                 .Take(pageSize)
@@ -122,8 +129,8 @@ namespace CLIQ_UE.Repositories
                     PostImage = p.PostImage,
                     User = p.User,
                     privacy = p.privacy,
-                    isLikedByMe = p.UsersLikedPost.Count() > 0 && p.UsersLikedPost.First().isLiked? true 
-                    : p.UsersLikedPost.Count() > 0 && !p.UsersLikedPost.First().isLiked ? false 
+                    isLikedByMe = p.UsersLikedPost.Count() > 0 && p.UsersLikedPost.First().isLiked ? true
+                    : p.UsersLikedPost.Count() > 0 && !p.UsersLikedPost.First().isLiked ? false
                     : null
                 })
                 .ToList();
@@ -137,12 +144,17 @@ namespace CLIQ_UE.Repositories
         }
 
 
-        public List<Post> GetLatestPostsByUserId(string id, int pageIndex, int pageSize)
+        public List<Post> GetLatestPostsByUserId(string id, string CurrentId, int pageIndex, int pageSize)
         {
             int postsToSkip = pageIndex * pageSize;
 
+            followingIds = followersServices.GetFollowersIds(CurrentId);
+
             List<Post> latestPosts = context.Posts
-                .Where(p => p.UserId == id && !p.isDeleted)
+       .Where(p => !p.isDeleted && p.User.Id == id &&
+            ((p.privacy == "public") ||
+             (p.privacy == "private" && p.User.Id == CurrentId) ||
+                (p.privacy == "friends" && (followingIds.Contains(p.User.Id) || p.User.Id == CurrentId))))
                 .Include(p => p.User)
                 .OrderByDescending(p => p.PostDate)
                 .Skip(postsToSkip)
@@ -167,7 +179,7 @@ namespace CLIQ_UE.Repositories
                     : p.UsersLikedPost != null && p.UsersLikedPost.Count() > 0 && !p.UsersLikedPost.First().isLiked ? false
                     : null
                 })
-                
+
                 .ToList();
 
             foreach (var post in latestPosts)
@@ -178,7 +190,21 @@ namespace CLIQ_UE.Repositories
             return latestPosts;
         }
 
+        public List<string> allPostsImagesById(string id, string CurrentId)
+        {
+            followingIds = followersServices.GetFollowersIds(CurrentId);
 
+            List<string> images = context.Posts
+             .Where(p => p.UserId == id && p.PostImage != null && !p.isDeleted &&
+            ((p.privacy == "public") ||
+             (p.privacy == "private" && p.User.Id == CurrentId) ||
+                (p.privacy == "friends" && (followingIds.Contains(p.User.Id) || p.User.Id == CurrentId))))
+             .OrderByDescending(p => p.PostDate)
+             .Select(p => p.PostImage)
+             .ToList();
+
+            return images;
+        }
 
         public Post? GetPostById(int id)
 

@@ -61,14 +61,14 @@ namespace CLIQ_UE.Services
         }
 
 
-        public List<Post> GetLatestPostsByUserId(string id, int pageIndex, int pageSize)
+        public List<Post> GetLatestPostsByUserId(string id, string CurrentId, int pageIndex, int pageSize)
         {
-            return postRepository.GetLatestPostsByUserId(id, pageIndex, pageSize);
+            return postRepository.GetLatestPostsByUserId(id,CurrentId, pageIndex, pageSize);
         }
 
-        public List<string> allPostsImagesById(string id)
+        public List<string> allPostsImagesById(string id, string CurrentId)
         {
-            return postRepository.allPostsImagesById(id);
+            return postRepository.allPostsImagesById(id,CurrentId);
         }
         public Task<int> IncreasePostComments(int postId)
         {
@@ -81,6 +81,11 @@ namespace CLIQ_UE.Services
         public int GetUserPostCount(string userId)
         {
             return postRepository.GetUserPostCount(userId);
+        }
+
+        public void LoadFollowingId(string userId)
+        {
+            postRepository.LoadFollowingId(userId);
         }
     }
 }
