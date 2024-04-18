@@ -1063,7 +1063,7 @@ button.btn-follow-following {
             display: flex;
             justify-content: center;
             flex-direction: column;
-            padding: 1.1rem;
+            padding: .8rem;
             gap: 1.5rem;
             background-color: rgb(238 238 238 / 40%);
             border-radius: var(--border-radius);
@@ -1108,13 +1108,13 @@ button.btn-follow-following {
                     }
 
                         .posts-container .post .box .top .profile .name p:first-child {
-                            font-size: 1.2rem;
+                            font-size: 1rem;
                             font-weight: 600;
                             letter-spacing: 1px;
                         }
 
                         .posts-container .post .box .top .profile .name p:last-child {
-                            font-size: 0.8rem;
+                            font-size: 0.5rem;
                             align-self: baseline;
                         }
 
@@ -1156,7 +1156,7 @@ button.btn-follow-following {
                 .posts-container .post .box .post-content p {
                     font-weight: 500;
                     text-align: left;
-                    font-size: 1.2rem;
+                    font-size: 1.3rem;
                     width: 100%;
                     overflow-wrap: break-word;
                 }
@@ -1186,7 +1186,7 @@ button.btn-follow-following {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 1rem;
 }
 
                     .posts-container .post .box .post-content .interactions .box {

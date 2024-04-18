@@ -341,6 +341,7 @@ function displayPosts(Model) {
                     <!-- Post Content -->
                     <div id="post${post.id}" class="post-content">
                         ${post.textContent ? `<p>${post.textContent}</p>` : ''}
+
                         <div class="post-img">
                             ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
                         </div>
