@@ -777,16 +777,17 @@
 
 @section Scripts {
     <script>
+        var viewModelJSON = @Html.Raw(Json.Serialize(Model));
 
-        // Check if email is verified
-        if (4) {
+        // Log the serialized viewModel
+        console.log(viewModelJSON);
+        if (true) {
             document.querySelector('.verify-email').classList.add('verified');
 
             document.getElementById('email-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
-            document.getElementById('profile-progress').value += 20; // Assuming each step is worth 20%
+            document.getElementById('profile-progress').value += 20; 
         }
 
-        // Check if username is set
         if (true) {
             document.querySelector('.verify-username').classList.add('verified');
             document.getElementById('username-check').style.opacity = '1';
@@ -794,22 +795,20 @@
             document.getElementById('profile-progress').value += 20;
         }
 
-        // Check if profile picture is set
         if (true) {
             document.querySelector('.verify-profile-pic').classList.add('verified');
             document.getElementById('profile-pic-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
             document.getElementById('profile-progress').value += 20;
         }
 
-        // Check if cover picture is set
         if (true) {
             document.querySelector('.verify-cover-pic').classList.add('verified');
             document.getElementById('cover-pic-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
             document.getElementById('profile-progress').value += 20;
         }
-
-        // Check if user is following users
-        if (true) {
+        var numberOfFollowing = parseInt(@Model.numberOfFollowing)
+        console.log(numberOfFollowing)
+        if (numberOfFollowing) {
             document.querySelector('.verify-following').classList.add('verified');
             document.getElementById('following-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
             document.getElementById('profile-progress').value += 20;
@@ -817,20 +816,15 @@
 
         const progress = document.getElementById('profile-progress');
 
-        // Check if the progress value is 100
         if (progress.value === 100) {
 
             progress.classList.add('completed');
-            // Get the progress element
             const progressElement = document.getElementById('profile-progress');
 
-            // Get the text element
             const textElement = document.querySelector('.links-container.box-1 p:first-child');
             textElement.style.opacity = 1
 
-            // Check if progress value is 100
             if (progress.value === 100) {
-                // Change the text content with emojis
                 textElement.innerHTML =
                     textElement.innerHTML = '<img src="https://i.postimg.cc/ZKJtvXkN/confetti.gif" alt="Confetti" width="30px">' +
                     '<span class="ms-2">Profile Completed</span>' +
