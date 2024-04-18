@@ -1189,3 +1189,13 @@ document.addEventListener('click', function (event) {
         searchInput.value = "";
     }
 });
+
+const overlayElement = document.querySelector('.overlay');
+
+searchInput.addEventListener('focus', function () {
+    overlayElement.style.display = 'block';
+});
+
+searchInput.addEventListener('blur', function () {
+    overlayElement.style.display = 'none';
+});
