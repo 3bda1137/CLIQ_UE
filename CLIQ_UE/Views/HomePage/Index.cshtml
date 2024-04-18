@@ -675,8 +675,10 @@
 
 
 
-    function addNewComment(PostId) {
+    function addNewComment(PostId, PostUserId) {
         console.log("Works");
+        
+        console.log(PostUserId);
         let commentText = $(`#postId` + PostId).val(); // Get the commentText value from the input field
         $(`#postId` + PostId).val("");
         
@@ -689,7 +691,7 @@
 
         
         $.ajax({
-            url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}`, // Endpoint URL
+            url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}&FollowingId=${PostUserId}`, // Endpoint URL
             type: 'POST',
             //data: { postId: PostId, commenttext: commentText }, // Include the postId and commentText parameters
 

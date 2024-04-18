@@ -435,10 +435,12 @@ function fetchContent(filter) {
 }
 
 
-
 // Function to display posts
 function displayPosts(Model) {
     Model.posts.forEach(post => {
+        console.log("Time line");
+        console.log(post);
+        const isCurrentUserPost = post.user.id === Model.currentUserId;
         const isBookmarkedValue = Model.bookmarksIds.includes(post.id)
         let bookmarkIconHtml = '';
         if (isBookmarkedValue) {
@@ -450,9 +452,11 @@ function displayPosts(Model) {
         let postHtml = `
             <div class="post" data-post-date="Just now">
                 <div class="box">
+                           <input type="hidden" class="post-id" value="${post.id}">
                     <div class="top">
                         <!-- Profile -- views -->
-                        <div class="profile">
+                        <div class="profile post-profile">
+                                 <input type="hidden" value="${post.user.id}" id="PostID">
                             <img class="profile-pic" src="${post.user.personalImage}"  alt="Profile image">
                             <div class="name">
                                 <p class="username">${post.user.userName} <i class="bi bi-patch-check-fill text-primary"></i> </p>
@@ -460,10 +464,9 @@ function displayPosts(Model) {
                                 <p class="post-time">${post.postAddedTime}</p>
                             </div>
                         </div>
-      
                     </div>
                     <!-- Post Content -->
-                    <div class="post-content">
+                    <div id="post${post.id}" class="post-content">
                         ${post.textContent ? `<p>${post.textContent}</p>` : ''}
                         <div class="post-img">
                             ${post.postImage ? `<img src="${post.postImage}" alt="Post Image">` : ''}
@@ -471,29 +474,30 @@ function displayPosts(Model) {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-                                <i class="fa-solid fa-heart like-icon"></i>
-                                <span>${post.likeCount}</span>
+<<<<<<< HEAD
+                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: ${post.isLikedByMe ? 'red' : 'grey'}" onclick="lovePost(${post.id}, true)"></i>
+                                <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
-                                <i class="fa-solid fa-thumbs-down dislike-icon"></i>
-                                <span>${post.dislikeCount}</span>
+                                <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: ${!post.isLikedByMe ? 'black' : 'grey'}" onclick="lovePost(${post.id}, false)"></i>
+                                <span id="dislikePostCount${post.id}">${post.dislikesCount}</span>
                             </div>
+                           
                             <!--
                             <div class="box">
-                                <i class="fa-solid fa-retweet repost-icon"></i>
+                                <i class="fa-solid fa-retweet repost-icon" onclick="rePost('${post.id}')"></i>
                                 <span>${post.repostCount}</span>
                             </div>
                             -->
                             <div class="box">
                                 <i class="fa-solid fa-comment comment-icon" onclick="getPostComments(${post.id})"></i>
-                                <span>${post.commentCount}</span>
+                                <span id="postCommentCount${post.id}">${post.commentCount}</span>
                             </div>
                         </div>
 
-                                         <div class="box bookmark-box">
+                       <div class="box bookmark-box">
                    ${bookmarkIconHtml}
                             </div>
-
                         </div>
                         ${post.commentCount > 2 ? `<a href="#">View <span>${post.commentCount}</span> Comments</a>` : ''}
                     </div>
@@ -501,7 +505,7 @@ function displayPosts(Model) {
                     <div class="add-comment">
                         <img class="profile-pic" src="${Model.currentUserImage}" alt="">
                         <input id="postId${post.id}" type="text" placeholder="Add a comment">
-                        <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})""></i>
+                        <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id}, '${post.user.id}')""></i>
                     </div>
                 </div>
             </div>`;
@@ -528,7 +532,96 @@ function loadMore() {
 
 window.addEventListener('scroll', loadMore);
 
+function getPostComments(postId) {
+    console.log(postId);
+    console.log("Post id" + postId);
+    console.log("Get Post Comments");
+    $('#commentsModal').html("");
+    $.ajax({
+        url: `/comments/getComments?postId=` + postId, // Endpoint URL
+        type: 'GET',
+        //data: { postId: postId, commentText: commentText }, // Include the postId and commentText parameters
+        success: function (response) {
+            // Handle the success response from the server
+            console.log('AJAX request successful');
+            console.log(response);
+            let a = ``;
+            $('#commentsModal').append(a);
+            for (let comment of response) {
 
+                let profileImage = '/images/';
+                profileImage += comment.userProfileImage;
+                console.log(comment);
+                console.log(profileImage);
+                a = `<div id="${comment.commentId}" class="comment">
+                                        <div class="profile">
+                                                        <img class="profile-pic" src=${profileImage} alt="Profile image">
+                                            <div class="name">
+                                                        <p class="username">${comment.userFirstName} ${comment.userLastName}</p>
+                                                <p class="comment-time">${comment.commentDate}o</p>
+                                            </div>
+                                        </div>
+                                        <div class="comment-content">
+                                            <p class="comment-text">${comment.commentText}</p>
+                                        </div>
+                                        <div class="love-icon">
+                                                <i id="likeIcon${comment.commentId}" class="fa-solid fa-heart like-icon" style="color: ${comment.isLikedByMe == true ? 'red' : 'grey'}" onclick="likeComment(${comment.commentId})"></i>
+                                                <span id="likeCommentIcon${comment.commentId}">${comment.likeCount}</span>
+                                        </div>
+                                    </div>`
+                $('#commentsModal').append(a);
+            }
+            $(`#postCommentCount` + postId).text(response.length);
+            console.log("Show modal");
+            $('#show_comments').modal('show');
+        },
+        error: function (xhr, status, error) {
+            // Handle errors
+            console.error('AJAX request failed');
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
+//Like a comment
+function likeComment(commentId) {
+    console.log(commentId);
+    var color = $(`#likeIcon${commentId}`).css('color');
+    console.log(color)
+    if (color == 'rgb(128, 128, 128)') {
+        console.log("From grey to red");
+        $(`#likeIcon${commentId}`).css('color', 'red');
+        $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) + 1)
+    }
+    else {
+        console.log("From red to grey");
+        $(`#likeIcon${commentId}`).css('color', 'grey');
+        $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) - 1)
+    }
+
+    $.ajax({
+        url: `/comments/LikeComment?commentId=${commentId}`,
+        type: 'POST',
+        //data: {commentId:commentId  }, // Include the postId and commentText parameters
+        success: function (response) {
+        },
+        error: function (xhr, status, error) {
+            if (color == 'red') {
+                $(`#likeIcon${commentId}`).css('color', 'grey');
+                $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) - 1)
+            }
+            else {
+                $(`#likeIcon${commentId}`).css('color', 'red');
+                $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) + 1)
+            }
+        }
+    });
+}
+
+
+/////////////////////////////--Comments Modal--///////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
 /////////////////  Add and remove bookmark function --> /////////
 ///////////////////////////////////////////////////////////////////
@@ -570,7 +663,82 @@ function removeBookmark(postId, bookmarkIcon) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// Following  /////////////////
 
+function lovePost(postId, likeOption) {
+    console.log("Love post");
+    let likePost = $("#likePost" + postId);
+    let dislikePost = $("#dislikePost" + postId);
 
+    let likesCount = $("#likePostCount" + postId);
+    let dislikesCount = $("#dislikePostCount" + postId);
+    console.log(likePost)
+    console.log(dislikePost)
+
+
+    $.ajax({
+        url: `/posts/InteractPost?PostId=${postId}&LikeOption=${likeOption}`,
+        type: 'POST',
+        //data: {commentId:commentId  }, // Include the postId and commentText parameters
+        success: function (response) {
+            if (likeOption == true) {
+                if (likePost.css('color') == "rgb(128, 128, 128)") {
+                    likePost.css('color', "red");
+                    dislikePost.css('color', "grey");
+                }
+                else {
+                    likePost.css('color', "grey");
+                }
+            }
+            else {
+                console.log("Not if")
+                if (dislikePost.css('color') == "rgb(128, 128, 128)") {
+                    dislikePost.css('color', "black");
+                    likePost.css('color', "grey");
+                }
+                else {
+                    dislikePost.css('color', "grey");
+                }
+            }
+            console.log(response);
+            likesCount.text(response['likes'])
+            dislikesCount.text(response['dislikes'])
+        },
+        error: function (xhr, status, error) {
+        }
+    });
+}
+
+function addNewComment(PostId, PostUserId) {
+    console.log("Works");
+    let commentText = $(`#postId` + PostId).val(); // Get the commentText value from the input field
+    $(`#postId` + PostId).val("");
+
+    if (commentText == "")
+        return;
+
+    let commentsViewsCount = $(`#postCommentCount` + PostId).text();
+    console.log(commentsViewsCount);
+    $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) + 1)
+
+
+    $.ajax({
+        url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}&FollowingId=${PostUserId}`, // Endpoint URL
+        type: 'POST',
+        //data: { postId: PostId, commenttext: commentText }, // Include the postId and commentText parameters
+
+        success: function (response) {
+            // Handle the success response from the server
+            console.log('AJAX request successful');
+            console.log(response);
+        },
+        error: function (xhr, status, error) {
+            // Handle errors
+            console.error('AJAX request failed');
+            console.error(xhr.responseText);
+            $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) - 1)
+            //(`#postCommentCount` + PostId).val() = numOfComments - 1;
+        }
+    });
+}
 function clickOnFollow(followingId) {
     const follow____btn = document.querySelector(".btn-follow-following");
     fetch('/Follow/FollowUser', {
@@ -754,10 +922,10 @@ function ShowNotifications(notifications) {
         <input type="hidden" name="notificationUserId" value="${notification.createdByUserId}">
         ${notification.content === 'followed you' ? '<i class="fa-solid fa-user-plus text-primary"></i>' : ''}
         ${notification.content === 'unfollowed your profile' ? '<i class="fa-solid fa-user-xmark text-danger"></i>' : ''}
-        ${notification.content === 'loved your post' ? '<i class="fa-solid fa-heart text-danger"></i>' : ''}
-        ${notification.content === 'commented on your post' ? '<i class="fa-solid fa-comment-alt text-primary"></i>' : ''}
-        ${notification.content === 'disliked your post' ? '<i class="fa-solid fa-thumbs-down text-warning"></i>' : ''}
-        ${notification.content === 'sent you a message' ? '<i class="fa-solid fa-envelope text-info"></i>' : ''}
+        ${notification.content === 'loved your post' ? '<i class="fa-solid fa-heart" style="color:#d90429;"></i>' : ''}
+        ${notification.content === 'commented on your post' ? '<i class="fa-solid fa-comment-alt "style="color:#03045e;"></i>' : ''}
+        ${notification.content === 'disliked your post' ? '<i class="fa-solid fa-thumbs-down""style="color:# 03071e"></i>' : ''}
+        ${notification.content === 'sent you a message' ? '<i class="fa-solid fa-message text-success"></i>   ' : ''}
         <img src="${notification.userImage}" alt="User" class="user-avatar">
         <div class="notification-details">
             <span class="user-name"><span>${notification.userName}</span></span>
@@ -889,3 +1057,172 @@ searchInput.addEventListener('focus', function () {
 searchInput.addEventListener('blur', function () {
     overlayElement.style.display = 'none';
 });
+
+
+    //////////////////////// Mousa ////////////////////////////
+function lovePost(postId, likeOption) {
+    console.log("Love post");
+    let likePost = $("#likePost" + postId);
+    let dislikePost = $("#dislikePost" + postId);
+
+    let likesCount = $("#likePostCount" + postId);
+    let dislikesCount = $("#dislikePostCount" + postId);
+    console.log(likePost)
+    console.log(dislikePost)
+
+
+    $.ajax({
+        url: `/posts/InteractPost?PostId=${postId}&LikeOption=${likeOption}`,
+        type: 'POST',
+        //data: {commentId:commentId  }, // Include the postId and commentText parameters
+        success: function (response) {
+            if (likeOption == true) {
+                if (likePost.css('color') == "rgb(128, 128, 128)") {
+                    likePost.css('color', "red");
+                    dislikePost.css('color', "grey");
+                }
+                else {
+                    likePost.css('color', "grey");
+                }
+            }
+            else {
+                console.log("Not if")
+                if (dislikePost.css('color') == "rgb(128, 128, 128)") {
+                    dislikePost.css('color', "black");
+                    likePost.css('color', "grey");
+                }
+                else {
+                    dislikePost.css('color', "grey");
+                }
+            }
+            console.log(response);
+            likesCount.text(response['likes'])
+            dislikesCount.text(response['dislikes'])
+        },
+        error: function (xhr, status, error) {
+        }
+    });
+}
+function getPostComments(postId) {
+    console.log(postId);
+    console.log("Post id" + postId);
+    console.log("Get Post Comments");
+    $('#commentsModal').html("");
+    $.ajax({
+        url: `/comments/getComments?postId=` + postId, // Endpoint URL
+        type: 'GET',
+        //data: { postId: postId, commentText: commentText }, // Include the postId and commentText parameters
+        success: function (response) {
+            // Handle the success response from the server
+            console.log('AJAX request successful');
+            console.log(response);
+            let a = ``;
+            $('#commentsModal').append(a);
+            for (let comment of response) {
+
+                let profileImage = '/images/';
+                profileImage += comment.userProfileImage;
+                console.log(comment);
+                console.log(profileImage);
+                a = `<div id="${comment.commentId}" class="comment">
+                                        <div class="profile">
+                                                        <img class="profile-pic" src=${profileImage} alt="Profile image">
+                                            <div class="name">
+                                                        <p class="username">${comment.userFirstName} ${comment.userLastName}</p>
+                                                <p class="comment-time">${comment.commentDate}o</p>
+                                            </div>
+                                        </div>
+                                        <div class="comment-content">
+                                            <p class="comment-text">${comment.commentText}</p>
+                                        </div>
+                                        <div class="love-icon">
+                                                <i id="likeIcon${comment.commentId}" class="fa-solid fa-heart like-icon" style="color: ${comment.isLikedByMe == true ? 'red' : 'grey'}" onclick="likeComment(${comment.commentId})"></i>
+                                                <span id="likeCommentIcon${comment.commentId}">${comment.likeCount}</span>
+                                        </div>
+                                    </div>`
+                $('#commentsModal').append(a);
+            }
+            $(`#postCommentCount` + postId).text(response.length);
+            $('#show_comments').modal('show');
+        },
+        error: function (xhr, status, error) {
+            // Handle errors
+            console.error('AJAX request failed');
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
+
+
+
+
+function addNewComment(PostId) {
+    console.log("Works");
+    let commentText = $(`#postId` + PostId).val(); // Get the commentText value from the input field
+    $(`#postId` + PostId).val("");
+
+    if (commentText == "")
+        return;
+
+    let commentsViewsCount = $(`#postCommentCount` + PostId).text();
+    console.log(commentsViewsCount);
+    $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) + 1)
+
+
+    $.ajax({
+        url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}`, // Endpoint URL
+        type: 'POST',
+        //data: { postId: PostId, commenttext: commentText }, // Include the postId and commentText parameters
+
+        success: function (response) {
+            // Handle the success response from the server
+            console.log('AJAX request successful');
+            console.log(response);
+        },
+        error: function (xhr, status, error) {
+            // Handle errors
+            console.error('AJAX request failed');
+            console.error(xhr.responseText);
+            $(`#postCommentCount` + PostId).text(parseInt($(`#postCommentCount` + PostId).text()) - 1)
+            //(`#postCommentCount` + PostId).val() = numOfComments - 1;
+        }
+    });
+}
+
+
+//asd
+function likeComment(commentId) {
+    console.log(commentId);
+    var color = $(`#likeIcon${commentId}`).css('color');
+    console.log(color)
+    if (color == 'rgb(128, 128, 128)') {
+        console.log("From grey to red");
+        $(`#likeIcon${commentId}`).css('color', 'red');
+        $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) + 1)
+    }
+    else {
+        console.log("From red to grey");
+        $(`#likeIcon${commentId}`).css('color', 'grey');
+        $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) - 1)
+    }
+
+    $.ajax({
+        url: `/comments/LikeComment?commentId=${commentId}`,
+        type: 'POST',
+        //data: {commentId:commentId  }, // Include the postId and commentText parameters
+        success: function (response) {
+        },
+        error: function (xhr, status, error) {
+            if (color == 'red') {
+                $(`#likeIcon${commentId}`).css('color', 'grey');
+                $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) - 1)
+            }
+            else {
+                $(`#likeIcon${commentId}`).css('color', 'red');
+                $(`#likeCommentIcon` + commentId).text(parseInt($(`#likeCommentIcon` + commentId).text()) + 1)
+            }
+        }
+    });
+}

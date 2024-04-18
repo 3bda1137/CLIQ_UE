@@ -859,7 +859,7 @@ function displayPosts(Model) {
                     <div class="add-comment">
                         <img class="profile-pic" src="${Model.currentUserImage}" alt="">
                         <input id="postId${post.id}" type="text" placeholder="Add a comment">
-                        <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})""></i>
+                        <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id}, '${post.user.id}')"></i>
                     </div>
                 </div>
             </div>`;
@@ -1035,7 +1035,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <div class="add-comment">
                                 <img class="profile-pic" src="${post.user.personalImage}" alt="">
                                 <input id="postId${post.id}" type="text" placeholder="Add a comment">
-                                <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})"></i>
+                                <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id}, '${post.user.id}')"></i>
                             </div>
                         </div>
                     </div>
@@ -1167,7 +1167,7 @@ function getPostComments(postId) {
 
 
 
-function addNewComment(PostId) {
+function addNewComment(PostId, PostUserId) {
     console.log("Works");
     let commentText = $(`#postId` + PostId).val(); // Get the commentText value from the input field
     $(`#postId` + PostId).val("");
@@ -1181,7 +1181,7 @@ function addNewComment(PostId) {
 
 
     $.ajax({
-        url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}`, // Endpoint URL
+        url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}&FollowingId=${PostUserId}`, // Endpoint URL
         type: 'POST',
         //data: { postId: PostId, commenttext: commentText }, // Include the postId and commentText parameters
 
@@ -1201,7 +1201,7 @@ function addNewComment(PostId) {
 }
 
 
-//asd
+//Like a comment
 function likeComment(commentId) {
     console.log(commentId);
     var color = $(`#likeIcon${commentId}`).css('color');
@@ -1322,10 +1322,10 @@ function ShowNotifications(notifications) {
         <input type="hidden" name="notificationUserId" value="${notification.createdByUserId}">
         ${notification.content === 'followed you' ? '<i class="fa-solid fa-user-plus text-primary"></i>' : ''}
         ${notification.content === 'unfollowed your profile' ? '<i class="fa-solid fa-user-xmark text-danger"></i>' : ''}
-        ${notification.content === 'loved your post' ? '<i class="fa-solid fa-heart text-danger"></i>' : ''}
-        ${notification.content === 'commented on your post' ? '<i class="fa-solid fa-comment-alt text-primary"></i>' : ''}
-        ${notification.content === 'disliked your post' ? '<i class="fa-solid fa-thumbs-down text-warning"></i>' : ''}
-        ${notification.content === 'sent you a message' ? '<i class="fa-solid fa-envelope text-info"></i>' : ''}
+        ${notification.content === 'loved your post' ? '<i class="fa-solid fa-heart" style="color:#d90429;"></i>' : ''}
+        ${notification.content === 'commented on your post' ? '<i class="fa-solid fa-comment-alt "style="color:#03045e;"></i>' : ''}
+        ${notification.content === 'disliked your post' ? '<i class="fa-solid fa-thumbs-down""style="color:# 03071e"></i>' : ''}
+        ${notification.content === 'sent you a message' ? '<i class="fa-solid fa-message text-success"></i>   ' : ''}
         <img src="${notification.userImage}" alt="User" class="user-avatar">
         <div class="notification-details">
             <span class="user-name"><span>${notification.userName}</span></span>
