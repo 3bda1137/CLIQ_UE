@@ -48,8 +48,8 @@ INotificationService notificationService)
                 await postService.IncreasePostComments(commentVM.PostId);
                 //await notificationHub.Clients.User(UID).SendAsync("LikeNotification", commentVM.PostId, UID);
                 //notificationService.AddNotification(Post.UserId, UID, "loved your post");
-                await notificationHub.Clients.User(UID).SendAsync("CommentNotification", commentVM.PostId, commentVM.FollowingId);
                 notificationService.AddNotification(commentVM.FollowingId, UID, "commented on your post");
+                await notificationHub.Clients.User(commentVM.FollowingId).SendAsync("CommentNotification", UID);
                 return Ok();
             }
             return BadRequest();
@@ -59,7 +59,7 @@ INotificationService notificationService)
         public IActionResult GetComments(int postId)
         {
             string UID = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            List<Comment> comments = commentService.GetCommentsByPost(postId,UID);
+            List<Comment> comments = commentService.GetCommentsByPost(postId, UID);
             List<RespCommentVM> respCommentVMs = new List<RespCommentVM>();
             foreach (Comment comment in comments)
             {
