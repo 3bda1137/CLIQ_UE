@@ -14,15 +14,21 @@ namespace CLIQ_UE.Controllers
         private readonly IPostService postService;
         private readonly IUserLikePostService userLikePostService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IHubContext<NotificationHub> notificationHub;
+        private readonly INotificationService notificationService;
         private readonly IHubContext<PostsHub> hub;
 
         public PostsController(IPostService postService, UserManager<ApplicationUser> userManager
-            , IHubContext<PostsHub> hub, IUserLikePostService userLikePostService)
+            , IHubContext<PostsHub> hub, IUserLikePostService userLikePostService
+            , IHubContext<NotificationHub> notificationHub,
+            INotificationService notificationService)
         {
             this.postService = postService;
             this.userManager = userManager;
             this.hub = hub;
             this.userLikePostService = userLikePostService;
+            this.notificationHub = notificationHub;
+            this.notificationService = notificationService;
         }
 
 
@@ -56,7 +62,9 @@ namespace CLIQ_UE.Controllers
 
         public async Task<IActionResult> InteractPost(int PostId, bool LikeOption)
         {
+            
 
+            
             string UID = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
             UserLikePost? userLikePost = userLikePostService.Get(PostId, UID);
 
@@ -71,11 +79,15 @@ namespace CLIQ_UE.Controllers
                     {
                         Post.LikeCount++;
                         await postService.UpdatePost(Post);
+                        await notificationHub.Clients.User(UID).SendAsync("LikeNotification", PostId, UID);
+                        notificationService.AddNotification(Post.UserId, UID, "loved your post");
                     }
                     else
                     {
                         Post.DislikeCount++;
                         await postService.UpdatePost(Post);
+                        await notificationHub.Clients.User(UID).SendAsync("DisLikeNotification", PostId, UID);
+                        notificationService.AddNotification(Post.UserId, UID, "disliked your post");
                     }
                     userLikePost = new UserLikePost()
                     {
@@ -97,6 +109,8 @@ namespace CLIQ_UE.Controllers
                             await postService.UpdatePost(Post);
                             userLikePost.isLiked = !userLikePost.isLiked;
                             userLikePostService.Update(userLikePost);
+                            await notificationHub.Clients.User(UID).SendAsync("DisLikeNotification", PostId, UID);
+                            notificationService.AddNotification(Post.UserId, UID, "disliked your post");
                         }
                         else
                         {
@@ -114,6 +128,8 @@ namespace CLIQ_UE.Controllers
                             await postService.UpdatePost(Post);
                             userLikePost.isLiked = !userLikePost.isLiked;
                             userLikePostService.Update(userLikePost);
+                            await notificationHub.Clients.User(UID).SendAsync("LikeNotification", PostId, UID);
+                            notificationService.AddNotification(Post.UserId, UID, "loved your post");
                         }
                         else
                         {

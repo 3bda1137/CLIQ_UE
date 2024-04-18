@@ -859,7 +859,7 @@ function displayPosts(Model) {
                     <div class="add-comment">
                         <img class="profile-pic" src="${Model.currentUserImage}" alt="">
                         <input id="postId${post.id}" type="text" placeholder="Add a comment">
-                        <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})""></i>
+                        <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id}, '${post.user.id}')"></i>
                     </div>
                 </div>
             </div>`;
@@ -1035,7 +1035,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <div class="add-comment">
                                 <img class="profile-pic" src="${post.user.personalImage}" alt="">
                                 <input id="postId${post.id}" type="text" placeholder="Add a comment">
-                                <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})"></i>
+                                <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id}, '${post.user.id}')"></i>
                             </div>
                         </div>
                     </div>
@@ -1167,7 +1167,7 @@ function getPostComments(postId) {
 
 
 
-function addNewComment(PostId) {
+function addNewComment(PostId, PostUserId) {
     console.log("Works");
     let commentText = $(`#postId` + PostId).val(); // Get the commentText value from the input field
     $(`#postId` + PostId).val("");
@@ -1181,7 +1181,7 @@ function addNewComment(PostId) {
 
 
     $.ajax({
-        url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}`, // Endpoint URL
+        url: `/comments/newcomment?postId=${PostId}&CommentText=${commentText}&FollowingId=${PostUserId}`, // Endpoint URL
         type: 'POST',
         //data: { postId: PostId, commenttext: commentText }, // Include the postId and commentText parameters
 
@@ -1201,7 +1201,7 @@ function addNewComment(PostId) {
 }
 
 
-//asd
+//Like a comment
 function likeComment(commentId) {
     console.log(commentId);
     var color = $(`#likeIcon${commentId}`).css('color');

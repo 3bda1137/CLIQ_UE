@@ -377,7 +377,7 @@ function displayPosts(Model) {
                     <div class="add-comment">
                         <img class="profile-pic" src="${Model.currentUserImage}" alt="">
                         <input id="postId${post.id}" type="text" placeholder="Add a comment">
-                        <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})""></i>
+                        <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id}, '${post.user.id}')"></i>
                     </div>
                 </div>
             </div>`;
@@ -702,7 +702,7 @@ textarea.addEventListener('input', function () {
                             <div class="add-comment">
                                 <img class="profile-pic" src="${post.user.personalImage}" alt="">
                                 <input id="postId${post.id}" type="text" placeholder="Add a comment">
-                                <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id})"></i>
+                                <i class="fa-solid fa-hand-pointer add-comment-icon" onclick="addNewComment(${post.id}, '${post.user.id}')"></i>
                             </div>
                         </div>
                     </div>
