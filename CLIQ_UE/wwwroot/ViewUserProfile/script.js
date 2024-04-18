@@ -482,15 +482,14 @@ function displayPosts(Model) {
                         <div class="interactions">
                         <div class="interactions-container">
                               <div class="box">
-<<<<<<< HEAD
-                                <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: ${post.isLikedByMe ? 'red' : 'grey'}" onclick="lovePost(${post.id}, true)"></i>
+
+                                  <i id="likePost${post.id}" class="fa-solid fa-heart like-icon" style="color: ${post.isLikedByMe ? 'red' : 'grey'}" onclick="lovePost(${post.id}, true)"></i>
                                 <span id="likePostCount${post.id}">${post.likeCount}</span>
                             </div>
                             <div class="box">
                                 <i id="dislikePost${post.id}" class="fa-solid fa-thumbs-down dislike-icon" style="color: ${!post.isLikedByMe ? 'black' : 'grey'}" onclick="lovePost(${post.id}, false)"></i>
-                                <span id="dislikePostCount${post.id}">${post.dislikesCount}</span>
+                                <span id="dislikePostCount${post.id}">${post.dislikeCount}</span>
                             </div>
-                           
                             <!--
                             <div class="box">
                                 <i class="fa-solid fa-retweet repost-icon" onclick="rePost('${post.id}')"></i>
@@ -869,6 +868,23 @@ notificationConnection.on("ReceiveUnfollowNotification", () => {
     NewNotificationAriived();
 
 });
+notificationConnection.on("CommentNotification", () => {
+    NewNotificationAriived();
+
+});
+notificationConnection.on("LikeNotification", () => {
+    NewNotificationAriived();
+
+});
+notificationConnection.on("DisLikeNotification", () => {
+    NewNotificationAriived();
+
+});
+notificationConnection.on("NewMessageNotification", () => {
+    NewNotificationAriived();
+
+});
+
 
 
 function NewNotificationAriived() {

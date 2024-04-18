@@ -1271,6 +1271,23 @@ notificationConnection.on("ReceiveUnfollowNotification", () => {
     NewNotificationAriived();
 
 });
+notificationConnection.on("CommentNotification", () => {
+    NewNotificationAriived();
+
+});
+notificationConnection.on("LikeNotification", () => {
+    NewNotificationAriived();
+
+});
+notificationConnection.on("DisLikeNotification", () => {
+    NewNotificationAriived();
+
+});
+notificationConnection.on("NewMessageNotification", () => {
+    NewNotificationAriived();
+
+});
+
 
 
 function NewNotificationAriived() {

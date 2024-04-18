@@ -19,7 +19,13 @@ namespace CLIQ_UE.Repositories
 
         public void AddNotification(string userId, string createdByUserId, string content)
         {
+
             ApplicationUser user = userServices.GetByID(createdByUserId);
+
+            if (createdByUserId == userId)
+            {
+                return;
+            }
             if (user != null && content != null)
             {
                 Notification notification = new Notification();
