@@ -10,7 +10,7 @@ html {
     --secondary-color: #4385f5;
     --font-color: #282d38;
     --box-group-color: #5858580f;
-    --box-shadow: rgb(50 50 93 / 31%) -2px 4px 2px 0px, rgb(0 0 0 / 12%) 4px -1px 6px -1px;
+    --box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
     --margin: 1rem;
     --padding: 1.5rem;
     --transition: all 0.2s ease;
@@ -614,6 +614,7 @@ nav .nav-content {
 
     /* Search input */
     .nav-content .search-bar .search-input {
+        position:relative;
         width: 33rem;
         border-radius: 0.4rem;
         border: 1px solid var(--font-color);
@@ -633,15 +634,15 @@ nav .nav-content {
 .dropdown.search-dropdown {
     position: absolute;
     width: 100%;
-    top: 0;
+    top: 100%;
     right: -15px;
 }
 
 .search-dropdown .dropdown-menu {
-    width: 528px;
-    background-color: #eee;
+    width: 100%;
+    background-color: #dee2e6;
     border: none;
-    height: 400px;
+    min-height: 100px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -676,36 +677,42 @@ nav .nav-content {
     align-items: center;
     justify-content: center;
     gap: 26px;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 600;
     color: black;
 }
-
-.search-dropdown .profile-pic {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
+    .search-dropdown .profile .mutual-followers {
+        font-size: 10px;
+        color: var(--font-color);
+        font-weight: 400;
+    }
+    .search-dropdown .profile-pic {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
 
 .search-dropdown .dropdown-menu.show {
+    top:0;
     display: block;
     animation: fadeIn 0.4s ease forwards;
-    box-shadow: -6px 7px 6px 0px #0000008c;
+    box-shadow: -6px 8px 8px 0px #0000002e;
     padding: 11px;
+    position: relative;
 }
 
-.search-dropdown button.btn-follow-following {
-    border: none;
-    outline: none;
-    background-color: #ba36f1;
-    color: #fff;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 20px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: none;
-}
+    .search-dropdown button.btn-follow-following {
+        border: none;
+        outline: none;
+        background-color: #ba36f1;
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 20px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: none;
+    }
 
     .search-dropdown button.btn-follow-following:hover {
         background-color: #8e44ad;

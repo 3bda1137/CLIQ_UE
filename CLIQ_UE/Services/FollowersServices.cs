@@ -126,5 +126,10 @@ namespace CLIQ_UE.Services
         {
             return followersRepository.GetAllUsersToFollow(userid);
         }
+
+        public int GetMutualFollowersCount(string userId1, string userId2)
+        {
+            return followersRepository.GetMutualFollowersCount(userId1, userId2);
+        }
     }
 }

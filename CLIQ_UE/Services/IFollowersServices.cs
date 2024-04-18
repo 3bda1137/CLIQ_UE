@@ -18,5 +18,7 @@ namespace CLIQ_UE.Services
         List<string> GetFollowersIds(string userid);
         List<string> GetFollowingIds(string userid);
         List<string> GetAllUsersToFollow(string userid);
+
+        int GetMutualFollowersCount(string userId1, string userId2);
     }
 }

@@ -16,8 +16,15 @@
                 <a class="logo" asp-action="Index" asp-controller="HomePage">Clique <i class="fa-solid fa-people-group"></i></a>
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" class="search-input" placeholder="Search" />
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search" />
+                    <div class="dropdown search-dropdown">
+                        <div class="dropdown-menu" aria-labelledby="userDropdown">
+                            <div class="users-list">
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
 
                 <div class="right-items">
                     <div class="items">

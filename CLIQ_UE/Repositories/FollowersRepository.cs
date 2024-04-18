@@ -83,6 +83,16 @@ namespace CLIQ_UE.Repositories
             return context.Followers.Count(f => f.FollowerId == followerId);
         }
 
+
+        public int GetMutualFollowersCount(string userId1, string userId2)
+        {
+            var followersUserId1 = GetFollowersIds(userId1);
+            var followersUserId2 = GetFollowersIds(userId2);
+
+            var mutualFollowersCount = followersUserId1.Intersect(followersUserId2).Count();
+
+            return mutualFollowersCount;
+        }
         public List<string> GetFollowersIds(string userid)
         {
             List<string> ids = context.Followers
