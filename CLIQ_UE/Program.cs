@@ -56,6 +56,8 @@ namespace CLIQ_UE
             builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
             builder.Services.AddScoped<INotificationService, NotificationService>();
 
+            builder.Services.AddScoped<ISearchRepository, SearchRepository>();
+            builder.Services.AddScoped<ISearchService, SearchService>();
 
             builder.Services.AddScoped<IViewRepository, ViewRepository>();
             builder.Services.AddScoped<IViewService, ViewService>();

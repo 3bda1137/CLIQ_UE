@@ -52,16 +52,16 @@ const comments_number = document.querySelector('.post-comments');
 // Drop Down menu
 const logout = document.querySelector(".logout")
 
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.querySelector('.search-input');
+//document.addEventListener('DOMContentLoaded', function () {
+//    const searchInput = document.querySelector('.search-input');
 
-    searchInput.addEventListener('input', function () {
-        const inputValue = searchInput.value.trim();
-        if (inputValue.length > 0) {
-            searchInput.value = '';
-        }
-    });
-});
+//    searchInput.addEventListener('input', function () {
+//        const inputValue = searchInput.value.trim();
+//        if (inputValue.length > 0) {
+//            searchInput.value = '';
+//        }
+//    });
+//});
 
 
 
@@ -787,4 +787,95 @@ function ShowNotifications(notifications) {
 }
 
 
-/////////////////// Close the notification list when user click outside  /////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+////////Search
+function fetchResultUsers(searchString) {
+    const url = `Search/searchUsers?str=${searchString}`;
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error fetching users:', error);
+            return [];
+        });
+}
+
+function generateDropdownItems(users) {
+    const dropdownMenu = document.querySelector('.search-dropdown .dropdown-menu');
+    dropdownMenu.innerHTML = '';
+
+    users.forEach(user => {
+        var userTemplate = `
+            <div class="user">
+                <div class="profile">
+                    <input type="hidden" value="${user.userId}" id="FolloweID">
+                    <img class="profile-pic" src="${user.userImage}" alt="Profile image">
+                    <div class="name">
+                        <p class="username">${user.fullName}</p>
+                          <p class="mutual-followers">${user.mutualFollowers} mutual followers</p>
+                    </div>
+                </div>
+                <div class="follow-button">
+                ${user.isIFollow ? `
+                     <button class="btn btn-follow-following follow" onclick="clickOnUnFollowFromList(this, '${user.userId}')">
+                        <i class="fa-solid fa-user-check btn-icon"></i> Following
+                    </button>
+                `: `
+                     <button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, '${user.userId}')">
+                        <i class="fa-solid fa-user-plus btn-icon"></i> Follow
+                    </button>
+                `}
+               
+                </div>
+            </div>
+        `;
+
+        dropdownMenu.insertAdjacentHTML('beforeend', userTemplate);
+    });
+
+    dropdownMenu.querySelectorAll(".profile").forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const userId = item.querySelector("#FolloweID").value;
+
+            const userProfileUrl = `ViewUserProfile?userId=${userId}`;
+
+            window.location.href = userProfileUrl;
+        });
+    });
+}
+
+document.getElementById('searchInput').addEventListener('input', handleSearchInput);
+
+function handleSearchInput(event) {
+    const searchString = event.target.value.toLowerCase();
+    const dropdownMenu = document.querySelector('.search-dropdown .dropdown-menu');
+
+    dropdownMenu.classList.add('show');
+
+    if (searchString.trim() !== '') {
+        fetchResultUsers(event.target.value)
+            .then(users => {
+                generateDropdownItems(users);
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+    } else {
+        dropdownMenu.innerHTML = '';
+    }
+}
+
+document.addEventListener('click', function (event) {
+    const dropdown = document.querySelector('.search-dropdown');
+    if (!dropdown.contains(event.target)) {
+        const dropdownMenu = document.querySelector('.search-dropdown .dropdown-menu');
+        dropdownMenu.classList.remove('show');
+        searchInput.value = "";
+    }
+});

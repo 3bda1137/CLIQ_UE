@@ -939,11 +939,7 @@ function displayUsersList(model) {
 
 <button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, '${user.userId}')">
     <i class="fa-solid fa-user-plus btn-icon"></i> Follow
-</button>
-
-
-
-            
+</button>   
             </div>
         </div>
     `;
@@ -979,7 +975,7 @@ function clickOnFollowFromList(button, followingId) {
         .then(response => {
             if (response.ok) {
                 button.innerHTML = `
-                <i class="fa-solid fa-check"></i> Following
+                <i class="fa-solid fa-user-check btn-icon"></i> Following
                 `;
             } else {
                 console.log("Error")
@@ -990,6 +986,28 @@ function clickOnFollowFromList(button, followingId) {
         });
 }
 
+function clickOnUnFollowFromList(btn, followingId) {
+    fetch('/Follow/UnFollowUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(followingId)
+    })
+        .then(response => {
+            if (response.ok) {
+                btn.innerHTML = " ";
+                btn.innerHTML = `
+                 <i class="fa-solid fa-user-plus"></i> Follow
+                `
+            } else {
+                console.log("Error")
+            }
+        })
+        .catch(error => {
+            console.log("Error")
+        });
+}
 
 
 
@@ -1080,6 +1098,21 @@ function goToTop() {
     smoothScroll();
 }
 /////////////////////////////////////////////////////////////////////////////////
+////////Search
+function fetchResultUsers(searchString) {
+    const url = `Search/searchUsers?str=${searchString}`;
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error fetching users:', error);
+            return []; 
+        });
+}
 
 function generateDropdownItems(users) {
     const dropdownMenu = document.querySelector('.search-dropdown .dropdown-menu');
@@ -1092,20 +1125,41 @@ function generateDropdownItems(users) {
                     <input type="hidden" value="${user.userId}" id="FolloweID">
                     <img class="profile-pic" src="${user.userImage}" alt="Profile image">
                     <div class="name">
-                        <p class="username">${user.userName}</p>
+                        <p class="username">${user.fullName}</p>
+                          <p class="mutual-followers">${user.mutualFollowers} mutual followers</p>
                     </div>
                 </div>
                 <div class="follow-button">
-                    <button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, '${user.userId}')">
+                ${user.isIFollow ? `
+                     <button class="btn btn-follow-following follow" onclick="clickOnUnFollowFromList(this, '${user.userId}')">
+                        <i class="fa-solid fa-user-check btn-icon"></i> Following
+                    </button>
+                `: `
+                     <button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, '${user.userId}')">
                         <i class="fa-solid fa-user-plus btn-icon"></i> Follow
                     </button>
+                `}
+               
                 </div>
             </div>
         `;
 
         dropdownMenu.insertAdjacentHTML('beforeend', userTemplate);
     });
+
+    dropdownMenu.querySelectorAll(".profile").forEach(function (item) {
+        item.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const userId = item.querySelector("#FolloweID").value;
+
+            const userProfileUrl = `ViewUserProfile?userId=${userId}`;
+
+            window.location.href = userProfileUrl;
+        });
+    });
 }
+
 document.getElementById('searchInput').addEventListener('input', handleSearchInput);
 
 function handleSearchInput(event) {
@@ -1115,40 +1169,23 @@ function handleSearchInput(event) {
     dropdownMenu.classList.add('show');
 
     if (searchString.trim() !== '') {
-            const userTemplate = `
-                <div class="user">
-                    <div class="profile">
-                        <input type="hidden" value="dasd" id="FolloweID">
-                        <img class="profile-pic" src="https://shots.codepen.io/username/pen/bpOjEr-800.jpg?version=1462466517" alt="Profile image">
-                        <div class="name">
-                            <p class="username">MOUDY RASMY</p>
-                        </div>
-                    </div>
-                    <div class="follow-button">
-                        <button class="btn btn-follow-following follow" onclick="clickOnFollowFromList(this, 'TEST')">
-                            <i class="fa-solid fa-user-plus btn-icon"></i> Follow
-                        </button>
-                    </div>
-                </div>
-            `;
-
-            dropdownMenu.innerHTML = userTemplate;
-     
+        fetchResultUsers(event.target.value)
+            .then(users => {
+                generateDropdownItems(users);
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
     } else {
         dropdownMenu.innerHTML = '';
     }
 }
 
-
 document.addEventListener('click', function (event) {
     const dropdown = document.querySelector('.search-dropdown');
-    const searchInput = document.getElementById('searchInput');
-
-    if (!dropdown.contains(event.target) && event.target !== searchInput) {
+    if (!dropdown.contains(event.target)) {
         const dropdownMenu = document.querySelector('.search-dropdown .dropdown-menu');
         dropdownMenu.classList.remove('show');
+        searchInput.value = "";
     }
 });
-
-
-
