@@ -60,6 +60,7 @@ namespace CLIQ_UE.Controllers
             {
                 return BadRequest();
             }
+            postService.LoadFollowingId(user.Id);
             List<Post> posts = postService.GetLatestPosts(pageIndex, pageSize, user.Id);
             foreach (var post in posts)
             {

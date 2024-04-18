@@ -24,9 +24,9 @@ namespace CLIQ_UE.Controllers
         }
         public async Task<IActionResult> Index(ProfileViewModel model)
         {
-
             var user = await userManager.GetUserAsync(User);
 
+            postService.LoadFollowingId(user.Id);
             if (user != null)
             {
                 model.UserName = user.UserName;
@@ -51,7 +51,9 @@ namespace CLIQ_UE.Controllers
         public async Task<IActionResult> GetPosts(int pageIndex = 0, int pageSize = 5)
         {
             ApplicationUser user = await userManager.GetUserAsync(User);
-            List<Post> posts = postService.GetLatestPostsByUserId(user.Id, pageIndex, pageSize);
+            List<Post> posts = postService.GetLatestPostsByUserId(user.Id, user.Id, pageIndex, pageSize);
+
+            postService.LoadFollowingId(user.Id);
 
             displayPostViewModel displayPostViewModel = new displayPostViewModel();
 
@@ -74,7 +76,8 @@ namespace CLIQ_UE.Controllers
         {
             ApplicationUser user = await userManager.GetUserAsync(User);
 
-            List<string> allImages = postService.allPostsImagesById(user.Id);
+            postService.LoadFollowingId(user.Id);
+            List<string> allImages = postService.allPostsImagesById(user.Id, user.Id);
 
 
             return Json(allImages);
