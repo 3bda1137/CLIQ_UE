@@ -15,14 +15,17 @@ function ChatProperties() {
 
     // start Conversation 
     var elem = document.querySelectorAll('.Conversation_Item_dropdown_toggle');
-    
+    console.log("************")
+    console.log(elem);
     document.querySelectorAll('.Conversation_Item_dropdown_toggle').forEach(function (item) {
-       
+
+        console.log(item);
         item.addEventListener('click', function (e) {
 
             e.preventDefault();
             if (this.parentElement.classList.contains('active')) {
                 this.parentElement.classList.remove('active')
+                console.log("############")
             }
             else {
                 document.querySelectorAll('.Conversation_Item_dropdown').forEach(function (i) {
