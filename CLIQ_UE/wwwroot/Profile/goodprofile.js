@@ -1346,12 +1346,12 @@ function ShowNotifications(notifications) {
         const HTML = `
 <div class="notification-item ${notification.isSeen ? 'seen' : 'unseen'}">
         <input type="hidden" name="notificationUserId" value="${notification.createdByUserId}">
-        ${notification.content === 'followed you' ? '<i class="fa-solid fa-user-plus text-primary"></i>' : ''}
-        ${notification.content === 'unfollowed your profile' ? '<i class="fa-solid fa-user-xmark text-danger"></i>' : ''}
-        ${notification.content === 'loved your post' ? '<i class="fa-solid fa-heart" style="color:#d90429;"></i>' : ''}
-        ${notification.content === 'disliked your post' ? '<i class="fa-solid fa-thumbs-down""style="color:# 03071e"></i>' : ''}
-        ${notification.content === 'sent you a message' ? '<i class="fa-solid fa-message text-success"></i>   ' : ''}
-                ${notification.content === 'commented on your post' ? '<i class="fa-solid fa-comment text-primary"></i>' : ''}
+              ${notification.content === 'followed you' ? ' <img src="./images/notifications/notify-follow.gif" style="width:20px" />' : ''}
+        ${notification.content === 'unfollowed your profile' ? ' <img src="./images/notifications/notify-unfollow.gif" style="width:20px" />' : ''}
+        ${notification.content === 'loved your post' ? ' <img src="./images/notifications/notifiy-like.gif" style="width:20px" />' : ''}
+        ${notification.content === 'disliked your post' ? ' <img src="./images/notifications/notifiy-Dislike.gif" style="width:20px" />' : ''}
+        ${notification.content === 'sent you a message' ? ' <img src="./images/notifications/notifiy-message.gif" style="width:20px" />' : ''}
+                ${notification.content === 'commented on your post' ? ' <img src="./images/notifications/notifiy-comment.gif" style="width:20px" />' : ''}
         <img src="${notification.userImage}" alt="User" class="user-avatar">
         <div class="notification-details">
             <span class="user-name"><span>${notification.userName}</span></span>
