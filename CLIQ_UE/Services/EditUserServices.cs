@@ -53,7 +53,7 @@ namespace CLIQ_UE.Services
                 {
                     user.PersonalImage = "/images/defaultimages/man-avatar.png";
                 }
-                user.ProfileImage= "/images/defaultimages/cover.jpg";
+                user.ProfileImage= "/images/defaultimages/cover.jpeg";
                 user.PublicBirthDate = userViewModel.PublicBirthDate;
 
                 editUserRepository.Update(user);

@@ -115,17 +115,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     function showAllCoverImages() {
         document.querySelector('.default-cover-images').innerHTML = `
-        <div class="col-12 mb-3">
-                <img src="/images/defaultimages/cover1.jpg" class="img-fluid rounded default-cover-image" alt="Default Image 1">
+            <div class="col-12 mb-3">
+                <img src="/images/DefaultImages/cover1.jpeg" class="img-fluid rounded default-cover-image" alt="Default Image 1">
             </div>
             <div class="col-12 mb-3">
-                <img src="/images/defaultimages/cover2.jpg" class="img-fluid rounded default-cover-image" alt="Default Image 1">
+                <img src="/images/defaultimages/cover2.jpeg" class="img-fluid rounded default-cover-image" alt="Default Image 1">
             </div>
             <div class="col-12 mb-3">
-                <img src="/images/defaultimages/cover3.jpg" class="img-fluid rounded default-cover-image" alt="Default Image 1">
+                <img src="/images/defaultimages/cover3.jpeg" class="img-fluid rounded default-cover-image" alt="Default Image 1">
             </div>
             <div class="col-12 mb-3">
-                <img src="/images/defaultimages/cover4.jpg" class="img-fluid rounded default-cover-image" alt="Default Image 1">
+                <img src="/images/defaultimages/cover4.jpeg" class="img-fluid rounded default-cover-image" alt="Default Image 1">
+            </div>
+            <div class="col-12 mb-3">
+                <img src="/images/defaultimages/cover5.jpeg" class="img-fluid rounded default-cover-image" alt="Default Image 1">
+            </div>
+            <div class="col-12 mb-3">
+                <img src="/images/defaultimages/cover6.jpeg" class="img-fluid rounded default-cover-image" alt="Default Image 1">
             </div>
 
     `;
