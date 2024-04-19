@@ -49,17 +49,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         }
 
-        // If all inputs have data, proceed with sending the OTP data via AJAX
         const otpData = Array.from(inputs).map(input => input.value).join('');
         console.log(otpData)
-        // Make AJAX call to send OTP data
         $.ajax({
             url: '/Account/confirmEmail',
             method: 'POST',
             data: { code: otpData },
-            success: function (response) {
-                if (response != null) {
-                    displayMessage(response)
+            success: function (data, textStatus, jqXHR) {
+                if (jqXHR.status === 200) {
+                    window.location.href = "/EditProfile/CompleteProfile";
+                } else {
+                    displayMessage(response);
                 }
             },
             error: function (xhr, status, error) {
