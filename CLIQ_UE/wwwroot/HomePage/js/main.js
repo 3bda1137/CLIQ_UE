@@ -319,7 +319,7 @@ function displayPosts(Model) {
         const postPrivacy = post.privacy;
         let privacy_icon = "";
         if (postPrivacy === "Public") {
-            privacy_icon = "<i class='fas fa-globe'></i>"; // Public icon
+            privacy_icon = "<i class='fas fa-earth-americas'></i>"; // Public icon
         } else if (postPrivacy === "friends") {
             privacy_icon = "<i class='fas fa-users'></i>"; // Friends icon
         } else if (postPrivacy === "private") {
@@ -502,7 +502,7 @@ function fetchAllSavedPosts() {
                 const postPrivacy = post.privacy;
                 let privacy_icon = "";
                 if (postPrivacy === "Public") {
-                    privacy_icon = "<i class='fas fa-globe'></i>"; // Public icon
+                    privacy_icon = "<i class='fas fa-earth-americas'></i>"; // Public icon
                 } else if (postPrivacy === "friends") {
                     privacy_icon = "<i class='fas fa-users'></i>"; // Friends icon
                 } else if (postPrivacy === "private") {
@@ -663,7 +663,7 @@ textarea.addEventListener('input', function () {
             const postPrivacy = post.privacy;
             let privacy_icon = "";
             if (postPrivacy === "Public") {
-                privacy_icon = "<i class='fas fa-globe'></i>"; // Public icon
+                privacy_icon = "<i class='fas fa-earth-americas'></i>"; // Public icon
             } else if (postPrivacy === "friends") {
                 privacy_icon = "<i class='fas fa-users'></i>"; // Friends icon
             } else if (postPrivacy === "private") {
