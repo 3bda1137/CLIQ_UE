@@ -48,8 +48,11 @@ INotificationService notificationService)
                 await postService.IncreasePostComments(commentVM.PostId);
                 //await notificationHub.Clients.User(UID).SendAsync("LikeNotification", commentVM.PostId, UID);
                 //notificationService.AddNotification(Post.UserId, UID, "loved your post");
-                notificationService.AddNotification(commentVM.FollowingId, UID, "commented on your post");
-                await notificationHub.Clients.User(commentVM.FollowingId).SendAsync("CommentNotification", UID);
+                if (commentVM.FollowingId != UID)
+                {
+                    notificationService.AddNotification(commentVM.FollowingId, UID, "commented on your post");
+                    await notificationHub.Clients.User(commentVM.FollowingId).SendAsync("CommentNotification", UID);
+                }
                 return Ok();
             }
             return BadRequest();
@@ -65,21 +68,6 @@ INotificationService notificationService)
             {
                 var respCommentVM = mapper.Map<Comment, RespCommentVM>(comment);
                 respCommentVM.CommentDate = FormatTime.FormatingTime(comment.CommentDate);
-                /*respCommentVMs.Add(new RespCommentVM()
-                {
-                    CommentId = comment.CommentId,
-                    CommentDate = comment.CommentDate,
-                    CommentImage = comment.CommentImage,
-                    CommentText = comment.CommentText,
-                    LikeCount = comment.LikeCount,
-                    PostId = comment.PostId,
-                    UserFirstName = comment.User.FirstName,
-                    UserLastName = comment.User.LastName,
-                    UserId = comment.User.Id,
-                    UserProfileImage = comment.User.ProfileImage,
-                    IsLikedByMe = comment.UserLikeComments != null && comment.UserLikeComments.Count > 0
-                });*/
-
                 respCommentVMs.Add(respCommentVM);
             }
             return Json(respCommentVMs);

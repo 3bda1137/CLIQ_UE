@@ -26,7 +26,7 @@ namespace CLIQ_UE.Helpers
             CreateMap<Comment, RespCommentVM>()
             .ForMember(dest => dest.UserFirstName, opt => opt.MapFrom(src => src.User!.FirstName))
             .ForMember(dest => dest.UserLastName, opt => opt.MapFrom(src => src.User!.LastName))
-            .ForMember(dest => dest.UserProfileImage, opt => opt.MapFrom(src => src.User!.ProfileImage))
+            .ForMember(dest => dest.UserProfileImage, opt => opt.MapFrom(src => src.User!.PersonalImage))
             .ForMember(dest => dest.IsLikedByMe, opt => opt.MapFrom(src => src.UserLikeComments != null && src.UserLikeComments.Count > 0));
 
         }

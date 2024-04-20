@@ -560,8 +560,8 @@ function getPostComments(postId) {
             $('#commentsModal').append(a);
             for (let comment of response) {
 
-                let profileImage = '/images/';
-                profileImage += comment.userProfileImage;
+                //let profileImage = '/images/';
+                let profileImage = comment.userProfileImage;
                 console.log(comment);
                 console.log(profileImage);
                 a = `<div id="${comment.commentId}" class="comment">
