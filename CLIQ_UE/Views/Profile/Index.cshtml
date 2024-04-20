@@ -138,9 +138,18 @@
                         <a class="Bookmark-btn">BookMark</a>
                     </div>
                     <div class="link">
-                        <i class="bi bi-patch-check-fill"></i>
-                        <a href="#">Get Verified</a>
+                        @if (Model.IsVerified)
+                        {
+                            <i class="bi bi-patch-check-fill text-primary"></i>
+                            <span>Verified Account</span>
+                        }
+                        else
+                        {
+                            <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                            <a data-bs-toggle="modal" data-bs-target="#staticBackdrop">Get Verified</a>
+                        }
                     </div>
+
                     <div class="link">
                         <img class="profile-pic" src="@Model.UserImage" alt="" />
                         <a asp-action="Index" asp-controller="Profile">@@@Model.UserName</a>
@@ -184,7 +193,14 @@
                     <div class="profile mr-3">
                         <img class="profile-pic2" src="@Model.UserImage" alt="Profile Image" class="mb-2 profile-image">
                         <div class="media-body text-white">
-                            <h4 id="userNameInProfile">@Model.FirstName @Model.LastName <i class="bi bi-patch-check-fill text-primary"></i></h4>
+                            <h4 id="userNameInProfile">
+                                @Model.FirstName @Model.LastName
+                                @if (Model.IsVerified)
+                                {
+                                    <i class="bi bi-patch-check-fill text-primary"></i>
+                                }
+                            </h4>
+
                         </div>
                         <button data-bs-toggle="modal" href="#exampleModalToggle" role="button" class="btn btn-primary btnedit">Edit Profile</button>
                     </div>
