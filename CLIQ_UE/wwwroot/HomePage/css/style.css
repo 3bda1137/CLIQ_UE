@@ -52,7 +52,9 @@ nav {
     margin: 0;
     z-index: 100;
 }
-
+strong{
+    opacity:.5;
+}
 
 .left-content-container,
 .right-content-container {

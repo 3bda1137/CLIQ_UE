@@ -53,7 +53,7 @@ namespace CLIQ_UE.Controllers
                 model.FollowersCount = followersServices.GetFollowerCount(userVisited.Id);
                 model.FollowingCount = followersServices.GetFollowingCount(userVisited.Id);
                 model.Location = currentUser.Location;
-
+                model.Bio = currentUser.Bio;
 
                 model.newNotificationCount = notificationService.GetNewNotifications(currentUser.Id).Count();
 

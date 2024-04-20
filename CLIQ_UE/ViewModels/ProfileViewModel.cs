@@ -16,6 +16,6 @@
         public int FollowingCount { get; set; }
         public int FollowersCount { get; set; }
         public string Location { get; set; }
-
+        public string Bio { get; set; }
     }
 }

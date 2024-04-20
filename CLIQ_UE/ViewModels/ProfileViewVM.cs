@@ -23,6 +23,7 @@
         public string CurrentUserImage { get; set; }
         public string CurrentUserName { get; set; }
 
+        public string Bio { get; set; }
         public bool IsMutualFollowing { get; set; }
     }
 }

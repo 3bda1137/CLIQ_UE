@@ -799,14 +799,16 @@
             document.getElementById('username-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
             document.getElementById('profile-progress').value += 20;
         }
-
-        if (true) {
+        var userImage = '@Model.UserImage';
+        if (userImage != "/images/defaultimages/man-avatar.png") {
             document.querySelector('.verify-profile-pic').classList.add('verified');
             document.getElementById('profile-pic-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
             document.getElementById('profile-progress').value += 20;
         }
 
-        if (true) {
+        var coverImage = '@Model.coverImage'
+
+        if (coverImage != "/images/defaultimages/cover.jpeg") {
             document.querySelector('.verify-cover-pic').classList.add('verified');
             document.getElementById('cover-pic-check').innerHTML = '<i class="fa-solid fa-check-double ms-3 text-primary"></i>';
             document.getElementById('profile-progress').value += 20;

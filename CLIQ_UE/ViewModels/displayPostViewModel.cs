@@ -11,7 +11,7 @@ namespace CLIQ_UE.ViewModels
         public string currentUserFirstName { get; set; }
         public string currentUserLastName { get; set; }
         public string currentUserusername { get; set; }
-
+        public string Bio { get; set; }
         public List<int> BookmarksIds { get; set; }
 
     }

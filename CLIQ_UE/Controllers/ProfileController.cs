@@ -40,6 +40,8 @@ namespace CLIQ_UE.Controllers
                 model.FollowingCount = followersServices.GetFollowingCount(user.Id);
                 model.Location = user.Location;
                 model.newNotificationCount = notificationService.GetNewNotifications(user.Id).Count();
+                model.Bio = user.Bio;
+
                 return View(model);
             }
             return RedirectToAction("Login", "Account");
@@ -64,7 +66,6 @@ namespace CLIQ_UE.Controllers
             displayPostViewModel.currentUserFirstName = user.FirstName;
             displayPostViewModel.currentUserLastName = user.LastName;
             displayPostViewModel.BookmarksIds = bookMarkService.getAllPostsId(user.Id);
-
 
 
             return Json(displayPostViewModel);

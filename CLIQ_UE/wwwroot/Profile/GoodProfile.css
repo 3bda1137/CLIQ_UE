@@ -42,6 +42,9 @@ h5,
 h6 {
     margin: 0;
 }
+strong {
+    opacity: .5;
+}
 
 nav {
     position: fixed;
@@ -245,6 +248,9 @@ progress {
 
 
 /*////////////////////////////////     Customize the model        ///////////////////////////////*/
+.alert-dismissible .btn-close {
+    padding: 0 !important;
+}
 .modal-content {
     border-radius: var(--border-radius) !important;
     box-shadow: -7px 14px 16px 16px #666666 !important;

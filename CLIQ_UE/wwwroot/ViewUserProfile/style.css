@@ -42,6 +42,9 @@ h5,
 h6 {
     margin: 0;
 }
+strong {
+    opacity: .5;
+}
 
 nav {
     position: fixed;
@@ -119,9 +122,13 @@ i {
     z-index: 10;
 }
 /*////////////////////////////////     Customize the model        ///////////////////////////////*/
+.alert-dismissible .btn-close{
+    padding:0;
+}
 .modal-content {
     border-radius: var(--border-radius) !important;
-    box-shadow: -4px 7px 10px 0px #6666664d !important; overflow-y: auto !important;
+    box-shadow: -4px 7px 10px 0px #6666664d !important;
+    overflow-y: auto !important;
 }
 
     /* Customize scrollbar appearance */
