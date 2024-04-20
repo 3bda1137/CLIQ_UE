@@ -467,7 +467,11 @@ function displayPosts(Model) {
                                  <input type="hidden" value="${post.user.id}" id="PostID">
                             <img class="profile-pic" src="${post.user.personalImage}"  alt="Profile image">
                             <div class="name">
-                       <p class="username">${post.user.firstName}  ${post.user.lastName} <i class="bi bi-patch-check-fill text-primary"></i> </p>
+                 <p class="username">
+    ${post.user.firstName} ${post.user.lastName}
+    ${post.user.isVerified ? '<i class="bi bi-patch-check-fill text-primary"></i>' : ''}
+</p>
+
                                 <!-- Using js function to calculate the time -->
                                 <p class="post-time">${privacy_icon}${post.postAddedTime}</p>
                             </div>

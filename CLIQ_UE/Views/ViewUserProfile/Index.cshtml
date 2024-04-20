@@ -106,13 +106,20 @@
 
         <div class="col-lg-9 col-md-7 col-12 main-content-container  justify-content-center">
             <div class="px-4 pt-0 pb-4 position-relative col-12 cover" style="height: 30vh;">
-                <img src="/images/@Model.CoverImage" alt="Cover Image" class="img-fluid">
+            <img src="@Model.CoverImage" alt="Cover Image" class="img-fluid">
 
                 <div class="media align-items-end profile-head px-4 d-flex position-absolute w-100 bottom-0">
                     <div class="profile mr-3">
                         <img src="@Model.UserImage" alt="Profile Image" class="mb-2 profile-image">
                         <div class="media-body text-white">
-                            <h4>@Model.FirstName @Model.LastName <i class="bi bi-patch-check-fill text-primary"></i></h4>
+                        <h4 id="userNameInProfile">
+                            @Model.FirstName @Model.LastName
+                            @if (Model.IsVerified)
+                            {
+                                <i class="bi bi-patch-check-fill text-primary"></i>
+                            }
+                        </h4>
+
                         </div>
                     </div>
                 </div>
